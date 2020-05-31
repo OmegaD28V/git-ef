@@ -1,6 +1,7 @@
 <?php
     session_start();
 ?>
+<!DOCTYPE html>
 <html lang="es">
     <?php
         require_once "models/conexion.php";
@@ -9,42 +10,62 @@
         <?php
             if (isset($_GET['action'])) {
                 if($_GET['action'] == "inicio"){
-                        $modulo =  "Inicio";
+                        $modulo =  "EF | Inicio";
                 }elseif ($_GET['action'] == "productoInicio") {
-                    $modulo =  "Productos";
+                    $modulo =  "EF | Productos";
                 }elseif ($_GET['action'] == "productoRegistrar") {
-                    $modulo =  "Nuevo Producto";
+                    $modulo =  "EF | Nuevo Producto";
                 }elseif ($_GET['action'] == "productoEditar") {
-                    $modulo = "Editar Producto";
-                }elseif ($_GET['action'] == "categoriaLista") {
-                    $modulo =  "Categorías";
+                    $modulo = "EF | Editar Producto";
+                }elseif ($_GET['action'] == "categoria") {
+                    $modulo =  "EF | Categorías";
                 }elseif ($_GET['action'] == "productoLista") {
-                    $modulo =  "Productos";
+                    $modulo =  "EF | Productos";
                 }elseif ($_GET['action'] == "productoCategoria" && isset($_GET["idcategoria"])) {
                     $categoria = MvcController::categoriaController($_GET["idcategoria"]);
-                    $modulo = $categoria["categoria"];
+                    $modulo = "EF | ".$categoria["categoria"];
                 }elseif ($_GET['action'] == "proveedores") {
-                    $modulo =  "Proveedores";
+                    $modulo =  "EF | Proveedores";
                 }elseif ($_GET['action'] == "compras") {
-                    $modulo =  "Compras";
+                    $modulo =  "EF | Compras";
                 }elseif ($_GET['action'] == "ventas") {
-                    $modulo =  "Ventas";
+                    $modulo =  "EF | Ventas";
                 }elseif ($_GET['action'] == "usuarioInicioSession") {
-                    $modulo =  "Iniciar Sesion";
+                    $modulo =  "EF | Iniciar Sesion";
                 }elseif ($_GET['action'] == "usuarioRegistrarse") {
-                    $modulo =  "Crear una cuenta";
+                    $modulo =  "EF | Crear una cuenta";
                 }elseif ($_GET['action'] == "usuarioConfiguracion") {
-                    $modulo =  "Configuración";
+                    $modulo =  "EF | Configuración";
                 }elseif ($_GET['action'] == "categoriaRegistrar") {
-                    $modulo =  "Nueva Categoría";
+                    $modulo =  "EF | Nueva Categoría";
+                }elseif ($_GET['action'] == "marca") {
+                    $modulo =  "EF | Marcas";
+                }elseif ($_GET['action'] == "marcaRegistrar") {
+                    $modulo =  "EF | Registrar Marca";
+                }elseif ($_GET['action'] == "categoriaEditar") {
+                    $modulo =  "EF | Editar Categoría";
+                }elseif ($_GET['action'] == "productoEntrada") {
+                    $modulo =  "EF | Entrada de productos";
+                }elseif ($_GET['action'] == "proveedorRegistrar") {
+                    $modulo =  "EF | Registrar Proveedor";
+                }elseif ($_GET['action'] == "productoCompra") {
+                    $modulo =  "EF | Registrar Compra";
+                }elseif ($_GET['action'] == "producto" && isset($_GET["idpro"])) {
+                    $valor = $_GET["idpro"];
+                    $producto = MvcController::tabProductoController($valor);
+                    $modulo =  "EF | ".$producto["nombre"];
+                }elseif ($_GET['action'] == "productoDeshabilitado") {
+                    $modulo =  "EF | Productos Deshabilitados";
+                }elseif ($_GET['action'] == "productoSinStock") {
+                    $modulo =  "EF | Productos Sin Stock";
                 }else{
-                    $modulo = "ninguno";
+                    $modulo = "Electrónica Fonseca.";
                 }
             }else {
-                $modulo = "Inicio";
+                $modulo = "Electrónica Fonseca";
             }
         ?>
-        <title>EF | <?=$modulo?></title>
+        <title><?=$modulo?></title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="ima/MiSitioWebIcono.png" type="image/x-icon">
@@ -60,7 +81,26 @@
     <body>
         <div class="main-container" id="main-container">
             <?php
-                include "modules/nav.php";
+                if (!isset($_SESSION["ingresoVerificado"])) {
+                    include "modules/nav.php";
+                }else {
+                    if (isset($_SESSION["access"])) {
+                        if ($_SESSION["access"] == "master") {
+                            include "modules/nav-master.php";
+                        }elseif ($_SESSION["access"] == "invite") {
+                            include "modules/nav-invite.php";
+                        }elseif ($_SESSION["access"] == "user") {
+                            include "modules/nav-user.php";
+                        }
+                    }else {
+                        echo '<script>
+                        if(window.history.replaceState){
+                            window.history.replaceState(null, null, window.location.href);
+                        }
+                    </script>';
+                    echo '<div><span>Error!</span></div>';
+                    }
+                }
             ?>
             <section class="section" id="section">
                 <?php
@@ -69,6 +109,11 @@
                 ?>
             </section> 
         </div>
+        <footer class="footer">
+            <?php
+                include "modules/footer.php";
+            ?>
+        </footer>
         <script type="text/javascript" src="js/interMenu.js"></script>
         <script type="text/javascript" src="js/visibleUser.js"></script>
         <script type="text/javascript" src="js/hiddenPasswordUIS.js"></script>

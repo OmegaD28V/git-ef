@@ -1,5 +1,15 @@
 <?php
-    $productos = MvcController::seleccionarProductoController(null, null);
+    $modo = "fichas";
+    $productos = MvcController::seleccionarProductoController(null, null, $modo);
+
+    if ((isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
+        if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] == "master") {
+            ?>
+<a href="index.php?action=productoSinStock">Ver productos sin existencia</a><br>
+<a href="index.php?action=productoDeshabilitado">Ver productos deshabilitados</a>
+            <?php
+        }
+    }
 ?>
 <div class="contenedor-formulario">
     <div class="gridFichas">
@@ -8,24 +18,42 @@
     ?>
         <div class="fichas">
             <div class="imagen">
-                <label class="img" for="imagen">Imagen</label>
+                <img class="img" src="ima/a3.jpg" alt="a" width="240" height="300">
             </div>
             <div class="info">
-                <label class="nombreProducto" for="nombreProducto"><?=$value["nombre"]?></label>
-                <label class="precioProducto" for="precioProducto">$<?=$value["precioventa"]?></label>
+                <span class="ficha-name-pro"><?=$value["nombre"]?></span>
+                <span class="ficha-price-pro">$<?=$value["precio"]?></span>
+                <span class="ficha-detail-pro"><?=$value["descripcion"]?></span>
                 <div class="acciones">
-                    <a class="editar" title="Editar" href="index.php?action=productoEditar&idproducto=<?php echo $value["idproducto"];?>"><i class="fas fa-pen"></i></a>
-                    <form class="formEliminar" method="post">
-                        <input class="inputEliminar" type="hidden" value="<?=$value["idproducto"]?>" name="dropProduct">
-                        <div class="divEliminar">    
-                            <button class="inputEliminar" type="submit" title="Eliminar" value=""><i class="fas fa-trash"></i></button>
-                        </div>
-                        
-                        <?php
-                            $eliminar = new MvcController();
-                            $eliminar -> eliminarProductoController();
+                <?php
+                    if ((isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
+                        if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] == "master") {
+                ?>
+                <a class="ver-mas" href="index.php?action=producto&idpro=<?=$value["idpro"]?>">Ver más</a>
+                <div class="pro">Más acciones
+                    <ul class="pro-ul">
+                        <li class="pro-items"><a href="index.php?action=productoCompra">Comprar más unidades</a></li>
+                        <li class="pro-items"><a href="index.php?action=productoImagen&pPic=<?=$value["idpro"]?>">Agregar Imágenes</a></li>
+                        <li class="pro-items"><a href="index.php?action=productoCaracteristica&pFts=<?=$value["idpro"]?>">Agregar caracteristicas</a></li>
+                    </ul>
+                </div>
+                <a class="editar" href="index.php?action=productoEditar&idpro=<?=$value["idpro"]?>"><i class="fas fa-pen-square"></i>Editar</a>        
+                <form class="formEliminar" method="post">
+                    <input class="inputEliminar" type="hidden" value="<?=$value["idpro"]?>" name="removeProduct">
+                    <button class="inputEliminar" type="submit" value=""><i class="fas fa-minus-square"></i>Quitar</button>                    
+                    <?php
+                        $quitarProducto = new MvcController();
+                        $quitarProducto -> eliminarProductoController();
+                    ?>
+                </form>
+                    <?php
+                        }
+                    }else {
                         ?>
-                    </form>
+                <a class="ver-mas" href="index.php?action=producto&idpro=<?=$value["idpro"]?>">Ver más</a>
+                        <?php
+                    }
+                ?>
                 </div>
             </div>
         </div>

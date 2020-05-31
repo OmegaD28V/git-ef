@@ -1,9 +1,10 @@
 <?php
-    $categorias = MvcController::seleccionarCategoriaController();
+    $categorias = MvcController::seleccionarCategoriaController(null, null);
+    $marcas = MvcController::seleccionarMarcaController(null, null);
 ?>
 <header class="header" id="header">
     <div class="encabezado">
-        <div class="img-logo"><img src="ima/LogoEF.jpeg" alt="Logo EF"></div>
+        <div class="img-logo"><img src="ima/LogoEF1.jpeg" alt="Logo EF"></div>
         <div class="logo">Electrónica Fonseca</div>
     </div>
 
@@ -13,7 +14,7 @@
             if (isset($_GET["action"])) {
                     if ($_GET["action"] == "inicio") {
                 ?>
-                    <li id="nav-item1" title="Inicio" class="nav-items"><a class="module" href="index.php?action=inicio"><i class="fas fa-home"></i>Inicio</a></li>
+                    <li id="nav-item1" title="Inicio" class="nav-items"><a class="module" href="index.php?action=inicio"><i class="fas fa-home a-module"></i>Inicio</a></li>
                 <?php                    
                     }else{
                 ?>
@@ -23,132 +24,105 @@
                 ?>
 
                 <?php
-                    if ($_GET["action"] == "categoriaLista" || $_GET["action"] == "productoCategoria") {
-                ?>
-                    <li id="nav-item2" title="Categorías" class="nav-items"><a class="module" href="index.php?action=categoriaLista"><i class="fas fa-cubes"></i>Categorías</a>
-                        <ul class="nav-ul-li-ul">
-                            <li class="nav-items">
-                                <a class="aCat" href="index.php?action=categoriaRegistrar" title="Nueva Categoría"><i class="fas fa-plus-circle"></i>Nueva Categoría</a>
-                            </li>
-                            <?php
-                                foreach ($categorias as $key => $value) {
-                            ?>
-                                <li title="" class="nav-items">
-                                    <a class="aCat" href="index.php?action=productoCategoria&idcategoria=<?=$value["idcategoria"]?>" title=""><?=$value["categoria"]?></a>
-                                </li>
-                            <?php
-                                }
-                            ?>
-                                
-                        </ul>
-                    </li>
-                <?php
-                    }else{
-                ?>
-                    <li id="nav-item2" title="Categorías" class="nav-items"><a href="index.php?action=categoriaLista"><i class="fas fa-cubes"></i>Categorías</a>
-                        <ul class="nav-ul-li-ul">
-                            <li class="nav-items">
-                                <a class="aCat" href="index.php?action=categoriaRegistrar" title="Nueva Categoría"><i class="fas fa-plus-circle"></i>Nueva Categoría</a>
-                            </li>
-                            <?php
-                                foreach ($categorias as $key => $value) {
-                            ?>
-                                <li title="" class="nav-items">
-                                    <a class="aCat" href="index.php?action=productoCategoria&idcategoria=<?=$value["idcategoria"]?>" title=""><?=$value["categoria"]?></a>
-                                </li>
-                            <?php
-                                }
-                            ?>
-                                
-                        </ul>
-                    </li>
-                <?php
-                    }
-                ?>
-
-                <?php
-                    if ($_GET["action"] == "productoLista") {
-                ?>
-                    <li id="nav-item3" title="Lista de productos" class="nav-items"><a class="module" href="index.php?action=productoLista"><i class="fas fa-list-ul"></i></i>Productos</a></li>
-                <?php
-                    }else{
-                ?>
-                    <li id="nav-item3" title="Lista de productos" class="nav-items"><a href="index.php?action=productoLista"><i class="fas fa-list-ul"></i></i>Productos</a></li>
-                <?php
-                    }
-                ?>
-
-                <?php
                     if ($_GET["action"] == "productoInicio") {
                 ?>
-                    <li id="nav-item4" title="Productos" class="nav-items"><a class="module" href="index.php?action=productoInicio"><i class="fas fa-tags"></i>Productos</a>
+                    <li id="nav-item2" title="Productos" class="nav-items"><a class="module" href="index.php?action=productoInicio"><i class="fas fa-tags a-module"></i>Productos</a>
+                    </li>
+                <?php
+                    }else{
+                ?>
+                    <li id="nav-item2" title="Productos" class="nav-items"><a href="index.php?action=productoInicio"><i class="fas fa-tags"></i>Productos</a></li>
+                <?php
+                    }
+                ?>
+
+                <?php
+                    if ($_GET["action"] == "categoria" || $_GET["action"] == "productoCategoria") {
+                ?>
+                    <li id="nav-item2" title="Categorías" class="nav-items"><a class="module" href="index.php?action=categoria"><i class="fas fa-cubes a-module"></i>Categorías</a>
                         <ul class="nav-ul-li-ul">
-                                <li class="nav-items">
-                                    <a class="aCat" href="index.php?action=productoRegistrar" title="Nuevo Producto"><i class="fas fa-plus-circle"></i>Nuevo Producto</a>
+                            <?php
+                                foreach ($categorias as $key => $value) {
+                            ?>
+                                <li title="" class="nav-items">
+                                    <a class="aCat" href="index.php?action=productoCategoria&cat=<?=$value["idpro_categoria"]?>" title=""><?=$value["categoria"]?></a>
                                 </li>
+                            <?php
+                                }
+                            ?>
+                                
                         </ul>
                     </li>
                 <?php
                     }else{
                 ?>
-                    <li id="nav-item4" title="Productos" class="nav-items"><a href="index.php?action=productoInicio"><i class="fas fa-tags"></i>Productos</a>
+                    <li id="nav-item2" title="Categorías" class="nav-items"><a href="index.php?action=categoria"><i class="fas fa-cubes"></i>Categorías</a>
                         <ul class="nav-ul-li-ul">
-                                <li class="nav-items">
-                                    <a class="aCat" href="index.php?action=productoRegistrar" title="Nuevo Producto"><i class="fas fa-plus-circle"></i>Nuevo Producto</a>
+                            <?php
+                                foreach ($categorias as $key => $value) {
+                            ?>
+                                <li title="" class="nav-items">
+                                    <a class="aCat" href="index.php?action=productoCategoria&cat=<?=$value["idpro_categoria"]?>" title=""><?=$value["categoria"]?></a>
                                 </li>
+                            <?php
+                                }
+                            ?>
+                                
                         </ul>
                     </li>
                 <?php
                     }
                 ?>
-
+                
                 <?php
-                    if ($_GET["action"] == "proveedores") {
+                    if ($_GET["action"] == "marca" || $_GET["action"] == "productoMarca") {
                 ?>
-                    <li id="nav-item5" title="Proveedores" class="nav-items"><a class="module" href="index.php?action=proveedores"><i class="fas fa-handshake"></i>Proveedores</a></li>
+                    <li id="nav-item4" title="Marcas" class="nav-items"><a class="module" href="index.php?action=marca"><i class="fas fa-copyright"></i>Marcas</a>
+                        <ul class="nav-ul-li-ul">
+                            <?php
+                                foreach ($marcas as $key => $value) {
+                            ?>
+                                <li class="nav-items">
+                                    <a class="aCat" href="index.php?action=productoMarca&tm=<?=$value["idpro_marca"]?>"><?=$value["marca"]?></a>
+                                </li>
+                            <?php
+                                }
+                            ?>
+                                
+                        </ul>
+                    </li>
                 <?php
                     }else{
                 ?>
-                    <li id="nav-item5" title="Proveedores" class="nav-items"><a href="index.php?action=proveedores"><i class="fas fa-handshake"></i>Proveedores</a></li>
+                    <li id="nav-item4" title="Marcas" class="nav-items"><a href="index.php?action=marca"><i class="fas fa-copyright"></i>Marcas</a>
+                        <ul class="nav-ul-li-ul">
+                            <?php
+                                foreach ($marcas as $key => $value) {
+                            ?>
+                                <li class="nav-items">
+                                    <a class="aCat" href="index.php?action=productoMarca&tm=<?=$value["idpro_marca"]?>"><?=$value["marca"]?></a>
+                                </li>
+                            <?php
+                                }
+                            ?>
+                                
+                        </ul>
+                    </li>
                 <?php
                     }
                 ?>
-
-                <?php
-                    if ($_GET["action"] == "compras") {
-                ?>
-                    <li id="nav-item6" title="Compra" class="nav-items"><a class="module" href="index.php?action=compras"><i class="fas fa-shopping-cart"></i>Compra</a></li>
-                <?php
-                    }else{
-                ?>
-                    <li id="nav-item6" title="Compra" class="nav-items"><a href="index.php?action=compras"><i class="fas fa-shopping-cart"></i>Compra</a></li>
-                <?php
-                    }
-                ?>
-
-                <?php
-                    if ($_GET["action"] == "ventas") {
-                ?>
-                    <li id="nav-item7" title="Venta" class="nav-items"><a class="module" href="index.php?action=ventas"><i class="fas fa-cash-register"></i>Venta</a></li>
-                <?php
-                    }else{
-                ?>
-                    <li id="nav-item7" title="Venta" class="nav-items"><a href="index.php?action=ventas"><i class="fas fa-cash-register"></i>Venta</a></li>
-                <?php
-                    }
+            <?php
             }else{
             ?>
-                <li id="nav-item1" title="Inicio" class="nav-items"><a class="module" href="index.php?action=inicio"><i class="fas fa-home"></i>Inicio</a></li>
-                <li id="nav-item2" title="Categorías" class="nav-items"><a href="index.php?action=categoriaLista"><i class="fas fa-cubes"></i>Categorías</a>
+                <li id="nav-item1" title="Inicio" class="nav-items"><a class="module" href="index.php?action=inicio"><i class="fas fa-home a-module"></i>Inicio</a></li>
+                <li id="nav-item2" title="Productos" class="nav-items"><a href="index.php?action=productoInicio"><i class="fas fa-tags"></i>Productos</a></li>
+                <li id="nav-item3" title="Categorías" class="nav-items"><a href="index.php?action=categoria"><i class="fas fa-cubes"></i>Categorías</a>
                     <ul class="nav-ul-li-ul">
-                        <li class="nav-items">
-                            <a class="aCat" href="index.php?action=categoriaRegistrar" title="Nueva Categoría"><i class="fas fa-plus-circle"></i>Nueva Categoría</a>
-                        </li> 
                         <?php
                             foreach ($categorias as $key => $value) {
                         ?>
                             <li class="nav-items">
-                                <a class="aCat" href="index.php?action=productoCategoria&idcategoria=<?=$value["idcategoria"]?>"><?=$value["categoria"]?></a>
+                                <a class="aCat" href="index.php?action=productoCategoria&cat=<?=$value["idpro_categoria"]?>"><?=$value["categoria"]?></a>
                             </li>
                         <?php
                             }
@@ -156,17 +130,20 @@
                              
                     </ul>
                 </li>
-                <li id="nav-item3" title="Lista de productos" class="nav-items"><a href="index.php?action=productoLista"><i class="fas fa-list-ul"></i></i>Productos</a></li>
-                <li id="nav-item4" title="Productos" class="nav-items"><a href="index.php?action=productoInicio"><i class="fas fa-tags"></i>Productos</a>
+                <li id="nav-item4" title="Marcas" class="nav-items"><a href="index.php?action=marca"><i class="fas fa-copyright"></i>Marcas</a>
                     <ul class="nav-ul-li-ul">
+                        <?php
+                            foreach ($marcas as $key => $value) {
+                        ?>
                             <li class="nav-items">
-                                <a class="aCat" href="index.php?action=productoRegistrar" title="Nuevo Producto"><i class="fas fa-plus-circle"></i>Nuevo Producto</a>
+                                <a class="aCat" href="index.php?action=productoMarca&tm=<?=$value["idpro_marca"]?>"><?=$value["marca"]?></a>
                             </li>
+                        <?php
+                            }
+                        ?>
+                             
                     </ul>
                 </li>
-                <li id="nav-item5" title="Proveedores" class="nav-items"><a href="index.php?action=proveedores"><i class="fas fa-handshake"></i>Proveedores</a></li>
-                <li id="nav-item6" title="Compra" class="nav-items"><a href="index.php?action=compras"><i class="fas fa-shopping-cart"></i>Compra</a></li>
-                <li id="nav-item7" title="Venta" class="nav-items"><a href="index.php?action=ventas"><i class="fas fa-cash-register"></i>Venta</a></li>
             <?php
             }
         ?>
@@ -176,15 +153,14 @@
     <div class="adjust" id="adjust">
         <!-- Anterior versión => Botón de tema oscuro/claro
         <button class="button-adjust" title="claro/oscuro" id="button-adjust"><i class="fas fa-sun"></i></button> -->
-        <span class="span-user-log">Bienvenido Juán</span>
+        <span class="span-user-log">Hola, Regístrate o Inicia Sesion</span>
         <button class="button-adjust" id="button-adjust"><i class="fas fa-user"></i>
             <div class="panel-usuario" id="panel-usuario">
                 <div class="mensaje">Bienvenido</div>
                 <div class="line-user"></div>
-                <a href="index.php?action=usuarioInicioSession" class="pU-actions">Ingresar con Sesion</a>
-                <a href="index.php?action=usuarioRegistrarse" class="pU-actions">Quiero una cuenta</a>
+                <a href="index.php?action=usuarioInicioSession" class="pU-actions">Iniciar Sesion</a>
+                <a href="index.php?action=usuarioRegistrarse" class="pU-actions">Crear Cuenta</a>
                 <a href="index.php?action=usuarioConfiguracion" class="pU-opciones">Configuración</a>
-                <a href="index.php?action=usuarioSalir" class="pU-opciones">Cerrar Sesión</a>
             </div>
         </button>
     </div>

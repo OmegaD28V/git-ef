@@ -27,12 +27,13 @@
             <input type="submit" id="btnRegistrarUsuario" name="btnRegistrarUsuario" value="Registrarse">
         </div>
         <div class="input-group">
-            <a href="#" class="user-a-register">¡Ya tengo una cuenta!</a>
+            <a href="index.php?action=usuarioInicioSession" class="user-a-register">¡Ya tengo una cuenta!</a>
         </div>
     </form>
 </div>
 
 <?php
+    $tipoUsuario = 3;
     $registrarse = new MvcController();
-    $registrarse -> registrarUsuarioController();
+    $registrarse -> registrarUsuarioController($tipoUsuario);
 ?>

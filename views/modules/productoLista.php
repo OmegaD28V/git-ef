@@ -1,5 +1,6 @@
 <?php
-    $productos = MvcController::seleccionarProductoController(null, null);
+    $modo = "lista";
+    $productos = MvcController::seleccionarProductoController(null, null, $modo);
 ?>
 <div class="contenedor-formulario">
     <table>
@@ -15,11 +16,11 @@
                 <td><?=$value["nombre"]?></td>
                 <td class="precio">$<?=$value["precioventa"]?></td>
                 <td>
-                    <a class="editar" title="Editar" href="index.php?action=productoEditar&idproducto=<?php echo $value["idproducto"];?>"><i class="fas fa-pen"></i></a>
+                    <a class="editar" title="Editar" href="index.php?action=productoEditar&idproducto=<?php echo $value["idproducto"];?>"><i class="fas fa-pen-square"></i></a>
                     <form class="formEliminar" method="post">
                         <input class="inputEliminar" type="hidden" value="<?=$value["idproducto"]?>" name="dropProduct">
                         <div class="divEliminar">    
-                            <button class="inputEliminar" type="submit" title="Eliminar" value=""><i class="fas fa-trash"></i></button>
+                            <button class="inputEliminar" type="submit" title="Eliminar" value=""><i class="fas fa-minus-square"></i></button>
                         </div>
                         
                         <?php
