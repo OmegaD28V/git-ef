@@ -11,7 +11,8 @@
              || $enlaces == "productoCompra" || $enlaces == "categoria" || $enlaces == "productoImagen"
              || $enlaces == "producto" || $enlaces == "usuarios" || $enlaces == "productoDeshabilitado" 
              || $enlaces == "productoSinStock" || $enlaces == "productoMarca" || $enlaces == "productoCaracteristica"
-             || $enlaces == "marcaEditar"){
+             || $enlaces == "marcaEditar" || $enlaces == "compra" || $enlaces == "removeIntro" 
+             || $enlaces == "compraEditar"){
                 $module =  "views/modules/".$enlaces.".php";
             }else if($enlaces == "index"){
                 $module =  "views/modules/inicio.php";

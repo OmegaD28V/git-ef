@@ -2,8 +2,9 @@
     if (!isset($_GET["into"])) {
         echo '<span>No se encontraron datos.</span>';
     }else {
-        $ticket = $_GET["into"];
-        $compra = MvcController::seleccionarCompraController($ticket);
+        $valor = $_GET["into"];
+    
+        $compra = MvcController::recuperarCompraController($valor);
         $entradas = MvcController::detalleCPController($compra["idcompra"]);
 ?>
 <div class="contenedor-formulario">
@@ -50,7 +51,7 @@
                 >
                     <td><span class="d-p-price"><?=$key + 1?></span></td>
                     <td><span class="d-p-price"><?=$valueEntradas["producto"]?></span></td>
-                    <td><span class="d-p-price">$<?=$valueEntradas["preciocompra"]?></span></td>
+                    <td><span class="d-p-price"><?=$valueEntradas["preciocompra"]?></span></td>
                     <td><span class="d-p-price"><?=$valueEntradas["cantidad"]?></span></td>
 
                     <td>
@@ -59,8 +60,8 @@
                             <input class="inputEliminar" type="hidden" value="<?=$valueEntradas["idcompra_entrada"]?>" name="removeIntro">
                             <button class="inputEliminar" type="submit" value=""><i class="fas fa-times-circle"></i></button>
                             <?php
-                                // $quitarEntrada = new MvcController();
-                                // $quitarEntrada -> quitarEntradaController();
+                                $quitarEntrada = new MvcController();
+                                $quitarEntrada -> uQuitarEntradaController();
                             ?>
                         </form>
                     </td>
@@ -116,7 +117,7 @@
                 <input type="submit" id="btnRegistrarEntrada" name="btnRegistrarEntrada" value="Agregar Producto" title="Registrar Entrada">
             </div>
             <?php
-                // $registro = MvcController::registrarEntradaController();
+                $registro = MvcController::uRegistrarEntradaController();
                 if (isset($_GET["not0"])) {
                     if ($_GET["not0"] == "true") {
                         ?>
@@ -138,3 +139,6 @@
         </form>
     </div>
 </div>
+<?php
+    }
+?>

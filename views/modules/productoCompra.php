@@ -28,7 +28,7 @@ if (isset($_GET["uBuy"])) {
             </select>
         </div>
         <div class="input-group">
-            <a href="index.php?action=proveedorRegistrar">¿Este proveedor no está registrado?</a>
+            <a href="index.php?action=proveedorRegistrar" class="enlace-form">¿Este proveedor no está registrado?</a>
         </div>
         <div class="input-group">
             <input type="submit" id="btnAgregarProductos" name="btnAgregarProductos" value="Agregar Productos" title="Agregar Productos">

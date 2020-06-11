@@ -489,14 +489,14 @@
             $stmt = null;
         }
         #Registrar Compra
-        static public function registrarCompraModel($datosModel, $tabla){
+        static public function registrarCompraModel($tabla, $datosModel){
             $stmt = Conexion::conectar() -> prepare(
                 "insert into $tabla (folio, iduser, momento) 
                  values (:folio, :proveedor, now());"
             );
 
             $stmt -> bindParam(":folio", $datosModel["folio"], PDO::PARAM_STR);
-            $stmt -> bindParam(":proveedor", $datosModel["proveedor"], PDO::PARAM_STR);
+            $stmt -> bindParam(":proveedor", $datosModel["proveedor"], PDO::PARAM_INT);
 
             if($stmt -> execute()){
                 return "ok";
@@ -507,16 +507,118 @@
             $stmt = null;
         }
 
-        #Seleccionar Compra
-        static public function seleccionarCompraModel($tabla){
-            $stmt = Conexion::conectar() -> prepare("select c.idcompra, c.folio, u.nombre from $tabla c 
+        #Verificar Compras Sin Concluir
+        static public function verificarCompraModel($tabla, $datosModel){
+            $stmt = Conexion::conectar() -> prepare("select count(*) from $tabla c 
             inner join user u on u.iduser = c.iduser 
-            where c.status = 1;");
+            where c.folio = :folio and c.iduser = :proveedor and c.status = 1;");
+
+            $stmt -> bindParam(':folio', $datosModel["folio"], PDO::PARAM_STR);
+            $stmt -> bindParam(':proveedor', $datosModel["proveedor"], PDO::PARAM_STR);
+            $stmt -> execute();
+            return $stmt -> fetchAll();
+            $stmt -> close();
+            $stmt = null;
+        }
+
+        #Seleccionar Compra
+        static public function seleccionarCompraModel($tabla, $datosModel, $ticket){
+            if ($ticket == null) {
+                $stmt = Conexion::conectar() -> prepare("select c.idcompra, c.folio, u.nombre from $tabla c 
+                inner join user u on u.iduser = c.iduser 
+                where c.folio = :folio and c.iduser = :proveedor and c.status = 1;");
+
+                $stmt -> bindParam(':folio', $datosModel["folio"], PDO::PARAM_STR);
+                $stmt -> bindParam(':proveedor', $datosModel["proveedor"], PDO::PARAM_INT);
+                $stmt -> execute();
+                return $stmt -> fetch();
+                $stmt -> close();
+                $stmt = null;
+            } elseif ($datosModel == null) {
+                $stmt = Conexion::conectar() -> prepare("select c.idcompra, c.folio, u.nombre from $tabla c 
+                inner join user u on u.iduser = c.iduser 
+                where c.idcompra = :idcompra and c.status = 1;");
+
+                $stmt -> bindParam(':idcompra', $ticket, PDO::PARAM_INT);
+
+                $stmt -> execute();
+                return $stmt -> fetch();
+                $stmt -> close();
+                $stmt = null;
+            }
+        }
+
+        #Seleccionar Compras
+        static public function seleccionarComprasModel($tabla){
+            $stmt = Conexion::conectar() -> prepare("select 
+            c.idcompra, c.folio, c.iduser, c.status, u.nombre, 
+            DATE_FORMAT(c.momento, '%d/%M/%Y - %H:%i:%S') momento 
+            from $tabla c inner join user u on u.iduser = c.iduser 
+            where c.status >= 1 order by c.momento desc;");
+            $stmt -> execute();
+            return $stmt -> fetchAll();
+            $stmt -> close();
+            $stmt = null;
+        }
+        
+        #Recuperar Compra
+        static public function recuperarCompraModel($tabla, $valor){
+            $stmt = Conexion::conectar() -> prepare("
+            select c.idcompra, c.folio, u.nombre from $tabla c 
+            inner join user u on u.iduser = c.iduser 
+            where c.status = 1;"
+        );
             $stmt -> execute();
             return $stmt -> fetch();
             $stmt -> close();
             $stmt = null;
         }
+
+        #Detalle de compra
+        static public function detalleCompraModel($tabla, $valor){
+            $stmt = Conexion::conectar() -> prepare("select c.folio, DATE_FORMAT(c.momento, '%d/%M/%Y - %H:%i:%S') momento, u.nombre as proveedor, 
+            sum(c_e.preciocompra * c_e.cantidad) as total from $tabla c 
+            inner join compra_entrada c_e on c.idcompra = c_e.idcompra 
+            inner join user u on c.iduser = u.iduser 
+            where c.idcompra = :idcompra;");
+
+            $stmt -> bindParam(":idcompra", $valor, PDO::PARAM_INT);
+            $stmt -> execute();
+            return $stmt -> fetch();
+            $stmt -> close();
+            $stmt = null;
+        }
+        
+        #Detalle de compra producto
+        static public function detalleCPModel($tabla, $valor){
+            $stmt = Conexion::conectar() -> prepare("select 
+            c_e.idcompra_entrada, p.nombre as producto, c_e.preciocompra, c_e.cantidad from $tabla c_e 
+            inner join pro p on c_e.idpro = p.idpro where c_e.idcompra = :idcompra and c_e.status = 1;");
+
+            $stmt -> bindParam(":idcompra", $valor, PDO::PARAM_INT);
+            $stmt -> execute();
+            return $stmt -> fetchAll();
+            $stmt -> close();
+            $stmt = null;
+        }
+
+        #Quitar Entrada
+        static public function quitarEntradaModel($tabla, $valor){
+            $stmt = Conexion::conectar() -> prepare(
+                "update $tabla set status = 0 where idcompra_entrada = :idcompra_entrada;"
+            );
+
+            $stmt -> bindParam(":idcompra_entrada", $valor, PDO::PARAM_INT);
+
+            if($stmt -> execute()){
+                return "ok";
+            }else{
+                return "error";
+            }
+            $stmt -> close();
+            $stmt = null;
+        }
+        
 
         #Concluir Compra
         static public function compraFinalizadaModel($item, $valor, $tabla){
@@ -524,7 +626,7 @@
                 "update $tabla set status = 2 where $item = :$item;"
             );
             $stmt2 = Conexion::conectar() -> prepare(
-                "select idpro, preciocompra, cantidad from compra_entrada where $item = :$item;"
+                "select idpro, preciocompra, cantidad from compra_entrada where $item = :$item and status = 1;"
             );
             
             $stmt -> bindParam(":".$item, $valor, PDO::PARAM_INT);

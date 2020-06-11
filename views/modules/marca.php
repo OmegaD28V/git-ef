@@ -5,7 +5,7 @@
 <div class="contenedor-formulario">
     <table class="tableCategorias">
         <tr>
-            <th class="thCategorias">Marcas</th>
+            <caption class="thCategorias">Marcas</caption>
         </tr>
             <?php
                 foreach ($marcas as $key => $value) {

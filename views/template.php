@@ -58,6 +58,8 @@
                     $modulo =  "EF | Productos Deshabilitados";
                 }elseif ($_GET['action'] == "productoSinStock") {
                     $modulo =  "EF | Productos Sin Stock";
+                }elseif ($_GET['action'] == "compra") {
+                    $modulo =  "EF | Detalle de Compra";
                 }else{
                     $modulo = "Electrónica Fonseca.";
                 }
@@ -118,7 +120,7 @@
         <script type="text/javascript" src="js/visibleUser.js"></script>
         <script type="text/javascript" src="js/hiddenPasswordUIS.js"></script>
         <script type="text/javascript" src="js/hiddenPasswordUR.js"></script>
-        <!-- <script type="text/javascript" src="js/darkMode.js"></script> -->
+        <script type="text/javascript" src="js/darkMode.js"></script>
         <script src="js/validarProducto.js"></script>
     </body>
 </html>

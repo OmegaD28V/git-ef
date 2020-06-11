@@ -5,7 +5,7 @@
         text: 'Registro exitoso!', 
         backdrop: false, 
         toast: true, 
-        position: 'bottom', 
+        position: 'center', 
         showCloseButton: false,
         width: 150, 
         padding: '0.5rem',

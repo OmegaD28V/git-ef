@@ -19,7 +19,7 @@
             <input type="submit" id="btnRegistrarUsuario" name="btnRegistrarUsuario" value="Iniciar Sesión">
         </div>
         <div class="input-group">
-            <a href="index.php?action=usuarioRegistrarse" class="user-a-login">No tengo una cuenta</a>
+            <a href="index.php?action=usuarioRegistrarse" class="extra-button">No tengo una cuenta</a>
         </div>
     </form>
 </div>

@@ -5,8 +5,6 @@
     if ((isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
         if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] == "master") {
             ?>
-<a href="index.php?action=productoSinStock">Ver productos sin existencia</a><br>
-<a href="index.php?action=productoDeshabilitado">Ver productos deshabilitados</a>
             <?php
         }
     }

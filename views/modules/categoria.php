@@ -14,7 +14,7 @@
 <div class="contenedor-formulario">
     <table class="tableCategorias">
         <tr>
-            <th class="thCategorias">Categorías</th>
+            <caption class="thCategorias">Categorías</caption>
         </tr>
             <?php
                 foreach ($categorias as $key => $value) {

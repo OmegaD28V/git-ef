@@ -1,15 +1,16 @@
 (async () => {
     const {value: pais} = await Swal.fire({
         showConfirmButton: false,  
-        icon: 'success', 
-        text: 'Compra Cerrada!', 
+        icon: 'info', 
+        text: 'Ya existe una compra sin concluir con estos datos!', 
         backdrop: false, 
-        toast: true, 
+        toast: false, 
         position: 'center', 
         showCloseButton: false,
-        width: 150, 
+        width: 400, 
         padding: '0.5rem',
         background: '#fdfdfd',
-        timer: 3000
+        backdrop: true, 
+        showCloseButton: true
     });
 })()

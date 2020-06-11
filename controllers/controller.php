@@ -451,31 +451,110 @@
                     "folio" => $_POST["codeBuy"], 
                     "proveedor" => $_POST["provider"] 
                 );
-                $respuesta = Datos::registrarCompraModel($datosController, $tabla);
-                if ($respuesta == "ok") {
+                $verificarCompra = Datos::verificarCompraModel($tabla, $datosController);
+                if ($verificarCompra >= 1) {
                     echo '<script>
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
                             }
-                            window.location = "index.php?action=productoEntrada";
+                            window.location = "index.php?action=compras&not6=true";
                         </script>';
                 }else{
-                    echo '<script>
-                            if(window.history.replaceState){
-                                window.history.replaceState(null, null, window.location.href);
-                            }
-                        </script>';
-                    echo '<div><span>No se pudo registrar</span></div>';
-                    echo '<div><span>verifique sus datos</span></div>';
+                    $ticket = null;
+                    $respuesta = Datos::registrarCompraModel($tabla, $datosController);
+                    $respuesta = Datos::seleccionarCompraModel($tabla, $datosController, $ticket);
+                    $ticket = $compra["idcompra"];
+                    if ($respuesta == "ok") {
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=productoEntrada&into='.$ticket.'";
+                            </script>';
+                    }else{
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                            </script>';
+                        echo '<div><span>No se pudo registrar</span></div>';
+                        echo '<div><span>verifique sus datos</span></div>';
+                    }
                 }
             }
         }
 
         #Seleccionar Compra
-        static public function seleccionarCompraController(){
+        static public function seleccionarCompraController($ticket){
+            $datosController = null;
             $tabla = "compra";
-            $respuesta = Datos::seleccionarCompraModel($tabla);
+            $respuesta = Datos::seleccionarCompraModel($tabla, $datosController, $ticket);
             return $respuesta;
+        }
+
+        #Seleccionar Compras
+        static public function seleccionarComprasController(){
+            $tabla = "compra";
+            $respuesta = Datos::seleccionarComprasModel($tabla);
+            return $respuesta;
+        }
+        
+        #Recuperar Compra
+        static public function recuperarCompraController($valor){
+            $tabla = "compra";
+            $respuesta = Datos::recuperarCompraModel($tabla, $valor);
+            return $respuesta;
+        }
+
+        #Detalle Compra
+        static public function detalleCompraController($valor){
+            $tabla = "compra";
+            $respuesta = Datos::detalleCompraModel($tabla, $valor);
+            return $respuesta;
+        }
+        
+        #Detalle Compra Producto
+        static public function detalleCPController($valor){
+            $tabla = "compra_entrada";
+            $respuesta = Datos::detalleCPModel($tabla, $valor);
+            return $respuesta;
+        }
+
+        #Quitar Entrada
+        public function quitarEntradaController($ticket){
+            if (isset($_POST["removeIntro"]) && isset($_POST["ticket"])) {
+                $ticket = $_POST["ticket"];
+                $tabla = "compra_entrada";
+                $valor = $_POST["removeIntro"];
+                $respuesta = Datos::quitarEntradaModel($tabla, $valor);
+                if ($respuesta == "ok") {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=productoEntrada&into='.$ticket.'&not3=true";
+                        </script>';
+                }
+                return $respuesta;
+            }
+        }
+        
+        #Quitar Entrada Update
+        public function uQuitarEntradaController(){
+            if (isset($_POST["removeIntro"])) {
+                $tabla = "compra_entrada";
+                $valor = $_POST["removeIntro"];
+                $respuesta = Datos::quitarEntradaModel($tabla, $valor);
+                if ($respuesta == "ok") {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=compraEditar&not3=true";
+                        </script>';
+                }
+                return $respuesta;
+            }
         }
 
         #Concluir compra
@@ -500,7 +579,38 @@
         }
 
         #Registrar Entrada
-        static public function registrarEntradaController(){
+        static public function registrarEntradaController($ticket){
+            $tabla = "compra_entrada";
+            if(isset($_POST["hiddenCompra"]) && isset($_POST["ticket"])){
+                $ticket = $_POST["ticket"];
+                $datosController = array(
+                    "compra" => $_POST["hiddenCompra"], 
+                    "producto" => $_POST["product"], 
+                    "precioCompra" => $_POST["buyPrice"], 
+                    "cantidad" => $_POST["cuantity"]);
+                
+                $respuesta = Datos::registrarEntradaModel($datosController, $tabla);
+                if ($respuesta == "ok") {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=productoEntrada&into='.$ticket.'&not0=true";
+                        </script>';
+                }else{
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                        </script>';
+                    echo '<div><span>Error al registrar</span></div>';
+                    echo '<div><span>verifique sus datos</span></div>';
+                }
+            }
+        }
+        
+        #Registrar Entrada Update
+        static public function uRegistrarEntradaController(){
             $tabla = "compra_entrada";
             if(isset($_POST["hiddenCompra"])){
                 $datosController = array(
@@ -515,7 +625,7 @@
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
                             }
-                            window.location = "index.php?action=productoEntrada&not0=true";
+                            window.location = "index.php?action=compraEditar&not0=true";
                         </script>';
                 }else{
                     echo '<script>

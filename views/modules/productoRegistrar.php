@@ -17,7 +17,7 @@
         </div>
 
         <div class="input-group">
-            <a href="index.php?action=categoriaRegistrar" class="category-a-new">Nueva Categoría</a>
+            <a href="index.php?action=categoriaRegistrar" class="enlace-form">Nueva Categoría</a>
         </div>
         
         <div class="input-group">
@@ -36,7 +36,7 @@
         </div>
 
         <div class="input-group">
-            <a href="index.php?action=marcaRegistrar" class="user-a-login">Nueva Marca</a>
+            <a href="index.php?action=marcaRegistrar" class="enlace-form">Nueva Marca</a>
         </div>
 
         <div class="input-group">

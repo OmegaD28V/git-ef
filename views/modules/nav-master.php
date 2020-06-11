@@ -31,6 +31,8 @@
                             <li class="nav-items">
                                 <a class="aCat" href="index.php?action=productoRegistrar" title="Nuevo Producto"><i class="fas fa-plus-circle"></i>Nuevo Producto</a>
                             </li>
+                            <li class="nav-items"><a href="index.php?action=productoSinStock"><i class="fab fa-creative-commons-zero"></i>Ver productos sin existencia</a></li>
+                            <li class="nav-items"><a href="index.php?action=productoDeshabilitado"><i class="fas fa-recycle"></i>Ver productos deshabilitados</a></li>
                         </ul>
                     </li>
                 <?php
@@ -38,9 +40,11 @@
                 ?>
                     <li id="nav-item2" title="Productos" class="nav-items"><a href="index.php?action=productoInicio"><i class="fas fa-tags"></i>Productos</a>
                         <ul class="nav-ul-li-ul">
-                                <li class="nav-items">
-                                    <a class="aCat" href="index.php?action=productoRegistrar" title="Nuevo Producto"><i class="fas fa-plus-circle"></i>Nuevo Producto</a>
-                                </li>
+                            <li class="nav-items">
+                                <a class="aCat" href="index.php?action=productoRegistrar" title="Nuevo Producto"><i class="fas fa-plus-circle"></i>Nuevo Producto</a>
+                            </li>
+                            <li class="nav-items"><a href="index.php?action=productoSinStock"><i class="fab fa-creative-commons-zero"></i>Ver productos sin existencia</a></li>
+                            <li class="nav-items"><a href="index.php?action=productoDeshabilitado"><i class="fas fa-recycle"></i>Ver productos deshabilitados</a></li>
                         </ul>
                     </li>
                 <?php
@@ -186,7 +190,7 @@
                 <?php
                     if ($_GET["action"] == "compras") {
                 ?>
-                    <li id="nav-item7" title="Compra" class="nav-items"><a class="module" href="index.php?action=compras"><i class="fas fa-shopping-cart a-module"></i>Compra</a>
+                    <li id="nav-item7" title="Compra" class="nav-items"><a class="module" href="index.php?action=compras"><i class="fas fa-shopping-cart a-module"></i>Compras</a>
                         <ul class="nav-ul-li-ul">
                             <li class="nav-items">
                                 <a class="aCat" href="index.php?action=productoCompra" title="Nueva Compra"><i class="fas fa-cart-plus"></i>Nueva Compra</a>
@@ -197,7 +201,7 @@
                 <?php
                     }else{
                 ?>
-                    <li id="nav-item7" title="Compra" class="nav-items"><a href="index.php?action=compras"><i class="fas fa-shopping-cart"></i>Compra</a>
+                    <li id="nav-item7" title="Compra" class="nav-items"><a href="index.php?action=compras"><i class="fas fa-shopping-cart"></i>Compras</a>
                         <ul class="nav-ul-li-ul">
                             <li class="nav-items">
                                 <a class="aCat" href="index.php?action=productoCompra" title="Nueva Compra"><i class="fas fa-cart-plus"></i>Nueva Compra</a>
@@ -212,7 +216,7 @@
                 <?php
                     if ($_GET["action"] == "ventas") {
                 ?>
-                    <li id="nav-item8" title="Venta" class="nav-items"><a class="module" href="index.php?action=ventas"><i class="fas fa-cash-register a-module"></i>Venta</a>
+                    <li id="nav-item8" title="Venta" class="nav-items"><a class="module" href="index.php?action=ventas"><i class="fas fa-cash-register a-module"></i>Ventas</a>
                         <ul class="nav-ul-li-ul">
                             <li class="nav-items">
                                 <a class="aCat" href="index.php?action=ventaRegistrar" title="Nueva Venta"><i class="fab fa-shopify"></i>Nueva Venta</a>
@@ -222,7 +226,7 @@
                 <?php
                     }else{
                 ?>
-                    <li id="nav-item8" title="Venta" class="nav-items"><a href="index.php?action=ventas"><i class="fas fa-cash-register"></i>Venta</a>
+                    <li id="nav-item8" title="Venta" class="nav-items"><a href="index.php?action=ventas"><i class="fas fa-cash-register"></i>Ventas</a>
                         <ul class="nav-ul-li-ul">
                             <li class="nav-items">
                                 <a class="aCat" href="index.php?action=ventaRegistrar" title="Nueva Venta"><i class="fab fa-shopify"></i>Nueva Venta</a>
@@ -289,14 +293,14 @@
                         </li>
                     </ul>
                 </li>
-                <li id="nav-item7" title="Compra" class="nav-items"><a href="index.php?action=compras"><i class="fas fa-shopping-cart"></i>Compra</a>
+                <li id="nav-item7" title="Compra" class="nav-items"><a href="index.php?action=compras"><i class="fas fa-shopping-cart"></i>Compras</a>
                     <ul class="nav-ul-li-ul">
                         <li class="nav-items">
                             <a class="aCat" href="index.php?action=productoCompra" title="Nueva Compra"><i class="fas fa-cart-plus"></i>Nueva Compra</a>
                         </li>
                     </ul>
                 </li>
-                <li id="nav-item8" title="Venta" class="nav-items"><a href="index.php?action=ventas"><i class="fas fa-cash-register"></i>Venta</a>
+                <li id="nav-item8" title="Venta" class="nav-items"><a href="index.php?action=ventas"><i class="fas fa-cash-register"></i>Ventas</a>
                     <ul class="nav-ul-li-ul">
                         <li class="nav-items">
                             <a class="aCat" href="index.php?action=ventaRegistrar" title="Nueva Venta"><i class="fab fa-shopify"></i>Nueva Venta</a>
