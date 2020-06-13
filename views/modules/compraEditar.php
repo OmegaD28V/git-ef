@@ -2,14 +2,13 @@
     if (!isset($_GET["into"])) {
         echo '<span>No se encontraron datos.</span>';
     }else {
-        $valor = $_GET["into"];
-    
-        $compra = MvcController::recuperarCompraController($valor);
+        $ticket = $_GET["into"];
+        $compra = MvcController::recuperarCompraController($ticket);
         $entradas = MvcController::detalleCPController($compra["idcompra"]);
 ?>
 <div class="contenedor-formulario">
-    <div class="multi-form">
-        <h2>Nueva Entrada</h2>
+    <div class="multi-form-edit">
+        <h2>Editar Entradas</h2>
         <div class="input-group">
             <span><b>Folio:</b> <?=$compra["folio"]?></span>
         </div>
@@ -20,7 +19,7 @@
         <div class="line-form"></div>
 
         <div class="form-group">
-           <table class="tableEntradas">
+            <table class="tableEntradas">
                 <tr>
                     <caption class="thCategorias">Entradas</caption>
                 </tr>
@@ -61,7 +60,7 @@
                             <button class="inputEliminar" type="submit" value=""><i class="fas fa-times-circle"></i></button>
                             <?php
                                 $quitarEntrada = new MvcController();
-                                $quitarEntrada -> uQuitarEntradaController();
+                                $quitarEntrada -> uQuitarEntradaController($ticket);
                             ?>
                         </form>
                     </td>
@@ -114,10 +113,10 @@
             <div class="line-form"></div>
 
             <div class="input-group">
-                <input type="submit" id="btnRegistrarEntrada" name="btnRegistrarEntrada" value="Agregar Producto" title="Registrar Entrada">
+                <input type="submit" class="submitEditarProducto" id="btnRegistrarEntrada" name="btnRegistrarEntrada" value="Agregar Producto" title="Registrar Entrada">
             </div>
             <?php
-                $registro = MvcController::uRegistrarEntradaController();
+                $registro = MvcController::uRegistrarEntradaController($ticket);
                 if (isset($_GET["not0"])) {
                     if ($_GET["not0"] == "true") {
                         ?>

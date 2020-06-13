@@ -10,9 +10,9 @@
              || $enlaces == "categoriaEditar" || $enlaces == "marcaRegistrar" || $enlaces == "proveedorRegistrar"
              || $enlaces == "productoCompra" || $enlaces == "categoria" || $enlaces == "productoImagen"
              || $enlaces == "producto" || $enlaces == "usuarios" || $enlaces == "productoDeshabilitado" 
-             || $enlaces == "productoSinStock" || $enlaces == "productoMarca" || $enlaces == "productoCaracteristica"
-             || $enlaces == "marcaEditar" || $enlaces == "compra" || $enlaces == "removeIntro" 
-             || $enlaces == "compraEditar"){
+             || $enlaces == "productoSinStock" || $enlaces == "productoMarca" || $enlaces == "productoCaracteristica" 
+             || $enlaces == "productoCEditar" || $enlaces == "marcaEditar" || $enlaces == "compra" 
+             || $enlaces == "removeIntro" || $enlaces == "compraEditar" || $enlaces == "productoImagenes"){
                 $module =  "views/modules/".$enlaces.".php";
             }else if($enlaces == "index"){
                 $module =  "views/modules/inicio.php";

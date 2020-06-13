@@ -282,6 +282,116 @@
             $stmt -> close();
             $stmt = null;
         }
+
+        #Registrar Característica.
+        static public function regCaracteristicaModel($tabla, $datos){
+            $stmt = Conexion::conectar() -> prepare("
+                insert into $tabla(idpro, caracteristica) values(:idpro, :caracteristica);
+            ");
+
+            $stmt -> bindparam(":idpro", $datos["idpro"], PDO::PARAM_INT);
+            $stmt -> bindparam(":caracteristica", $datos["caracteristica"], PDO::PARAM_STR);
+
+            if ($stmt -> execute()) {
+                return "ok";
+            }else{
+                return "error";
+            }
+
+            $stmt -> close();
+            $stmt = null;
+        }
+
+        #Seleccionar Características.
+        static public function seleccionarCaracteristicasModel($tabla, $pro, $item){
+            if ($item == null) {
+                $stmt = Conexion::conectar() -> prepare("
+                    select idpro_caracteristica, caracteristica from $tabla 
+                    where idpro = :idpro and status = 1;
+                ");
+
+                $stmt -> bindParam(":idpro", $pro, PDO::PARAM_INT);
+                $stmt -> execute();
+                return $stmt -> fetchAll();
+                $stmt -> close();
+                $stmt = null;    
+            }else{
+                $stmt = Conexion::conectar() -> prepare("
+                    select caracteristica from $tabla 
+                    where idpro_caracteristica = :idpro_caracteristica and idpro = :idpro;
+                ");
+
+                $stmt -> bindParam(":idpro_caracteristica", $item, PDO::PARAM_INT);
+                $stmt -> bindParam(":idpro", $pro, PDO::PARAM_INT);
+                $stmt -> execute();
+                return $stmt -> fetch();
+                $stmt -> close();
+                $stmt = null;
+            }
+            
+        }
+
+        #Actualizar Característica.
+        static public function actualCaracteristicaModel($tabla, $datos){
+            $stmt = Conexion::conectar() -> prepare("
+                update $tabla set caracteristica = :caracteristica where idpro_caracteristica = :id;
+            ");
+            $stmt -> bindParam(":caracteristica", $datos["caracteristica"], PDO::PARAM_STR);
+            $stmt -> bindParam(":id", $datos["id"], PDO::PARAM_INT);
+            if ($stmt -> execute()) {
+                return "ok";
+            }else {
+                return "error";
+            }
+            $stmt -> close();
+            $stmt = null;
+        }
+        
+        #Seleccionar producto para características o imágenes.
+        static public function productoModel($tabla, $valor){
+            $stmt = Conexion::conectar() -> prepare("
+                select p.idpro, p.nombre from $tabla p 
+                where p.idpro = :idpro;
+            ");
+
+            $stmt -> bindParam(":idpro", $valor, PDO::PARAM_INT);
+            $stmt -> execute();
+            return $stmt -> fetch();
+            $stmt -> close();
+            $stmt = null;
+        }
+
+        #Quitar Característica.
+        static public function quitarCaracteristicaModel($tabla, $valor){
+            $stmt = Conexion::conectar() -> prepare("
+                update $tabla set status = 0 where idpro_caracteristica = :idpro_caracteristica;
+            ");
+
+            $stmt -> bindParam(":idpro_caracteristica", $valor, PDO::PARAM_INT);
+            if($stmt -> execute()){
+                return "ok";
+            }else{
+                return "error";
+            }
+            $stmt -> close();
+            $stmt = null;
+        }
+
+        #Subir Imagen Producto.
+        static public function subirImgProModel($tabla, $archivo, $pro){
+            $stmt = Conexion::conectar() -> prepare("
+                insert into $tabla(idpro, ruta) values(:idpro, :ruta);
+            ");
+            $stmt -> bindParam(":idpro", $pro, PDO::PARAM_INT);
+            $stmt -> bindParam(":ruta", $archivo, PDO::PARAM_STR);
+            if ($stmt -> execute()) {
+                return "ok";
+            }else{
+                return "error";
+            }
+            $stmt -> close();
+            $stmt = null;
+        }
         
         #Seleccionar productos
         static public function seleccionarProductoModel($tabla, $item, $valor){
@@ -509,14 +619,14 @@
 
         #Verificar Compras Sin Concluir
         static public function verificarCompraModel($tabla, $datosModel){
-            $stmt = Conexion::conectar() -> prepare("select count(*) from $tabla c 
+            $stmt = Conexion::conectar() -> prepare("select count(*) as coincide from $tabla c 
             inner join user u on u.iduser = c.iduser 
             where c.folio = :folio and c.iduser = :proveedor and c.status = 1;");
 
             $stmt -> bindParam(':folio', $datosModel["folio"], PDO::PARAM_STR);
-            $stmt -> bindParam(':proveedor', $datosModel["proveedor"], PDO::PARAM_STR);
+            $stmt -> bindParam(':proveedor', $datosModel["proveedor"], PDO::PARAM_INT);
             $stmt -> execute();
-            return $stmt -> fetchAll();
+            return $stmt -> fetch();
             $stmt -> close();
             $stmt = null;
         }
@@ -564,10 +674,11 @@
         #Recuperar Compra
         static public function recuperarCompraModel($tabla, $valor){
             $stmt = Conexion::conectar() -> prepare("
-            select c.idcompra, c.folio, u.nombre from $tabla c 
-            inner join user u on u.iduser = c.iduser 
-            where c.status = 1;"
-        );
+                select c.idcompra, c.folio, u.nombre from $tabla c 
+                inner join user u on u.iduser = c.iduser 
+                where c.idcompra = :idcompra and c.status = 1;"
+            );
+            $stmt -> bindParam(":idcompra", $valor, PDO::PARAM_INT);
             $stmt -> execute();
             return $stmt -> fetch();
             $stmt -> close();
@@ -580,7 +691,7 @@
             sum(c_e.preciocompra * c_e.cantidad) as total from $tabla c 
             inner join compra_entrada c_e on c.idcompra = c_e.idcompra 
             inner join user u on c.iduser = u.iduser 
-            where c.idcompra = :idcompra;");
+            where c.idcompra = :idcompra and c_e.status = 1;");
 
             $stmt -> bindParam(":idcompra", $valor, PDO::PARAM_INT);
             $stmt -> execute();
@@ -592,7 +703,7 @@
         #Detalle de compra producto
         static public function detalleCPModel($tabla, $valor){
             $stmt = Conexion::conectar() -> prepare("select 
-            c_e.idcompra_entrada, p.nombre as producto, c_e.preciocompra, c_e.cantidad from $tabla c_e 
+            c_e.idcompra_entrada, p.nombre as producto, p.idpro, c_e.preciocompra, c_e.cantidad from $tabla c_e 
             inner join pro p on c_e.idpro = p.idpro where c_e.idcompra = :idcompra and c_e.status = 1;");
 
             $stmt -> bindParam(":idcompra", $valor, PDO::PARAM_INT);
@@ -618,7 +729,23 @@
             $stmt -> close();
             $stmt = null;
         }
-        
+
+        #Quitar Compra sin concluir
+        static public function quitarCompraModel($tabla, $valor){
+            $stmt = Conexion::conectar() -> prepare(
+                "update $tabla set status = 0 where idcompra = :idcompra;"
+            );
+
+            $stmt -> bindParam(":idcompra", $valor, PDO::PARAM_INT);
+
+            if($stmt -> execute()){
+                return "ok";
+            }else{
+                return "error";
+            }
+            $stmt -> close();
+            $stmt = null;
+        }
 
         #Concluir Compra
         static public function compraFinalizadaModel($item, $valor, $tabla){
@@ -706,6 +833,18 @@
             }else{
                 return "error";
             }
+            $stmt -> close();
+            $stmt = null;
+        }
+
+        #Seleccionar todos los usuarios.
+        static public function seleccionarUsuariosModel($tabla, $valor){
+            $stmt = Conexion::conectar() -> prepare("
+                select usuario from $tabla where usuario = :usuario;
+            ");
+            $stmt -> bindParam(":usuario", $valor, PDO::PARAM_STR);
+            $stmt -> execute();
+            return $stmt -> fetch();
             $stmt -> close();
             $stmt = null;
         }

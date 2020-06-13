@@ -65,7 +65,7 @@
         </div>
         
         <div class="input-group">
-            <input type="submit" id="btnRegistrarProducto" name="btnRegistrarProducto" value="Registrar Producto" title="Registrar Producto">
+            <input type="submit" id="btnRegistrarProducto" name="btnRegistrarProducto" value="Registrar Producto">
             <?php
                 $registro = new MvcController();
                 $registro -> registrarProductoController();

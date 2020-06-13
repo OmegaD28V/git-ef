@@ -59,8 +59,8 @@
                             <input class="inputEliminar" type="hidden" value="<?=$valueEntradas["idcompra_entrada"]?>" name="removeIntro">
                             <button class="inputEliminar" type="submit" value=""><i class="fas fa-times-circle"></i></button>
                             <?php
-                                // $quitarEntrada = new MvcController();
-                                // $quitarEntrada -> quitarEntradaController();
+                                $quitarEntrada = new MvcController();
+                                $quitarEntrada -> quitarEntradaController($ticket);
                             ?>
                         </form>
                     </td>
@@ -116,7 +116,7 @@
                 <input type="submit" id="btnRegistrarEntrada" name="btnRegistrarEntrada" value="Agregar Producto" title="Registrar Entrada">
             </div>
             <?php
-                // $registro = MvcController::registrarEntradaController();
+                $registro = MvcController::registrarEntradaController($ticket);
                 if (isset($_GET["not0"])) {
                     if ($_GET["not0"] == "true") {
                         ?>
@@ -138,3 +138,6 @@
         </form>
     </div>
 </div>
+<?php
+    }
+?>

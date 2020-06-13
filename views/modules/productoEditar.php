@@ -12,8 +12,8 @@
     <form class="formulario-editar" name="editarProducto" method="post">
         <h2>Editar Producto</h2>
         <div class="input-group">
-            <label for="input1">Categoria</label>
-            <select id="input1" name="uCategory" required autofocus>
+            <label for="uCategory">Categoria</label>
+            <select name="uCategory" required autofocus>
             <option value="">Seleccionar</option>
             <?php
                 $categorias = MvcController::seleccionarCategoriaController(null, null);
@@ -44,33 +44,33 @@
         </div>
 
         <div class="input-group">
-            <label for="input3">Código del Producto</label>
-            <input id="input3" type="text" value="<?=$producto["codigo"]?>" name="uCode" required>
+            <label for="uCode">Código del Producto</label>
+            <input type="text" value="<?=$producto["codigo"]?>" name="uCode" required>
         </div>
         
         <div class="input-group">
-            <label for="input4">Nombre</label>
-            <input id="input4" type="text" value="<?=$producto["nombre"]?>" name="uNameProduct" required>
+            <label for="uNameProduct">Nombre</label>
+            <input type="text" value="<?=$producto["nombre"]?>" name="uNameProduct" required>
         </div>
     
         <div class="input-group">
-            <label for="input5">Modelo</label>
-            <input id="input5" type="text" value="<?=$producto["modelo"]?>" name="uModel" required>
+            <label for="uModel">Modelo</label>
+            <input type="text" value="<?=$producto["modelo"]?>" name="uModel" required>
             <input type="hidden" value="<?=$producto["idpro"]?>" name="idpro">
         </div>
 
         <div class="input-group">
-            <label for="input6">Precio de venta $</label>
-            <input id="input6" type="number" name="upriceSellProduct" value="<?=$precio["precio"]?>" min="0" step="1" required>
+            <label for="upriceSellProduct">Precio de venta $</label>
+            <input type="number" name="upriceSellProduct" value="<?=$precio["precio"]?>" min="0" step="1" required>
         </div>
     
         <div class="input-group">
-            <label for="input7">Descripción</label>
-            <textarea id="input7" name="uDescription" cols="50" rows="10" required><?=$producto["descripcion"]?></textarea>
+            <label for="uDescription">Descripción</label>
+            <textarea name="uDescription" cols="50" rows="10" required><?=$producto["descripcion"]?></textarea>
         </div>
     
         <div class="input-group">
-            <input type="submit" class="submitEditarProducto" id="btnActualizarProducto" name="btnActualizarProducto" value="Actualizar Producto">
+            <input type="submit" class="submitEditarProducto" name="btnActualizarProducto" value="Actualizar Producto">
         </div>
     </form>
 </div>

@@ -189,6 +189,161 @@
                 return $respuesta;
             }
         }
+
+        #Registrar Característica.
+        static public function regCaracteristicaController(){
+            if (isset($_POST["idpro"]) && isset($_POST["featureProduct"])) {
+                $tabla = "pro_caracteristica";
+                $datos = array(
+                    "idpro" => $_POST["idpro"], 
+                    "caracteristica" => $_POST["featureProduct"]
+                );
+
+                $respuesta = Datos::regCaracteristicaModel($tabla, $datos);
+
+                if ($respuesta == "ok") {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=productoCaracteristica&pFts='.$datos["idpro"].'&not0=true";
+                        </script>';
+                }else {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=productoCaracteristica&pFts='.$datos["idpro"].'&not0=false";
+                        </script>';
+                }
+            }
+        }
+
+        #Seleccionar Características.
+        static public function seleccionarCaracteristicasController($pro, $item){
+            $tabla = "pro_caracteristica";
+            $respuesta = Datos::seleccionarCaracteristicasModel($tabla, $pro, $item);
+            return $respuesta;
+        }
+
+        #Actualizar Característica.
+        public function actualCaracteristicaController(){
+            if (isset($_POST["uFeature"]) && isset($_POST["uHFeature"]) && $_POST["pro"]) {
+                $tabla = "pro_caracteristica";
+                $datos = array(
+                    "id" => $_POST["uHFeature"], 
+                    "caracteristica" => $_POST["uFeature"], 
+                    "pro" => $_POST["pro"]
+                );
+
+                $respuesta = Datos::actualCaracteristicaModel($tabla, $datos);
+                if ($respuesta == "ok") {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=productoCaracteristica&pFts='.$datos["pro"].'&not2=true";
+                        </script>';
+                }else {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=productoCaracteristica";
+                        </script>';
+                }
+            }
+        }
+
+        #Seleccionar producto para características o imágenes.
+        static public function productoController($valor){
+            $tabla = "pro";
+            $respuesta = Datos::productoModel($tabla, $valor);
+            return $respuesta;
+        }
+
+        #Quitar Característica.
+        public function quitarCaracteristicaController(){
+            if (isset($_POST["removeFeature"]) && isset($_POST["pro"])) {
+                $tabla = "pro_caracteristica";
+                $valor = $_POST["removeFeature"];
+                $respuesta = Datos::quitarCaracteristicaModel($tabla, $valor);
+                if ($respuesta == "ok") {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=productoCaracteristica&pFts='.$_POST["pro"].'&not3=true";
+                        </script>';
+                }
+                return $respuesta;
+            }
+        }
+
+        #Subir Imagen de producto.
+        static public function subirImgProController(){
+            if (isset($_POST["pro"])) {
+                $pro = $_POST["pro"];
+                if (isset($_FILES["imageProduct"]["tmp_name"]) && !empty($_FILES["imageProduct"]["tmp_name"])) {
+                    list($ancho, $alto) = getimagesize($_FILES["imageProduct"]["tmp_name"]);
+                    $resizeAncho = 240;
+                    $resizeAlto = 300;
+                    $rutaSave = "views/img/pro/";
+    
+                    #Funciones para imagenes.
+                    if ($_FILES["imageProduct"]["type"] == "image/jpeg") {
+                        $random = mt_rand(100, 9999);
+                        $rutaFile = $rutaSave.$random.".jpg";
+                        $origen = imagecreatefromjpeg($_FILES["imageProduct"]["tmp_name"]);
+                        $destino = imagecreatetruecolor($resizeAncho, $resizeAlto);
+                        imagecopyresized($destino, $origen, 0, 0, 0, 0, $resizeAncho, $resizeAlto, $ancho, $alto);
+                        imagejpeg($destino, $rutaFile);
+                    }elseif ($_FILES["imageProduct"]["type"] == "image/png") {
+                        $random = mt_rand(100, 9999);
+                        $rutaFile = $rutaSave.$random.".png";
+                        $origen = imagecreatefrompng($_FILES["imageProduct"]["tmp_name"]);
+                        $destino = imagecreatetruecolor($resizeAncho, $resizeAlto);
+                        imagealphablending($destino, FALSE);
+                        imagesavealpha($destino, TRUE);
+                        imagecopyresized($destino, $origen, 0, 0, 0, 0, $resizeAncho, $resizeAlto, $ancho, $alto);
+                        imagepng($destino, $rutaFile);
+                    }else{
+                        return "invalid";
+                    }
+                    $tabla = "pro_imagen";
+                    $archivo = $rutaFile;
+                    $respuesta = Datos::subirImgProModel($tabla, $archivo, $pro);
+                    if ($respuesta == "ok") {
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=productoImagenes&pPic='.$pro.'&not0=true";
+                            </script>';
+                    }else {
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=productoImagenes&pPic='.$pro.'&notx=true";
+                            </script>';
+                    }
+                }else {
+                    // echo '<script>
+                    //             if(window.history.replaceState){
+                    //                 window.history.replaceState(null, null, window.location.href);
+                    //             }
+                    //             window.location = "index.php?action=productoImagenes&pPic='.$pro.'&notx=true";
+                    //         </script>';
+                }
+            }
+            // echo '<script>
+            //             if(window.history.replaceState){
+            //                 window.history.replaceState(null, null, window.location.href);
+            //             }
+            //             window.location = "index.php?action=productoImagenes&pPic='.$pro.'&notx=true";
+            //         </script>';
+        }
         
         #Seleccionar Productos Deshabilitados
         static public function seleccionarProductoDeshabilitadoController($modo){
@@ -452,7 +607,7 @@
                     "proveedor" => $_POST["provider"] 
                 );
                 $verificarCompra = Datos::verificarCompraModel($tabla, $datosController);
-                if ($verificarCompra >= 1) {
+                if ($verificarCompra["coincide"] >= 1) {
                     echo '<script>
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
@@ -461,10 +616,10 @@
                         </script>';
                 }else{
                     $ticket = null;
-                    $respuesta = Datos::registrarCompraModel($tabla, $datosController);
-                    $respuesta = Datos::seleccionarCompraModel($tabla, $datosController, $ticket);
-                    $ticket = $compra["idcompra"];
-                    if ($respuesta == "ok") {
+                    $registro = Datos::registrarCompraModel($tabla, $datosController);
+                    $select = Datos::seleccionarCompraModel($tabla, $datosController, $ticket);
+                    $ticket = $select["idcompra"];
+                    if ($registro == "ok") {
                         echo '<script>
                                 if(window.history.replaceState){
                                     window.history.replaceState(null, null, window.location.href);
@@ -522,8 +677,8 @@
 
         #Quitar Entrada
         public function quitarEntradaController($ticket){
-            if (isset($_POST["removeIntro"]) && isset($_POST["ticket"])) {
-                $ticket = $_POST["ticket"];
+            if (isset($_POST["removeIntro"]) && isset($_GET["into"])) {
+                $ticket = $_GET["into"];
                 $tabla = "compra_entrada";
                 $valor = $_POST["removeIntro"];
                 $respuesta = Datos::quitarEntradaModel($tabla, $valor);
@@ -540,8 +695,9 @@
         }
         
         #Quitar Entrada Update
-        public function uQuitarEntradaController(){
-            if (isset($_POST["removeIntro"])) {
+        public function uQuitarEntradaController($ticket){
+            if (isset($_POST["removeIntro"]) && isset($_GET["into"])) {
+                $ticket = $_GET["into"];
                 $tabla = "compra_entrada";
                 $valor = $_POST["removeIntro"];
                 $respuesta = Datos::quitarEntradaModel($tabla, $valor);
@@ -550,7 +706,25 @@
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
                             }
-                            window.location = "index.php?action=compraEditar&not3=true";
+                            window.location = "index.php?action=compraEditar&into='.$ticket.'&not3=true";
+                        </script>';
+                }
+                return $respuesta;
+            }
+        }
+
+        #Quitar Compra sin concluir
+        public function quitarCompraController(){
+            if (isset($_POST["removeBuy"])) {
+                $tabla = "compra";
+                $valor = $_POST["removeBuy"];
+                $respuesta = Datos::quitarCompraModel($tabla, $valor);
+                if ($respuesta == "ok") {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=compras&not3=true";
                         </script>';
                 }
                 return $respuesta;
@@ -581,8 +755,8 @@
         #Registrar Entrada
         static public function registrarEntradaController($ticket){
             $tabla = "compra_entrada";
-            if(isset($_POST["hiddenCompra"]) && isset($_POST["ticket"])){
-                $ticket = $_POST["ticket"];
+            if(isset($_POST["hiddenCompra"]) && isset($_GET["into"])){
+                $ticket = $_GET["into"];
                 $datosController = array(
                     "compra" => $_POST["hiddenCompra"], 
                     "producto" => $_POST["product"], 
@@ -610,9 +784,10 @@
         }
         
         #Registrar Entrada Update
-        static public function uRegistrarEntradaController(){
+        static public function uRegistrarEntradaController($ticket){
             $tabla = "compra_entrada";
-            if(isset($_POST["hiddenCompra"])){
+            if(isset($_POST["hiddenCompra"]) && isset($_GET["into"])){
+                $ticket = $_GET["into"];
                 $datosController = array(
                     "compra" => $_POST["hiddenCompra"], 
                     "producto" => $_POST["product"], 
@@ -625,7 +800,7 @@
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
                             }
-                            window.location = "index.php?action=compraEditar&not0=true";
+                            window.location = "index.php?action=compraEditar&into='.$ticket.'&not0=true";
                         </script>';
                 }else{
                     echo '<script>
@@ -680,6 +855,13 @@
                 }
                   
             }
+        }
+
+        #Seleccionar todos los usuarios.
+        static public function seleccionarUsuariosController($valor){
+            $tabla = "user";
+            $respuesta = Datos::seleccionarUsuariosModel($tabla, $valor);
+            return $respuesta;
         }
 
         #Inicio Sesion de usuario

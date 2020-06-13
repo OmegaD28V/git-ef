@@ -195,6 +195,8 @@
                             <li class="nav-items">
                                 <a class="aCat" href="index.php?action=productoCompra" title="Nueva Compra"><i class="fas fa-cart-plus"></i>Nueva Compra</a>
                             </li>
+                            <!-- <li class="nav-items"><a href="index.php?action=devoluciones"><i class="fas fa-reply"></i>Ver Devoluciones</a></li>
+                            <li class="nav-items"><a href="index.php?action=devolucionRegistrar"><i class="fas fa-hand-holding-usd"></i>Nueva Devolución</a></li> -->
                         </ul>
                     </li>
 
@@ -206,6 +208,8 @@
                             <li class="nav-items">
                                 <a class="aCat" href="index.php?action=productoCompra" title="Nueva Compra"><i class="fas fa-cart-plus"></i>Nueva Compra</a>
                             </li>
+                            <!-- <li class="nav-items"><a href="index.php?action=devoluciones"><i class="fas fa-reply"></i>Ver Devoluciones</a></li>
+                            <li class="nav-items"><a href="index.php?action=devolucionRegistrar"><i class="fas fa-hand-holding-usd"></i>Nueva Devolución</a></li> -->
                         </ul>
                     </li>
 
@@ -243,6 +247,8 @@
                         <li class="nav-items">
                             <a class="aCat" href="index.php?action=productoRegistrar" title="Nuevo Producto"><i class="fas fa-plus-circle"></i>Nuevo Producto</a>
                         </li>
+                        <li class="nav-items"><a href="index.php?action=productoSinStock"><i class="fab fa-creative-commons-zero"></i>Ver productos sin existencia</a></li>
+                        <li class="nav-items"><a href="index.php?action=productoDeshabilitado"><i class="fas fa-recycle"></i>Ver productos deshabilitados</a></li>
                     </ul>
                 </li>
                 <li id="nav-item3" title="Categorías" class="nav-items"><a href="index.php?action=categoria"><i class="fas fa-cubes"></i>Categorías</a>
@@ -298,6 +304,8 @@
                         <li class="nav-items">
                             <a class="aCat" href="index.php?action=productoCompra" title="Nueva Compra"><i class="fas fa-cart-plus"></i>Nueva Compra</a>
                         </li>
+                        <!-- <li class="nav-items"><a href="index.php?action=devoluciones"><i class="fas fa-reply"></i>Ver Devoluciones</a></li>
+                        <li class="nav-items"><a href="index.php?action=devolucionRegistrar"><i class="fas fa-hand-holding-usd"></i>Nueva Devolución</a></li> -->
                     </ul>
                 </li>
                 <li id="nav-item8" title="Venta" class="nav-items"><a href="index.php?action=ventas"><i class="fas fa-cash-register"></i>Ventas</a>

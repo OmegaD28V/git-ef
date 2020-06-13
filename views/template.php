@@ -75,6 +75,7 @@
         <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet"> -->
         <link rel="stylesheet" href="css/estilo.css">
         <link href="css/all.css" rel="stylesheet">
+        <script type="text/javascript" src="views/scripts/jquery-3.4.1.min.js"></script>
         <!-- <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@500&display=swap" rel="stylesheet"> -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
         <!-- <script src="https://kit.fontawesome.com/088ef51476.js" crossorigin="anonymous"></script> -->
@@ -116,6 +117,7 @@
                 include "modules/footer.php";
             ?>
         </footer>
+        <script type="text/javascript" src="views/scripts/uno.js"></script>
         <script type="text/javascript" src="js/interMenu.js"></script>
         <script type="text/javascript" src="js/visibleUser.js"></script>
         <script type="text/javascript" src="js/hiddenPasswordUIS.js"></script>

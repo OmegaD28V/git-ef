@@ -1,8 +1,3 @@
-<!-- <div class="contenedor-formulario">
-    <h2 class="build-page">Página en construcción</h2>
-    <img src="ima/imgPaginaConstruccion.jpg" alt="PaginaConstruccion">
-</div> -->
-
 <?php
     $compras = MvcController::seleccionarComprasController();
 ?>
@@ -45,27 +40,32 @@
                             }else {
                                 $estado = "Sin concluir";
                             }
+
+                            $total = $totales["total"];
+                            if ($totales["total"] == null) {
+                                $total = 0;
+                            }
                         ?>
                         <td><span class="d-p-price"><?=$value["folio"]?></span></td>
                         <td><span class="d-p-price"><?=$value["nombre"]?></span></td>
                         <td><span class="d-p-price"><?=$value["momento"]?></span></td>
-                        <td><span class="d-p-price">$ <?=$totales["total"]?></span></td>
+                        <td><span class="d-p-price">$ <?=$total?></span></td>
                         <td><span class="d-p-price"><?=$estado?></span></td>
                         <td>
                             <a class="ver-det" href="index.php?action=compra&cdet=<?=$value["idcompra"]?>">Detalles</a>
                             <?php if ($status == 1) {
                                 ?>
                             <a class="editar" href="index.php?action=compraEditar&into=<?=$value["idcompra"]?>"><i class="fas fa-pen-square"></i>Editar</a>        
+                            <form class="formEliminarT" method="post" name="eliminarCompra">
+                                <input class="inputEliminar" type="hidden" value="<?=$value["idcompra"]?>" name="removeBuy">
+                                <button class="btn-remove" type="submit" value=""><i class="fas fa-times-circle"></i>Quitar</button>
                                 <?php
-                            }?>
-                            <!-- <form class="formEliminar" method="post">
-                                <input class="inputEliminar" type="hidden" value="" name="removeTrademark">
-                                <button class="inputEliminar" type="submit" value=""><i class="fas fa-minus-square"></i>Quitar</button>
-                                <?php
-                                    // $quitarMarca = new MvcController();
-                                    // $quitarMarca -> quitarMarcaController();
+                                    $quitarCompra = new MvcController();
+                                    $quitarCompra -> quitarCompraController();
                                 ?>
-                            </form> -->
+                            </form>
+                            <?php
+                            }?>
                         </td>
                     </tr>
                 <?php

@@ -11,7 +11,7 @@
         </div>
         <div class="input-group">
             <label for="correo-user">Correo electrónico</label>
-            <input type="email" name="correo-user" id="name-user" required>
+            <input type="email" name="correo-user" id="correo-user" required>
         </div>
         <div class="input-group">
             <label for="password-user">Contraseña</label>
