@@ -1,3 +1,13 @@
+<?php
+    if (!(isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
+        echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
+    }else {
+        if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] == "master") {
+            ?>
+            <?php
+        }
+    }
+?>
 <div class="contenedor-formulario">
     <form class="formulario" name="nuevoProveedor" method="post">
         <h2>Nuevo Proveedor</h2>

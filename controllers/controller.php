@@ -19,33 +19,46 @@
 
         #Registrar producto
         static public function registrarProductoController(){
-            $tabla = "pro";
-            if(isset($_POST["categoryProduct"])){
-                $datosController = array(
-                    "idpro_categoria" => $_POST["categoryProduct"], 
-                    "idpro_marca" => $_POST["trademarkProduct"], 
-                    "codigo" => $_POST["codeProduct"], 
-                    "nombre" => $_POST["nameProduct"], 
-                    "modelo" => $_POST["modelProduct"],  
-                    "precioventa" => $_POST["priceSellProduct"],  
-                    "descripcion" => $_POST["descriptionProduct"]);
-                
-                $respuesta = Datos::registrarProductoModel($datosController, $tabla);
-                if ($respuesta == "ok") {
+            if (isset($_POST["categoryProduct"])) {
+                if (
+                    preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,20}+$/", $_POST["codeProduct"]) && 
+                    preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,100}+$/", $_POST["nameProduct"]) && 
+                    preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,30}+$/", $_POST["modelProduct"]) && 
+                    preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ,.-_ ]{1,250}+$/m", $_POST["descriptionProduct"])
+                ) {
+                    $tabla = "pro";
+                    $datosController = array(
+                        "idpro_categoria" => $_POST["categoryProduct"], 
+                        "idpro_marca" => $_POST["trademarkProduct"], 
+                        "codigo" => $_POST["codeProduct"], 
+                        "nombre" => $_POST["nameProduct"], 
+                        "modelo" => $_POST["modelProduct"],
+                        "descripcion" => $_POST["descriptionProduct"]);
+                    
+                    $respuesta = Datos::registrarProductoModel($datosController, $tabla);
+                    if ($respuesta == "ok") {
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=productoRegistrar&not0=true";
+                            </script>';
+                    }else{
+                        echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                        </script>';
+                        echo '<div><span>No se pudo registrar</span></div>';
+                        echo '<div><span>verifique sus datos</span></div>';
+                    }
+                }else {
                     echo '<script>
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
                             }
-                            window.location = "index.php?action=productoRegistrar&not0=true";
+                            window.location = "index.php?action=productoRegistrar&err=pr";
                         </script>';
-                }else{
-                    echo '<script>
-                        if(window.history.replaceState){
-                            window.history.replaceState(null, null, window.location.href);
-                        }
-                    </script>';
-                    echo '<div><span>No se pudo registrar</span></div>';
-                    echo '<div><span>verifique sus datos</span></div>';
                 }
             }
         }
@@ -54,53 +67,74 @@
         public function actualizarProductoController(){
             $tabla = "pro";
             if(isset($_POST["uCategory"])){
-                $datosController = array(
-                    "idpro" => $_POST["idpro"], 
-                    "idpro_categoria" => $_POST["uCategory"], 
-                    "idpro_marca" => $_POST["uTrademark"], 
-                    "codigo" => $_POST["uCode"], 
-                    "nombre" => $_POST["uNameProduct"], 
-                    "modelo" => $_POST["uModel"], 
-                    "descripcion" => $_POST["uDescription"]);
-                
-                $respuesta = Datos::actualizarProductoModel($datosController, $tabla);
-                if ($respuesta == "ok") {
-                    echo '<script>
+                if (
+                    preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,20}+$/", $_POST["uCode"]) && 
+                    preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,100}+$/", $_POST["uNameProduct"]) && 
+                    preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,30}+$/", $_POST["uModel"]) && 
+                    preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ,.-_ ]{1,250}+$/m", $_POST["uDescription"])
+                ) {
+                    $datosController = array(
+                        "idpro" => $_POST["idpro"], 
+                        "idpro_categoria" => $_POST["uCategory"], 
+                        "idpro_marca" => $_POST["uTrademark"], 
+                        "codigo" => $_POST["uCode"], 
+                        "nombre" => $_POST["uNameProduct"], 
+                        "modelo" => $_POST["uModel"], 
+                        "descripcion" => $_POST["uDescription"]);
+                    
+                    $respuesta = Datos::actualizarProductoModel($datosController, $tabla);
+                    if ($respuesta == "ok") {
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=productoInicio&not2=true";
+                            </script>';
+                    }else{
+                        echo '<script>
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
                             }
-                            window.location = "index.php?action=productoInicio&not2=true";
+                            window.location = "index.php?action=productoInicio&err=ep";
                         </script>';
+                    }
                 }else{
                     echo '<script>
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
                             }
-                            window.location = "index.php?action=productoInicio";
+                            window.location = "index.php?action=productoInicio&err=ep";
                         </script>';
-                    echo '<div><span>No se pudo Actualizar</span></div>';
-                    echo '<div><span>verifique sus datos</span></div>';
                 }
             }
         }
 
         #Actualizar Precio Producto
         public function actualizarProPrecioController(){
-            $tabla = "pro_precio";
-            if(isset($_POST["idpro"]) && isset($_POST["upriceSellProduct"])){
-                $datosController = array(
-                    "idpro" => $_POST["idpro"], 
-                    "precio" => $_POST["upriceSellProduct"]);
-                
-                $respuesta = Datos::actualizarProPrecioModel($datosController, $tabla);
-                if ($respuesta == "ok") {
-                }else{
+            if(isset($_POST["idpro"]) && isset($_POST["uPriceSellProduct"])){
+                $tabla = "pro_precio";
+                if (preg_match("/^[0-9.]{1,9}+$/", $_POST["uPriceSellProduct"])) {
+                    $datosController = array(
+                        "precio" => $_POST["uPriceSellProduct"], 
+                        "idpro" => $_POST["idpro"]);
+                    
+                    $respuesta = Datos::actualizarProPrecioModel($datosController, $tabla);
+                    if ($respuesta == "ok") {
+                    }else{
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=productoInicio&not5=true";
+                            </script>';
+                    }
+                }else {
                     echo '<script>
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
                             }
                             window.location = "index.php?action=productoInicio&not5=true";
-                        </script>';
+                        </script>'; 
                 }
             }
         }
@@ -193,22 +227,31 @@
         #Registrar Característica.
         static public function regCaracteristicaController(){
             if (isset($_POST["idpro"]) && isset($_POST["featureProduct"])) {
-                $tabla = "pro_caracteristica";
-                $datos = array(
-                    "idpro" => $_POST["idpro"], 
-                    "caracteristica" => $_POST["featureProduct"]
-                );
+                if (preg_match("/^[0-9a-zA-ZñÑáéíóúÁÉÍÓÚ\W ]{1,150}+$/", $_POST["featureProduct"])) {
+                    $tabla = "pro_caracteristica";
+                    $datos = array(
+                        "idpro" => $_POST["idpro"], 
+                        "caracteristica" => $_POST["featureProduct"]
+                    );
 
-                $respuesta = Datos::regCaracteristicaModel($tabla, $datos);
+                    $respuesta = Datos::regCaracteristicaModel($tabla, $datos);
 
-                if ($respuesta == "ok") {
-                    echo '<script>
-                            if(window.history.replaceState){
-                                window.history.replaceState(null, null, window.location.href);
-                            }
-                            window.location = "index.php?action=productoCaracteristica&pFts='.$datos["idpro"].'&not0=true";
-                        </script>';
-                }else {
+                    if ($respuesta == "ok") {
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=productoCaracteristica&pFts='.$datos["idpro"].'&not0=true";
+                            </script>';
+                    }else {
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=productoCaracteristica&pFts='.$datos["idpro"].'&not0=false";
+                            </script>';
+                    }
+                }else{
                     echo '<script>
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
@@ -286,8 +329,8 @@
                 $pro = $_POST["pro"];
                 if (isset($_FILES["imageProduct"]["tmp_name"]) && !empty($_FILES["imageProduct"]["tmp_name"])) {
                     list($ancho, $alto) = getimagesize($_FILES["imageProduct"]["tmp_name"]);
-                    $resizeAncho = 240;
-                    $resizeAlto = 300;
+                    // $ancho = 240;
+                    // $alto = 300;
                     $rutaSave = "views/img/pro/";
     
                     #Funciones para imagenes.
@@ -295,17 +338,17 @@
                         $random = mt_rand(100, 9999);
                         $rutaFile = $rutaSave.$random.".jpg";
                         $origen = imagecreatefromjpeg($_FILES["imageProduct"]["tmp_name"]);
-                        $destino = imagecreatetruecolor($resizeAncho, $resizeAlto);
-                        imagecopyresized($destino, $origen, 0, 0, 0, 0, $resizeAncho, $resizeAlto, $ancho, $alto);
+                        $destino = imagecreatetruecolor($ancho, $alto);
+                        imagecopyresized($destino, $origen, 0, 0, 0, 0, $ancho, $alto, $ancho, $alto);
                         imagejpeg($destino, $rutaFile);
                     }elseif ($_FILES["imageProduct"]["type"] == "image/png") {
                         $random = mt_rand(100, 9999);
                         $rutaFile = $rutaSave.$random.".png";
                         $origen = imagecreatefrompng($_FILES["imageProduct"]["tmp_name"]);
-                        $destino = imagecreatetruecolor($resizeAncho, $resizeAlto);
+                        $destino = imagecreatetruecolor($ancho, $alto);
                         imagealphablending($destino, FALSE);
                         imagesavealpha($destino, TRUE);
-                        imagecopyresized($destino, $origen, 0, 0, 0, 0, $resizeAncho, $resizeAlto, $ancho, $alto);
+                        imagecopyresized($destino, $origen, 0, 0, 0, 0, $ancho, $alto, $ancho, $alto);
                         imagepng($destino, $rutaFile);
                     }else{
                         return "invalid";
@@ -318,7 +361,7 @@
                                 if(window.history.replaceState){
                                     window.history.replaceState(null, null, window.location.href);
                                 }
-                                window.location = "index.php?action=productoImagenes&pPic='.$pro.'&not0=true";
+                                window.location = "index.php?action=productoImagenes&pPic='.$pro.'&notiU=true";
                             </script>';
                     }else {
                         echo '<script>
@@ -343,6 +386,45 @@
             //             }
             //             window.location = "index.php?action=productoImagenes&pPic='.$pro.'&notx=true";
             //         </script>';
+        }
+
+        #ver imagenes del producto
+        static public function verImgProController($pro){
+            $tabla = "pro_imagen";
+            $respuesta = Datos::verImgProModel($tabla, $pro);
+            return $respuesta;
+        }
+        
+        #Imagen para ficha
+        static public function fichaImagenController($pro){
+            $tabla = "pro_imagen";
+            $respuesta = Datos::fichaImagenModel($tabla, $pro);
+            return $respuesta;
+        }
+
+        #Quitar imagen de producto.
+        public function quitarImgProController(){
+            if (isset($_POST["removePicture"]) && isset($_POST["pro"])) {
+                $tabla = "pro_imagen";
+                $img = $_POST["removePicture"];
+                $pro = $_POST["pro"];
+                $respuesta = Datos::quitarImgProModel($tabla, $img);
+                if ($respuesta == "ok") {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=productoImagenes&pPic='.$pro.'&not3=true";
+                        </script>';
+                }else {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=productoImagenes&pPic='.$pro.'&notx=true";
+                        </script>';
+                }
+            }
         }
         
         #Seleccionar Productos Deshabilitados
@@ -387,26 +469,33 @@
         static public function registrarCategoriaController(){
             $tabla = "pro_categoria";
             if(isset($_POST["nameCategory"])){
-                $valor = $_POST["nameCategory"];
-                
-                $respuesta = Datos::registrarCategoriaModel($valor, $tabla);
-                if ($respuesta == "ok") {
+                if (preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9-_& ]{1,60}$/", $_POST["nameCategory"])) {
+                    
+                    $valor = $_POST["nameCategory"];
+                    $respuesta = Datos::registrarCategoriaModel($valor, $tabla);
+                    if ($respuesta == "ok") {
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=categoriaRegistrar&not0=true";
+                            </script>';
+                    }else{
+                        echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                        </script>';
+                        echo '<div><span>No se pudo registrar</span></div>';
+                        echo '<div><span>verifique sus datos</span></div>';
+                    }   
+                }else {
                     echo '<script>
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
                             }
-                            window.location = "index.php?action=categoriaRegistrar&not0=true";
+                            window.location = "index.php?action=categoriaRegistrar&err=rc";
                         </script>';
-                    return "ok";
-                }else{
-                    echo '<script>
-                        if(window.history.replaceState){
-                            window.history.replaceState(null, null, window.location.href);
-                        }
-                    </script>';
-                    echo '<div><span>No se pudo registrar</span></div>';
-                    echo '<div><span>verifique sus datos</span></div>';
-                    return $respuesta;
                 }
             }
         }
@@ -428,24 +517,33 @@
         public function actualizarCategoriaController(){
             $tabla = "pro_categoria";
             if(isset($_POST["nameCategory"]) && isset($_POST["hidden-idcategory"])){
-                $datosController = array(
-                    "categoria" => $_POST["nameCategory"], 
-                    "idpro_categoria" => $_POST["hidden-idcategory"]);
-                
-                $respuesta = Datos::actualizarCategoriaModel($datosController, $tabla);
-                if ($respuesta == "ok") {
+                if (preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9-_& ]{1,60}$/", $_POST["nameCategory"])) {
+                    $datosController = array(
+                        "categoria" => $_POST["nameCategory"], 
+                        "idpro_categoria" => $_POST["hidden-idcategory"]);
+                    
+                    $respuesta = Datos::actualizarCategoriaModel($datosController, $tabla);
+                    if ($respuesta == "ok") {
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=categoria&not2=true";
+                            </script>';
+                    }else{
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=categoria&err=ec";
+                            </script>';
+                    }
+                }else {
                     echo '<script>
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
                             }
-                            window.location = "index.php?action=categoria&not2=true";
-                        </script>';
-                }else{
-                    echo '<script>
-                            if(window.history.replaceState){
-                                window.history.replaceState(null, null, window.location.href);
-                            }
-                            window.location = "index.php?action=categoria";
+                            window.location = "index.php?action=categoria&err=ec";
                         </script>';
                 }
             }
@@ -468,6 +566,40 @@
                 return $respuesta;
             }
         }
+
+        #Registrar Marca
+        static public function registrarMarcaController(){
+            $tabla = "pro_marca";
+            if(isset($_POST["nameTrademark"])){
+                if ((preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9-_& ]{1,60}$/", $_POST["nameTrademark"]))) {
+                    $valor = $_POST["nameTrademark"];
+                    $respuesta = Datos::registrarMarcaModel($valor, $tabla);
+                    if ($respuesta == "ok") {
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=marcaRegistrar&not0=true";
+                            </script>';
+                    }else{
+                        echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=marcaRegistrar&err=mr";
+                        </script>';
+                    } 
+                }else {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=marcaRegistrar&err=mr";
+                        </script>';
+                }
+                
+            }
+        }
         
         #Seleccionar Marcas
         static public function seleccionarMarcaController($item, $valor){
@@ -486,24 +618,33 @@
         public function actualizarMarcaController(){
             $tabla = "pro_marca";
             if(isset($_POST["nameTrademark"]) && isset($_POST["hidden-idtrademark"])){
-                $datosController = array(
-                    "marca" => $_POST["nameTrademark"], 
-                    "idpro_marca" => $_POST["hidden-idtrademark"]);
-                
-                $respuesta = Datos::actualizarMarcaModel($datosController, $tabla);
-                if ($respuesta == "ok") {
+                if ((preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9-_& ]{1,60}$/", $_POST["nameTrademark"]))) {
+                    $datosController = array(
+                        "marca" => $_POST["nameTrademark"], 
+                        "idpro_marca" => $_POST["hidden-idtrademark"]);
+                    
+                    $respuesta = Datos::actualizarMarcaModel($datosController, $tabla);
+                    if ($respuesta == "ok") {
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=marca&not2=true";
+                            </script>';
+                    }else{
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=marca&err=em";
+                            </script>';
+                    }
+                }else {
                     echo '<script>
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
                             }
-                            window.location = "index.php?action=marca&not2=true";
-                        </script>';
-                }else{
-                    echo '<script>
-                            if(window.history.replaceState){
-                                window.history.replaceState(null, null, window.location.href);
-                            }
-                            window.location = "index.php?action=marca";
+                            window.location = "index.php?action=marca&err=em";
                         </script>';
                 }
             }
@@ -532,32 +673,6 @@
             $tabla = "pro_categoria";
             $respuesta = Datos::categoriaModel($tabla, $valor);
             return $respuesta;
-        }
-
-        #Registrar Marca
-        static public function registrarMarcaController(){
-            $tabla = "pro_marca";
-            if(isset($_POST["nameTrademark"])){
-                $valor = $_POST["nameTrademark"];
-                
-                $respuesta = Datos::registrarMarcaModel($valor, $tabla);
-                if ($respuesta == "ok") {
-                    echo '<script>
-                            if(window.history.replaceState){
-                                window.history.replaceState(null, null, window.location.href);
-                            }
-                            window.location = "index.php?action=marcaRegistrar";
-                        </script>';
-                }else{
-                    echo '<script>
-                        if(window.history.replaceState){
-                            window.history.replaceState(null, null, window.location.href);
-                        }
-                    </script>';
-                    echo '<div><span>No se pudo registrar</span></div>';
-                    echo '<div><span>verifique sus datos</span></div>';
-                }
-            }
         }
 
         #Registrar Proveedor
@@ -602,39 +717,49 @@
         static public function registrarCompraController(){
             $tabla = "compra";
             if (isset($_POST["codeBuy"])) {
-                $datosController = array(
-                    "folio" => $_POST["codeBuy"], 
-                    "proveedor" => $_POST["provider"] 
-                );
-                $verificarCompra = Datos::verificarCompraModel($tabla, $datosController);
-                if ($verificarCompra["coincide"] >= 1) {
+                if (
+                    preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9-_ ]{1,20}+$/", $_POST["codeBuy"])
+                ) {
+                    $datosController = array(
+                        "folio" => $_POST["codeBuy"], 
+                        "proveedor" => $_POST["provider"] 
+                    );
+                    $verificarCompra = Datos::verificarCompraModel($tabla, $datosController);
+                    if ($verificarCompra["coincide"] >= 1) {
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=compras&not6=true";
+                            </script>';
+                    }else{
+                        $ticket = null;
+                        $registro = Datos::registrarCompraModel($tabla, $datosController);
+                        $select = Datos::seleccionarCompraModel($tabla, $datosController, $ticket);
+                        $ticket = $select["idcompra"];
+                        if ($registro == "ok") {
+                            echo '<script>
+                                    if(window.history.replaceState){
+                                        window.history.replaceState(null, null, window.location.href);
+                                    }
+                                    window.location = "index.php?action=productoEntrada&into='.$ticket.'";
+                                </script>';
+                        }else{
+                            echo '<script>
+                                    if(window.history.replaceState){
+                                        window.history.replaceState(null, null, window.location.href);
+                                    }
+                                    window.location = "index.php?action=productoCompra&err=pc";
+                                </script>';
+                        }
+                    }  
+                }else {
                     echo '<script>
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
                             }
-                            window.location = "index.php?action=compras&not6=true";
+                            window.location = "index.php?action=productoCompra&err=pc";
                         </script>';
-                }else{
-                    $ticket = null;
-                    $registro = Datos::registrarCompraModel($tabla, $datosController);
-                    $select = Datos::seleccionarCompraModel($tabla, $datosController, $ticket);
-                    $ticket = $select["idcompra"];
-                    if ($registro == "ok") {
-                        echo '<script>
-                                if(window.history.replaceState){
-                                    window.history.replaceState(null, null, window.location.href);
-                                }
-                                window.location = "index.php?action=productoEntrada&into='.$ticket.'";
-                            </script>';
-                    }else{
-                        echo '<script>
-                                if(window.history.replaceState){
-                                    window.history.replaceState(null, null, window.location.href);
-                                }
-                            </script>';
-                        echo '<div><span>No se pudo registrar</span></div>';
-                        echo '<div><span>verifique sus datos</span></div>';
-                    }
                 }
             }
         }
@@ -756,29 +881,40 @@
         static public function registrarEntradaController($ticket){
             $tabla = "compra_entrada";
             if(isset($_POST["hiddenCompra"]) && isset($_GET["into"])){
-                $ticket = $_GET["into"];
-                $datosController = array(
-                    "compra" => $_POST["hiddenCompra"], 
-                    "producto" => $_POST["product"], 
-                    "precioCompra" => $_POST["buyPrice"], 
-                    "cantidad" => $_POST["cuantity"]);
-                
-                $respuesta = Datos::registrarEntradaModel($datosController, $tabla);
-                if ($respuesta == "ok") {
+                if (
+                    preg_match("/^[0-9]{1,9}+$/", $_POST["buyPrice"]) && 
+                    preg_match("/^[0-9]{1,9}+$/", $_POST["cuantity"])
+                ) {
+                    $ticket = $_GET["into"];
+                    $datosController = array(
+                        "compra" => $_POST["hiddenCompra"], 
+                        "producto" => $_POST["product"], 
+                        "precioCompra" => $_POST["buyPrice"], 
+                        "cantidad" => $_POST["cuantity"]);
+                    
+                    $respuesta = Datos::registrarEntradaModel($datosController, $tabla);
+                    if ($respuesta == "ok") {
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=productoEntrada&into='.$ticket.'&not0=true";
+                            </script>';
+                    }else{
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=productoEntrada&into='.$ticket.'&err=re";
+                            </script>';
+                    }   
+                }else {
                     echo '<script>
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
                             }
-                            window.location = "index.php?action=productoEntrada&into='.$ticket.'&not0=true";
-                        </script>';
-                }else{
-                    echo '<script>
-                            if(window.history.replaceState){
-                                window.history.replaceState(null, null, window.location.href);
-                            }
-                        </script>';
-                    echo '<div><span>Error al registrar</span></div>';
-                    echo '<div><span>verifique sus datos</span></div>';
+                            window.location = "index.php?action=productoEntrada&into='.$ticket.'&err=re";
+                        </script>'; 
                 }
             }
         }
@@ -787,73 +923,253 @@
         static public function uRegistrarEntradaController($ticket){
             $tabla = "compra_entrada";
             if(isset($_POST["hiddenCompra"]) && isset($_GET["into"])){
-                $ticket = $_GET["into"];
-                $datosController = array(
-                    "compra" => $_POST["hiddenCompra"], 
-                    "producto" => $_POST["product"], 
-                    "precioCompra" => $_POST["buyPrice"], 
-                    "cantidad" => $_POST["cuantity"]);
-                
-                $respuesta = Datos::registrarEntradaModel($datosController, $tabla);
-                if ($respuesta == "ok") {
+                if (
+                    preg_match("/^[0-9]{1,9}+$/", $_POST["buyPrice"]) && 
+                    preg_match("/^[0-9]{1,9}+$/", $_POST["cuantity"])
+                ) {
+                    $ticket = $_GET["into"];
+                    $datosController = array(
+                        "compra" => $_POST["hiddenCompra"], 
+                        "producto" => $_POST["product"], 
+                        "precioCompra" => $_POST["buyPrice"], 
+                        "cantidad" => $_POST["cuantity"]);
+                    
+                    $respuesta = Datos::registrarEntradaModel($datosController, $tabla);
+                    if ($respuesta == "ok") {
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=compraEditar&into='.$ticket.'&not0=true";
+                            </script>';
+                    }else{
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=compraEditar&into='.$ticket.'&err=re";
+                            </script>';
+                    }  
+                }else {
                     echo '<script>
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
                             }
-                            window.location = "index.php?action=compraEditar&into='.$ticket.'&not0=true";
+                            window.location = "index.php?action=compraEditar&into='.$ticket.'&err=re";
                         </script>';
-                }else{
-                    echo '<script>
-                            if(window.history.replaceState){
-                                window.history.replaceState(null, null, window.location.href);
-                            }
-                        </script>';
-                    echo '<div><span>Error al registrar</span></div>';
-                    echo '<div><span>verifique sus datos</span></div>';
                 }
             }
         }
 
         #Registrar usuario
         static public function registrarUsuarioController($tipoUsuario){
-            $tabla = "user";
             if(isset($_POST["name-user"])){
-                if ($_POST["password-user"] != $_POST["repassword-user"]) {
-                    echo '<script>
-                            if(window.history.replaceState){
-                                window.history.replaceState(null, null, window.location.href);
-                            }
-                        </script>';
-                    echo '<div><span>Error!</span></div>';
-                    echo '<div><span>Las contraseñas no coinciden</span></div>';
-                }else {
-                    if ($tipoUsuario = 3) {
-                        $datosController = array(
-                            "nombre" => $_POST["name-user"], 
-                            "apellidos" => $_POST["ape-user"], 
-                            "correo" => $_POST["correo-user"], 
-                            "contrasena" => $_POST["password-user"]);
-                        
-                        $respuesta = Datos::registrarUsuarioModel($datosController, $tabla, $tipoUsuario);
-                        if ($respuesta == "ok") {
-                            echo '<script>
-                                    if(window.history.replaceState){
-                                        window.history.replaceState(null, null, window.location.href);
-                                    }
-                                    window.location = "index.php?action=usuarioInicioSession";
-                                </script>';
-                        }else{
+                if ($tipoUsuario == 3) {
+                    //Validación de campos en servidor.
+                    if (
+                        preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,75}+$/", $_POST["name-user"]) && 
+                        preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,75}+$/", $_POST["ape-user"]) && 
+                        (preg_match("/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/", $_POST["correo-user"]) || 
+                        preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ-_ ]{1,150}+$/", $_POST["correo-user"])) && 
+                        preg_match("/^[0-9a-zA-Z ]{4,30}+$/", $_POST["password-user"]) && 
+                        preg_match("/^[0-9a-zA-Z ]{4,30}+$/", $_POST["repassword-user"])
+                        ) {
+                        if ($_POST["password-user"] != $_POST["repassword-user"]) {
                             echo '<script>
                                     if(window.history.replaceState){
                                         window.history.replaceState(null, null, window.location.href);
                                     }
                                 </script>';
                             echo '<div><span>Error!</span></div>';
+                            echo '<div><span>Las contraseñas no coinciden</span></div>';
+                        }else{
+                            $tabla = "user";
+                            $datosController = array(
+                                "nombre" => $_POST["name-user"], 
+                                "apellidos" => $_POST["ape-user"], 
+                                "correo" => $_POST["correo-user"], 
+                                "contrasena" => $_POST["password-user"]
+                            );
+                            $respuesta = Datos::registrarUsuarioModel($datosController, $tabla, $tipoUsuario);
+                            if ($respuesta == "ok") {
+                                echo '<script>
+                                        if(window.history.replaceState){
+                                            window.history.replaceState(null, null, window.location.href);
+                                        }
+                                        window.location = "index.php?action=usuarioInicioSession&not0=true";
+                                    </script>';
+                            }else{
+                                echo '<script>
+                                        if(window.history.replaceState){
+                                            window.history.replaceState(null, null, window.location.href);
+                                        }
+                                    </script>';
+                                echo '<div><span>Error!</span></div>';
+                                echo '<div><span>verifique sus datos</span></div>';
+                            }  
+                        }
+                    }else{
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=usuarioRegistrarse&err=ur";
+                            </script>';
+                    }
+                }if ($tipoUsuario == 33) {
+                    if (
+                        isset($_POST["name-user"]) && 
+                        isset($_POST["ape-user"]) && 
+                        isset($_POST["correo-user"]) && 
+                        isset($_POST["tel-user"]) && 
+                        isset($_POST["val-estado"]) && 
+                        isset($_POST["val-municipio"]) && 
+                        isset($_POST["val-colonia"]) && 
+                        isset($_POST["calle"]) && 
+                        isset($_POST["no-casa"]) && 
+                        isset($_POST["no-ext"]) && 
+                        isset($_POST["entre-calle1"]) && 
+                        isset($_POST["entre-calle2"]) && 
+                        isset($_POST["ref"])
+                    ) {
+                        echo '<span>Valido todo</span>';
+                        //Validación de campos en servidor.
+                        if (
+                            preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ. ]{1,75}+$/", $_POST["name-user"]) && 
+                            preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ. ]{1,75}+$/", $_POST["ape-user"]) && 
+                            (preg_match("/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/", $_POST["correo-user"]) || 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,150}$/", $_POST["correo-user"])) && 
+                            preg_match("/^[0-9]{0,10}+$/", $_POST["tel-user"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-estado"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-municipio"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-colonia"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["calle"]) && 
+                            preg_match("/^[0-9]{0,7}+$/", $_POST["no-casa"]) && 
+                            preg_match("/^[0-9]{0,7}+$/", $_POST["no-ext"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{0,60}+$/", $_POST["entre-calle1"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{0,60}+$/", $_POST["entre-calle2"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ.,_\- ]{1,250}$/m", $_POST["ref"])
+                            ) {
+                            $tabla = "user";
+                            $datosController = array(
+                                "nombre" => $_POST["name-user"], 
+                                "apellidos" => $_POST["ape-user"], 
+                                "correo" => $_POST["correo-user"], 
+                                "tel" => $_POST["tel-user"], 
+                                "estado" => $_POST["val-estado"], 
+                                "municipio" => $_POST["val-municipio"], 
+                                "colonia" => $_POST["val-colonia"], 
+                                "CP" => $_POST["val-CP"], 
+                                "calle" => $_POST["calle"], 
+                                "no-casa" => $_POST["no-casa"], 
+                                "no-ext" => $_POST["no-ext"], 
+                                "calle1" => $_POST["entre-calle1"], 
+                                "calle2" => $_POST["entre-calle2"], 
+                                "ref" => $_POST["ref"]
+                            );
+                            $respuesta = Datos::registrarUsuarioModel($datosController, $tabla, $tipoUsuario);
+                            if ($respuesta == "ok") {
+                                echo '<script>
+                                        if(window.history.replaceState){
+                                            window.history.replaceState(null, null, window.location.href);
+                                        }
+                                        window.location = "index.php?action=uClienteRegistrar&not0=true";
+                                    </script>';
+                            }else{
+                                echo '<script>
+                                        if(window.history.replaceState){
+                                            window.history.replaceState(null, null, window.location.href);
+                                        }
+                                        window.location = "index.php?action=uClienteRegistrar";
+                                    </script>';
+                                echo '<div><span>Error!</span></div>';
+                                echo '<div><span>verifique sus datos</span></div>';
+                            }
+                        }else{
+                            echo '<script>
+                                    if(window.history.replaceState){
+                                        window.history.replaceState(null, null, window.location.href);
+                                    }
+                                    window.location = "index.php?action=uClienteRegistrar&err=ur";
+                                </script>';
+                        }   
+                    }
+                }
+            }
+        }
+        
+        #Actualizar usuario
+        static public function actualizarUsuarioController($cli, $idDomicilio, $idPhone, $gestor){
+            if(isset($_POST["name-user"])){
+                if (
+                    isset($_POST["name-user"]) && 
+                    isset($_POST["tel-user"]) && 
+                    isset($_POST["val-estado"]) && 
+                    isset($_POST["val-municipio"]) && 
+                    isset($_POST["val-colonia"]) && 
+                    isset($_POST["calle"]) && 
+                    isset($_POST["no-casa"]) && 
+                    isset($_POST["no-ext"]) && 
+                    isset($_POST["entre-calle1"]) && 
+                    isset($_POST["entre-calle2"]) && 
+                    isset($_POST["ref"])
+                ) {
+                    echo '<span>Valido todo</span>';
+                    //Validación de campos en servidor.
+                    if (
+                        preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ. ]{1,75}+$/", $_POST["name-user"]) && 
+                        preg_match("/^[0-9]{0,10}+$/", $_POST["tel-user"]) && 
+                        preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-estado"]) && 
+                        preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-municipio"]) && 
+                        preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-colonia"]) && 
+                        preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["calle"]) && 
+                        preg_match("/^[0-9]{0,7}+$/", $_POST["no-casa"]) && 
+                        preg_match("/^[0-9]{0,7}+$/", $_POST["no-ext"]) && 
+                        preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{0,60}+$/", $_POST["entre-calle1"]) && 
+                        preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{0,60}+$/", $_POST["entre-calle2"]) && 
+                        preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ.,_\- ]{1,250}$/m", $_POST["ref"])
+                        ) {
+                        $tabla = "user";
+                        $datosController = array(
+                            "nombre" => $_POST["name-user"], 
+                            "tel" => $_POST["tel-user"], 
+                            "estado" => $_POST["val-estado"], 
+                            "municipio" => $_POST["val-municipio"], 
+                            "colonia" => $_POST["val-colonia"], 
+                            "calle" => $_POST["calle"], 
+                            "no-casa" => $_POST["no-casa"], 
+                            "no-ext" => $_POST["no-ext"], 
+                            "calle1" => $_POST["entre-calle1"], 
+                            "calle2" => $_POST["entre-calle2"], 
+                            "ref" => $_POST["ref"]
+                        );
+                        $respuesta = Datos::actualizarUsuarioModel($datosController, $tabla, $cli, $idDomicilio, $idPhone, $gestor);
+                        if ($respuesta == "ok") {
+                            echo '<script>
+                                    if(window.history.replaceState){
+                                        window.history.replaceState(null, null, window.location.href);
+                                    }
+                                    window.location = "index.php?action=clientes&not0=true";
+                                </script>';
+                        }else{
+                            echo '<script>
+                                    if(window.history.replaceState){
+                                        window.history.replaceState(null, null, window.location.href);
+                                    }
+                                    window.location = "index.php?action=clienteEditar&cliD='.$cli.'";
+                                </script>';
+                            echo '<div><span>Error!</span></div>';
                             echo '<div><span>verifique sus datos</span></div>';
                         }
-                    }     
+                    }else{
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=clienteEditar&cliD='.$cli.'&err=ur";
+                            </script>';
+                    }   
                 }
-                  
             }
         }
 
@@ -861,6 +1177,34 @@
         static public function seleccionarUsuariosController($valor){
             $tabla = "user";
             $respuesta = Datos::seleccionarUsuariosModel($tabla, $valor);
+            return $respuesta;
+        }
+        
+        #Seleccionar domicilio de usuario.
+        static public function clienteDomicilioController($user, $valor){
+            $tabla = "user_domicilio";
+            $respuesta = Datos::clienteDomicilioModel($tabla, $user, $valor);
+            return $respuesta;
+        }
+        
+        #Seleccionar correo de usuario.
+        static public function clienteCorreoController($user, $valor){
+            $tabla = "user_correo";
+            $respuesta = Datos::clienteCorreoModel($tabla, $user, $valor);
+            return $respuesta;
+        }
+        
+        #Seleccionar telefono de usuario.
+        static public function clientePhoneController($user, $valor){
+            $tabla = "user_telefono";
+            $respuesta = Datos::clientePhoneModel($tabla, $user, $valor);
+            return $respuesta;
+        }
+        
+        #Seleccionar usuario.
+        static public function seleccionarUsuarioController($user, $tipo){
+            $tabla = "user";
+            $respuesta = Datos::seleccionarUsuarioModel($tabla, $user, $tipo);
             return $respuesta;
         }
 
@@ -893,11 +1237,33 @@
                         if(window.history.replaceState){
                             window.history.replaceState(null, null, window.location.href);
                         }
+                        window.location = "index.php?action=usuarioInicioSession&err=ul";
                     </script>';
-                    echo '<div><span>No se pudo iniciar sesión</span></div>';
-                    echo '<div><span>verifique sus datos</span></div>';
+                    // echo '<div><span>No se pudo iniciar sesión</span></div>';
+                    // echo '<div><span>verifique sus datos</span></div>';
                 }
             }
-        }
+        }    
+
+        #Validaciones de Ajax de esta línea hacia abajo.
+        #Validar Nombre de usuario.
+        // static public function validNameController($valor){
+        //     if (preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$/", $valor)){
+        //             $respuesta = "ok";
+        //         }else {
+        //             $respuesta = "error";
+        //         }
+        //     return $respuesta;
+        // }
+        
+        // #Validar Apellido de usuario.
+        // static public function validApeController($valor){
+        //     if (preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]+$/", $valor)){
+        //             $respuesta = "ok";
+        //         }else {
+        //             $respuesta = "error";
+        //         }
+        //     return $respuesta;
+        // }
+
     }
-?>

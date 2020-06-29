@@ -16,7 +16,18 @@
     ?>
         <div class="fichas">
             <div class="imagen">
-                <img class="img" src="ima/a3.jpg" alt="a" loading="lazy" width="240" height="300">
+                <?php
+                    $imagenFicha = MvcController::fichaImagenController($value["idpro"]);
+                    if ($imagenFicha == null) {
+                        ?>
+                    <img class="i-p-img" src="ima/a3.jpg" alt="a" width="240" height="300">
+                        <?php
+                    }else {
+                        ?>
+                    <img class="i-p-img" src="<?=$imagenFicha["ruta"]?>" alt="img" loading="lazy" width="240" height="300">
+                        <?php                    
+                    }
+                ?>
             </div>
             <div class="info">
                 <span class="ficha-name-pro"><?=$value["nombre"]?></span>

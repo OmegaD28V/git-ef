@@ -10,11 +10,6 @@
             <input type="text" class="input-password" name="password-user" id="password-user2" required>
             <button type="button" class="btn-hidden-password-login" id="btn-hidden-password3"><i id="fasIconHiddenPassword3" class="far fa-eye-slash"></i></button>
         </div>
-        
-        <?php
-            $inicioSesion = new MvcController();
-            $inicioSesion -> inicioSesionUsuarioController();
-        ?>
         <div class="input-group">
             <input type="submit" id="btnRegistrarUsuario" name="btnRegistrarUsuario" value="Iniciar Sesión">
         </div>
@@ -23,3 +18,22 @@
         </div>
     </form>
 </div>
+
+<?php
+    $inicioSesion = new MvcController();
+    $inicioSesion -> inicioSesionUsuarioController();
+    if (isset($_GET["not0"])) {
+        if ($_GET["not0"] == "true") {
+        ?>
+            <script type="text/javascript" src="js/notUserReg.js"></script>
+        <?php
+        }
+    }
+    if (isset($_GET["err"])) {
+        if ($_GET["err"] == "ul") {
+        ?>
+            <script type="text/javascript" src="js/invalidUserLogin.js"></script>
+        <?php
+        }
+    }
+?>

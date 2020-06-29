@@ -1,4 +1,13 @@
 <?php
+    if (!(isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
+        echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
+    }else {
+        if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] == "master") {
+            ?>
+            <?php
+        }
+    }
+
 if (isset($_GET["uBuy"])) {
     $item = "idcompra";
     $valor = $_GET["uBuy"];
@@ -42,6 +51,12 @@ if (isset($_GET["uBuy"])) {
         if ($_GET["not1"] == "true") {
             ?>
             <script type="text/javascript" src="js/notificacion1.js"></script>
+            <?php
+        }
+    }elseif (isset($_GET["err"])) {
+        if ($_GET["err"] == "pc") {
+            ?>
+            <script type="text/javascript" src="js/invalidRegister.js"></script>
             <?php
         }
     }

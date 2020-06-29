@@ -1,4 +1,13 @@
 <?php
+    if (!(isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
+        echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
+    }else {
+        if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] == "master") {
+            ?>
+            <?php
+        }
+    }
+
     if (!isset($_GET["into"])) {
         echo '<span>No se encontraron datos.</span>';
     }else {
@@ -127,6 +136,12 @@
                     if ($_GET["not3"] == "true") {
                         ?>
                         <script type="text/javascript" src="js/notificacion3.js"></script>
+                        <?php
+                    }
+                }elseif (isset($_GET["err"])) {
+                    if ($_GET["err"] == "re") {
+                        ?>
+                        <script type="text/javascript" src="js/invalidRegister.js"></script>
                         <?php
                     }
                 }

@@ -1,11 +1,6 @@
 <?php
     if (!(isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
-        echo '<script>
-                if(window.history.replaceState){
-                    window.history.replaceState(null, null, window.location.href);
-                }
-                window.location = "index.php?action=usuarioInicioSession";
-            </script>';
+        echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
     }else {
         if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] == "master") {
             $modo = "fichas";
@@ -34,7 +29,7 @@
                 <div class="pro">Más acciones
                     <ul class="pro-ul">
                         <li class="pro-items"><a href="index.php?action=productoCompra">Comprar más unidades</a></li>
-                        <li class="pro-items"><a href="index.php?action=productoImagen&pPic=<?=$value["idpro"]?>">Agregar Imágenes</a></li>
+                        <li class="pro-items"><a href="index.php?action=productoImagenes&pPic=<?=$value["idpro"]?>">Agregar Imágenes</a></li>
                         <li class="pro-items"><a href="index.php?action=productoCaracteristica&pFts=<?=$value["idpro"]?>">Agregar caracteristicas</a></li>
                     </ul>
                 </div>

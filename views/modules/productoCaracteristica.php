@@ -1,4 +1,13 @@
 <?php
+    if (!(isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
+        echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
+    }else {
+        if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] == "master") {
+            ?>
+            <?php
+        }
+    }
+
     if (isset($_GET["pFts"])) {
         $pro = $_GET["pFts"];
 
@@ -75,7 +84,7 @@
             <div class="input-group">
                 <input type="hidden" value="<?=$producto["idpro"]?>" name="idpro">
                 <label for="featureProduct">Característica</label>
-                <textarea name="featureProduct" cols="50" rows="5" required></textarea>
+                <textarea id="featureProduct" name="featureProduct" cols="50" rows="5" required></textarea>
             </div>
 
             <div class="input-group">

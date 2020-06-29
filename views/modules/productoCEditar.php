@@ -1,4 +1,13 @@
 <?php
+    if (!(isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
+        echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
+    }else {
+        if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] == "master") {
+            ?>
+            <?php
+        }
+    }
+
     if (isset($_GET["uPFts"]) && isset($_GET["pFts"])) {
         $valor = $_GET["uPFts"];
         $pro = $_GET["pFts"];
@@ -10,8 +19,8 @@
     <form class="formulario-editar" name="editarCaracteristica" method="post">
         <h2>Editar Característica</h2>
         <div class="input-group">
-            <label for="uFeature">Característica</label>
-            <textarea name="uFeature" cols="50" rows="5" required><?=$caracteristica["caracteristica"]?></textarea>
+            <label for="featureProduct">Característica</label>
+            <textarea id="featureProduct" name="uFeature" cols="50" rows="5" required><?=$caracteristica["caracteristica"]?></textarea>
             <input type="hidden" name="uHFeature" value="<?=$valor?>">
             <input type="hidden" name="pro" value="<?=$pro?>">
         </div>

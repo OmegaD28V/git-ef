@@ -60,6 +60,13 @@
                         <?php
                     }
                 }
+                if (isset($_GET["err"])) {
+                    if ($_GET["err"] == "em") {
+                        ?>
+                        <script type="text/javascript" src="js/invalidRegister.js"></script>
+                        <?php
+                    }
+                }
             ?>
     </table>
 </div>  

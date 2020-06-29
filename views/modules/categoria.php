@@ -39,9 +39,9 @@
                         ?>
                         <td>
                             <a class="editar" href="index.php?action=categoriaEditar&cat=<?=$value["idpro_categoria"]?>"><i class="fas fa-pen-square"></i>Editar</a>        
-                            <!-- <form class="formEliminar" method="post">
-                                <input class="inputEliminar" type="hidden" value="<?=$value["idpro_categoria"]?>" name="removeCategory">
-                                <button class="inputEliminar" type="submit" value="<?=$value["idpro_categoria"]?>"><i class="fas fa-minus-square"></i>Quitar</button>
+                            <!-- <form class="formEliminarT" method="post">
+                                <input type="hidden" value="<?=$value["idpro_categoria"]?>" name="removeCategory">
+                                <button class="btn-remove" type="submit" value="<?=$value["idpro_categoria"]?>"><i class="fas fa-minus-square"></i>Quitar</button>
                                 <?php
                                     // $quitarCategoria = new MvcController();
                                     // $quitarCategoria -> quitarCategoriaController();
@@ -66,6 +66,13 @@
                     if ($_GET["not2"] == "true") {
                         ?>
                         <script type="text/javascript" src="js/notificacion2.js"></script>
+                        <?php
+                    }
+                }
+                if (isset($_GET["err"])) {
+                    if ($_GET["err"] == "ec") {
+                        ?>
+                        <script type="text/javascript" src="js/invalidRegister.js"></script>
                         <?php
                     }
                 }

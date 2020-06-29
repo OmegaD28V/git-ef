@@ -2,7 +2,7 @@
     const {value: pais} = await Swal.fire({
         showConfirmButton: false,  
         icon: 'info', 
-        text: 'Ya existe una compra sin concluir con estos datos!', 
+        text: 'Ya existe una compra con esos datos!', 
         backdrop: false, 
         toast: false, 
         position: 'center', 
@@ -11,6 +11,7 @@
         padding: '0.5rem',
         background: '#fdfdfd',
         backdrop: true, 
-        showCloseButton: true
+        showCloseButton: true, 
+        timerProgressBar: true
     });
 })()

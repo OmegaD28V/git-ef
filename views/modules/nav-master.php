@@ -145,7 +145,7 @@
                     <li id="nav-item5" title="Clientes" class="nav-items"><a class="module" href="index.php?action=clientes"><i class="fas fa-user-friends a-module"></i></i>Clientes</a>
                         <ul class="nav-ul-li-ul">
                             <li class="nav-items">
-                                <a class="aCat" href="index.php?action=clienteRegistrar" title="Nuevo Cliente"><i class="fas fa-user-plus"></i>Nuevo Cliente</a>
+                                <a class="aCat" href="index.php?action=uClienteRegistrar" title="Nuevo Cliente"><i class="fas fa-user-plus"></i>Nuevo Cliente</a>
                             </li>
                         </ul>
                     </li>
@@ -155,7 +155,7 @@
                     <li id="nav-item5" title="Clientes" class="nav-items"><a href="index.php?action=clientes"><i class="fas fa-user-friends"></i></i>Clientes</a>
                         <ul class="nav-ul-li-ul">
                             <li class="nav-items">
-                                <a class="aCat" href="index.php?action=clienteRegistrar" title="Nuevo Cliente"><i class="fas fa-user-plus"></i>Nuevo Cliente</a>
+                                <a class="aCat" href="index.php?action=uClienteRegistrar" title="Nuevo Cliente"><i class="fas fa-user-plus"></i>Nuevo Cliente</a>
                             </li>
                         </ul>
                     </li>
@@ -169,7 +169,7 @@
                     <li id="nav-item6" title="Proveedores" class="nav-items"><a class="module" href="index.php?action=proveedores"><i class="fas fa-users a-module"></i>Proveedores</a>
                         <ul class="nav-ul-li-ul">
                             <li class="nav-items">
-                                <a class="aCat" href="index.php?action=proveedorRegistrar" title="Nuevo Proveedor"><i class="fas fa-user-plus"></i>Nuevo Proveedor</a>
+                                <a class="aCat" href="index.php?action=uProveedorRegistrar" title="Nuevo Proveedor"><i class="fas fa-user-plus"></i>Nuevo Proveedor</a>
                             </li>
                         </ul>
                     </li>
@@ -179,7 +179,7 @@
                     <li id="nav-item6" title="Proveedores" class="nav-items"><a href="index.php?action=proveedores"><i class="fas fa-users"></i>Proveedores</a>
                         <ul class="nav-ul-li-ul">
                             <li class="nav-items">
-                                <a class="aCat" href="index.php?action=proveedorRegistrar" title="Nuevo Proveedor"><i class="fas fa-user-plus"></i>Nuevo Proveedor</a>
+                                <a class="aCat" href="index.php?action=uProveedorRegistrar" title="Nuevo Proveedor"><i class="fas fa-user-plus"></i>Nuevo Proveedor</a>
                             </li>
                         </ul>
                     </li>
@@ -288,14 +288,14 @@
                 <li id="nav-item5" title="Clientes" class="nav-items"><a href="index.php?action=clientes"><i class="fas fa-user-friends"></i></i>Clientes</a>
                     <ul class="nav-ul-li-ul">
                         <li class="nav-items">
-                            <a class="aCat" href="index.php?action=clienteRegistrar" title="Nuevo Cliente"><i class="fas fa-user-plus"></i>Nuevo Cliente</a>
+                            <a class="aCat" href="index.php?action=uClienteRegistrar" title="Nuevo Cliente"><i class="fas fa-user-plus"></i>Nuevo Cliente</a>
                         </li>
                     </ul>
                 </li>
                 <li id="nav-item6" title="Proveedores" class="nav-items"><a href="index.php?action=proveedores"><i class="fas fa-users"></i>Proveedores</a>
                     <ul class="nav-ul-li-ul">
                         <li class="nav-items">
-                            <a class="aCat" href="index.php?action=proveedorRegistrar" title="Nuevo Proveedor"><i class="fas fa-user-plus"></i>Nuevo Proveedor</a>
+                            <a class="aCat" href="index.php?action=uProveedorRegistrar" title="Nuevo Proveedor"><i class="fas fa-user-plus"></i>Nuevo Proveedor</a>
                         </li>
                     </ul>
                 </li>

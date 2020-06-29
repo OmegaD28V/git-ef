@@ -78,7 +78,11 @@
         <script type="text/javascript" src="views/scripts/jquery-3.4.1.min.js"></script>
         <!-- <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@500&display=swap" rel="stylesheet"> -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
-        <!-- <script src="https://kit.fontawesome.com/088ef51476.js" crossorigin="anonymous"></script> -->
+
+        <!-- API Google Places -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZXLpj_YTM5xyDp2mz3iu2m7cDkpd7Lz8&libraries=places&callback=initMap"></script>
+        
+        <script src="https://kit.fontawesome.com/088ef51476.js" crossorigin="anonymous"></script>
     </head>        
         
     <body>

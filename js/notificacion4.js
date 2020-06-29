@@ -10,6 +10,7 @@
         width: 150, 
         padding: '0.5rem',
         background: '#fdfdfd',
-        timer: 3000
+        timer: 3000, 
+        timerProgressBar: true
     });
 })()

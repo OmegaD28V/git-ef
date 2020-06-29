@@ -12,7 +12,9 @@
              || $enlaces == "producto" || $enlaces == "usuarios" || $enlaces == "productoDeshabilitado" 
              || $enlaces == "productoSinStock" || $enlaces == "productoMarca" || $enlaces == "productoCaracteristica" 
              || $enlaces == "productoCEditar" || $enlaces == "marcaEditar" || $enlaces == "compra" 
-             || $enlaces == "removeIntro" || $enlaces == "compraEditar" || $enlaces == "productoImagenes"){
+             || $enlaces == "removeIntro" || $enlaces == "compraEditar" || $enlaces == "productoImagenes" 
+             || $enlaces == "uClienteRegistrar" || $enlaces == "clientes" || $enlaces == "cliente" 
+             || $enlaces == "clienteEditar"){
                 $module =  "views/modules/".$enlaces.".php";
             }else if($enlaces == "index"){
                 $module =  "views/modules/inicio.php";
@@ -24,4 +26,3 @@
             return $module;
         }
     }
-?>

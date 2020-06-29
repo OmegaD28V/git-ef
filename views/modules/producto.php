@@ -5,6 +5,7 @@
 
         $producto = MvcController::seleccionarProductoController($item, $valor, null);
         $cProducto = MvcController::seleccionarProductoCaracteristicasController($item, $valor);
+        $imagenes = MvcController::verImgProController($valor);
     }
 ?>
 <div class="contenedor-formulario">
@@ -13,7 +14,21 @@
             <span class="t-p-name"><?=$producto["nombre"]?></span>
         </div>
         <div class="gallery-pro">
-            <img class="i-p-img" src="ima/a3.jpg" alt="a" width="240" height="300">
+            <div class="slider">
+            <?php
+                if ($imagenes == null) {
+                    ?>
+                <img class="i-p-img" src="ima/a3.jpg" alt="a" width="240" height="300">
+                    <?php
+                }else {
+                    foreach ($imagenes as $key => $value) {
+                        ?>
+                    <img class="i-p-img" src="<?=$value["ruta"]?>" alt="img" loading="lazy" width="240" height="300">
+                        <?php                    
+                    }    
+                }
+            ?>
+            </div>
         </div>
         <div class="detail-pro">
             <h2 class="p-title">Detalles del producto</h2>
@@ -56,9 +71,6 @@
                 <?php
                     }
                 ?>
-                <li class="f-p-ul-li"><span class="f-p-feature">Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque magni tenetur inventore, natus ducimus delectus molestias facere quo? Quibusdam nam distinctio qui commodi ducimus dolore blanditiis labore ipsam quisquam id?</span></li>
-                <li class="f-p-ul-li"><span class="f-p-feature">Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque magni tenetur inventore, natus ducimus delectus molestias facere quo? Quibusdam nam distinctio qui commodi ducimus dolore blanditiis labore ipsam quisquam id?</span></li>
-                <li class="f-p-ul-li"><span class="f-p-feature">Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque magni tenetur inventore, natus ducimus delectus molestias facere quo? Quibusdam nam distinctio qui commodi ducimus dolore blanditiis labore ipsam quisquam id?</span></li>
             </ul>
         </div>
     </div>

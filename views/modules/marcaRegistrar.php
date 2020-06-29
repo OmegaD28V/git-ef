@@ -1,3 +1,14 @@
+<?php
+    if (!(isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
+        echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
+    }else {
+        if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] == "master") {
+            ?>
+            <?php
+        }
+    }
+?>
+
 <div class="contenedor-formulario">
     <form class="formulario" name="nuevaMarca" method="post">
         <h2>Nueva Marca</h2>
@@ -15,4 +26,18 @@
 <?php
     $registro = new MvcController();
     $registro -> registrarMarcaController();
+    if (isset($_GET["not0"])) {
+        if ($_GET["not0"] == "true") {
+        ?>
+            <script type="text/javascript" src="js/notificacion0.js"></script>
+        <?php
+        }
+    }
+    if (isset($_GET["err"])) {
+        if ($_GET["err"] == "mr") {
+        ?>
+            <script type="text/javascript" src="js/invalidRegister.js"></script>
+        <?php
+        }
+    }
 ?>

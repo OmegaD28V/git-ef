@@ -1,4 +1,13 @@
 <?php
+    if (!(isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
+        echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
+    }else {
+        if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] == "master") {
+            ?>
+            <?php
+        }
+    }
+
     if (isset($_GET["idpro"])) {
         $item = "idpro";
         $valor = $_GET["idpro"];
@@ -12,8 +21,8 @@
     <form class="formulario-editar" name="editarProducto" method="post">
         <h2>Editar Producto</h2>
         <div class="input-group">
-            <label for="uCategory">Categoria</label>
-            <select name="uCategory" required autofocus>
+            <label for="input1">Categoria</label>
+            <select id="input1" name="uCategory" required autofocus>
             <option value="">Seleccionar</option>
             <?php
                 $categorias = MvcController::seleccionarCategoriaController(null, null);
@@ -44,29 +53,29 @@
         </div>
 
         <div class="input-group">
-            <label for="uCode">Código del Producto</label>
-            <input type="text" value="<?=$producto["codigo"]?>" name="uCode" required>
+            <label for="input3">Código del Producto</label>
+            <input type="text" id="input3" value="<?=$producto["codigo"]?>" name="uCode" required>
         </div>
         
         <div class="input-group">
-            <label for="uNameProduct">Nombre</label>
-            <input type="text" value="<?=$producto["nombre"]?>" name="uNameProduct" required>
+            <label for="input4">Nombre</label>
+            <input type="text" id="input4" value="<?=$producto["nombre"]?>" name="uNameProduct" required>
         </div>
     
         <div class="input-group">
-            <label for="uModel">Modelo</label>
-            <input type="text" value="<?=$producto["modelo"]?>" name="uModel" required>
-            <input type="hidden" value="<?=$producto["idpro"]?>" name="idpro">
+            <label for="input5">Modelo</label>
+            <input type="text" id="input5" value="<?=$producto["modelo"]?>" name="uModel" required>
+            <input type="hidden" value="<?=$producto["idpro"]?>" name="idpro" id="idpro">
         </div>
 
         <div class="input-group">
-            <label for="upriceSellProduct">Precio de venta $</label>
-            <input type="number" name="upriceSellProduct" value="<?=$precio["precio"]?>" min="0" step="1" required>
+            <label for="input6">Precio de venta $</label>
+            <input type="number" id="input6" name="uPriceSellProduct" value="<?=$precio["precio"]?>" min="0" step="1" required>
         </div>
     
         <div class="input-group">
-            <label for="uDescription">Descripción</label>
-            <textarea name="uDescription" cols="50" rows="10" required><?=$producto["descripcion"]?></textarea>
+            <label for="input7">Descripción</label>
+            <textarea name="uDescription" id="input7" cols="50" rows="10" required><?=$producto["descripcion"]?></textarea>
         </div>
     
         <div class="input-group">

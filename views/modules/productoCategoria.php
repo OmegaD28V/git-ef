@@ -6,15 +6,6 @@
 
         $productoCategoria = MvcController::seleccionarProductoCategoriaController($item, $valor, $modo);
     }
-
-    if ((isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
-        if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] == "master") {
-            ?>
-<a href="index.php?action=productoSinStock">Ver productos sin existencia</a><br>
-<a href="index.php?action=productoDeshabilitado">Ver productos deshabilitados</a>
-            <?php
-        }
-    }
 ?>
 <div class="contenedor-formulario">
     <div class="gridFichas">
@@ -38,8 +29,8 @@
                 <div class="pro">Más acciones
                     <ul class="pro-ul">
                         <li class="pro-items"><a href="index.php?action=productoCompra">Comprar más unidades</a></li>
-                        <li class="pro-items"><a href="index.php?action=productoImagen&pPic<?=$value["idpro"]?>">Agregar Imágenes</a></li>
-                        <li class="pro-items"><a href="index.php?action=productoCaracteristica&pFts<?=$value["idpro"]?>">Agregar caracteristicas</a></li>
+                        <li class="pro-items"><a href="index.php?action=productoImagenes&pPic=<?=$value["idpro"]?>">Agregar Imágenes</a></li>
+                        <li class="pro-items"><a href="index.php?action=productoCaracteristica&pFts=<?=$value["idpro"]?>">Agregar caracteristicas</a></li>
                     </ul>
                 </div>
                 <a class="editar" href="index.php?action=productoEditar&idpro=<?=$value["idpro"]?>"><i class="fas fa-pen-square"></i>Editar</a>        

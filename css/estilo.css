@@ -625,6 +625,69 @@
     padding: 4px;
   }
 
+  .content-msg-a{
+    border-radius: 5px;
+    margin: 2px 0px;
+    padding: 6px 14px;     
+  }
+  
+  .content-msg-a > .d-p-price{
+    display: block;     
+  }
+
+  .content-msg-a .a-span-bottom{
+    text-decoration: underline;
+    display: inline-block;
+    font-size: 0.8rem;
+    margin: 0;
+    padding: 0;
+    color: blue;
+  }
+
+  .a-span-bottom:hover{
+    color: red;
+  }              
+
+  .slider{
+    display: inline-block;
+    text-align: -webkit-center;
+    margin: 0;
+    padding: 20px;
+  }
+
+  .slider .i-p-img{
+    display: inline-block;
+    margin: 5px;
+  }
+
+  .i-p-img{
+    justify-content: center;
+    align-content: center;
+    padding: 5px 0;
+  }
+
+  .form-quitar-image{
+    display: inline-block;
+    position: absolute;
+    margin:-10px 0px 0px -15px;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+  }
+
+  .form-quitar-image .input-quitar-image{
+    display: inline-block;
+    position: static;
+    background-color: indianred;
+    border: none;
+    color: #fff;
+    font-size: 1.2rem;
+    padding: 0px 5px;
+    min-width: max-content;
+    border-radius: 20px;
+    text-align: center;
+  }
+
   .contenedor-formulario .grid-info-pro{
     display: grid;
     grid-template-columns: auto;
@@ -790,7 +853,8 @@
     margin: 0px;
     padding: 10px;
     justify-content: start;
-    min-height: 120px;
+    max-height: 120px;
+    overflow: auto;
   }
   
   .contenedor-formulario .gridFichas .fichas .info .ficha-name-pro{
@@ -1054,7 +1118,16 @@
   }
 
   .contenedor-formulario > .user-form{
-    width: 300px;
+    min-width: 300px;
+  }
+
+  .extra-input{
+    display: inline-block; 
+    width: auto;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    padding: 4px;
+    border: 1px solid;
   }
 
   .contenedor-formulario > .user-form > .input-group > .login-access-p{
@@ -1128,6 +1201,46 @@
     background-color: rgb(0, 0, 0);
     margin-bottom: 20px;
   }
+  
+  .line-form-msg{
+    display: inline-block;
+    position: sticky;
+    color: rgb(0, 0, 0);
+    width: calc(50% - 130px);
+    transition: .3s ease-in-out;
+  }
+
+  .line-form-msg:hover{
+    width: calc(100% - 130px);
+    color: blue;
+    cursor: pointer;
+  }
+
+  .line-form-msg::after{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: currentColor;
+    top: 0.7em;
+  }
+  
+  .line-form-msg::after{
+    right: -130px;
+  }
+
+  .input-disabled{
+    display: inline-block;
+    width: calc(100% - 10px);
+    font-size: 1rem;
+    min-height: 26px;
+    max-height: 26px;
+    border: 2px solid rgb(16, 49, 199);
+    border-radius: 3px;
+    vertical-align: top;
+    padding: 5px 5px;
+    background-color: rgb(129, 163, 238);
+  }
 
   input[type="submit"]{
     font-size: 1.1rem;
@@ -1147,6 +1260,7 @@
   .contenedor-formulario .formulario-editar, 
   .contenedor-formulario .multi-form-edit{
     border: 1px solid rgba(69, 196, 52, 0.836);
+    min-width: 300px;
   }
   
   .contenedor-formulario .formulario-editar .input-group .submitEditarProducto, 
@@ -1160,6 +1274,30 @@
   
   select:hover{
     cursor: pointer;
+  }
+
+  .info-f{
+    display: inline-block;
+    width: calc(100% - 10px);
+    font-size: 0.8rem;
+    text-align: center;
+    border-radius: 3px;
+    vertical-align: top;
+    margin: -10px 0 0 0;
+    padding: 5px 5px;
+    background-color: yellow;
+  }
+  
+  .info-i{
+    display: inline-block;
+    width: calc(100% - 20px);
+    font-size: 1rem;
+    text-align: center;
+    border-radius: 4px;
+    margin: 0px;
+    padding: 10px;
+    background-color: limegreen;
+    color: white;
   }
   
   .main-container .section .contenedorImagen{

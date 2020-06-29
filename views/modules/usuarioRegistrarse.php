@@ -34,6 +34,12 @@
 
 <?php
     $tipoUsuario = 3;
-    $registrarse = new MvcController();
-    $registrarse -> registrarUsuarioController($tipoUsuario);
+    $registrarse = MvcController::registrarUsuarioController($tipoUsuario);
+    if (isset($_GET["err"])) {
+        if ($_GET["err"] == "ur") {
+            ?>
+                <script src="js/invalidRegister.js"></script>
+            <?php  
+        }
+    }
 ?>

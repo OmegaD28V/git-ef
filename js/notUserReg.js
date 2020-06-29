@@ -1,17 +1,15 @@
 (async () => {
     const {value: pais} = await Swal.fire({
         showConfirmButton: false,  
-        icon: 'error', 
-        text: 'Error!', 
+        icon: 'success', 
+        text: 'Usuario registrado!', 
         backdrop: false, 
-        toast: false, 
+        toast: true, 
         position: 'center', 
         showCloseButton: false,
-        width: 400, 
+        width: 150, 
         padding: '0.5rem',
         background: '#fdfdfd',
-        backdrop: true, 
-        showCloseButton: true, 
-        timerProgressBar: true
+        timer: 3000
     });
 })()

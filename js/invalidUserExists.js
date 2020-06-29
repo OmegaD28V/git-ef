@@ -1,8 +1,8 @@
 (async () => {
     const {value: pais} = await Swal.fire({
         showConfirmButton: false,  
-        icon: 'error', 
-        text: 'Error!', 
+        icon: 'info', 
+        text: 'Ya existe un usuario con esos datos', 
         backdrop: false, 
         toast: false, 
         position: 'center', 
@@ -10,8 +10,6 @@
         width: 400, 
         padding: '0.5rem',
         background: '#fdfdfd',
-        backdrop: true, 
-        showCloseButton: true, 
-        timerProgressBar: true
+        timer: 3000,
     });
 })()
