@@ -84,7 +84,6 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
         <!-- API Google Places -->
-        <script src="https://maps.googleapis.com/maps/api/js?key=&libraries=places&callback=initMap"></script>
         
         <script src="https://kit.fontawesome.com/088ef51476.js" crossorigin="anonymous"></script>
     </head>        
