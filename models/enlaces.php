@@ -15,7 +15,9 @@
              || $enlaces == "removeIntro" || $enlaces == "compraEditar" || $enlaces == "productoImagenes" 
              || $enlaces == "uClienteRegistrar" || $enlaces == "uClientes" || $enlaces == "uCliente" 
              || $enlaces == "uClienteEditar" || $enlaces == "uClienteCorreo" || $enlaces == "uClienteAddress" 
-             || $enlaces == "uClientePhone"){
+             || $enlaces == "uClientePhone" || $enlaces == "uProveedorRegistrar" || $enlaces == "uProveedores" || $enlaces == "uProveedor" 
+             || $enlaces == "uProveedorEditar" || $enlaces == "uProveedorCorreo" || $enlaces == "uProveedorAddress" 
+             || $enlaces == "uProveedorPhone"){
                 $module =  "views/modules/".$enlaces.".php";
             }else if($enlaces == "index"){
                 $module =  "views/modules/inicio.php";

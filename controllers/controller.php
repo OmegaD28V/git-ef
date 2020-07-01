@@ -1185,6 +1185,161 @@
                                 window.location = "index.php?action=uClienteRegistrar&err=ur";
                             </script>';
                     }
+                }if ($tipoUsuario == 22) {
+                    if (
+                        isset($_POST["name-user"]) && 
+                        isset($_POST["ape-user"]) && 
+                        isset($_POST["correo-user"]) && 
+                        isset($_POST["val-estado"]) && 
+                        isset($_POST["val-municipio"]) && 
+                        isset($_POST["val-colonia"]) && 
+                        isset($_POST["calle"]) && 
+                        isset($_POST["no-casa"]) && 
+                        isset($_POST["no-ext"]) && 
+                        isset($_POST["entre-calle1"]) && 
+                        isset($_POST["entre-calle2"]) && 
+                        isset($_POST["ref"])
+                    ) {
+                        echo '<span>Valido todo</span>';
+                        //Validación de campos en servidor.
+                        if (
+                            preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ. ]{1,75}+$/", $_POST["name-user"]) && 
+                            preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ. ]{1,75}+$/", $_POST["ape-user"]) && 
+                            (preg_match("/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/", $_POST["correo-user"]) || 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,150}$/", $_POST["correo-user"])) && 
+                            preg_match("/^[0-9]{0,10}+$/", $_POST["tel-user"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-estado"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-municipio"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-colonia"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["calle"]) && 
+                            preg_match("/^[0-9]{0,7}+$/", $_POST["no-casa"]) && 
+                            preg_match("/^[0-9]{0,7}+$/", $_POST["no-ext"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{0,60}+$/", $_POST["entre-calle1"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{0,60}+$/", $_POST["entre-calle2"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ.,_\- ]{1,250}$/m", $_POST["ref"])
+                            ) {
+                            $tabla = "user";
+                            $datosController = array(
+                                "nombre" => $_POST["name-user"], 
+                                "apellidos" => $_POST["ape-user"], 
+                                "correo" => $_POST["correo-user"], 
+                                "tel" => $_POST["tel-user"], 
+                                "estado" => $_POST["val-estado"], 
+                                "municipio" => $_POST["val-municipio"], 
+                                "colonia" => $_POST["val-colonia"], 
+                                "CP" => $_POST["val-CP"], 
+                                "calle" => $_POST["calle"], 
+                                "no-casa" => $_POST["no-casa"], 
+                                "no-ext" => $_POST["no-ext"], 
+                                "calle1" => $_POST["entre-calle1"], 
+                                "calle2" => $_POST["entre-calle2"], 
+                                "ref" => $_POST["ref"]
+                            );
+                            $respuesta = Datos::registrarUsuarioModel($datosController, $tabla, $tipoUsuario);
+                            if ($respuesta == "ok") {
+                                echo '<script>
+                                        if(window.history.replaceState){
+                                            window.history.replaceState(null, null, window.location.href);
+                                        }
+                                        window.location = "index.php?action=uClienteRegistrar&not0=true";
+                                    </script>';
+                            }else{
+                                echo '<script>
+                                        if(window.history.replaceState){
+                                            window.history.replaceState(null, null, window.location.href);
+                                        }
+                                        window.location = "index.php?action=uClienteRegistrar";
+                                    </script>';
+                                echo '<div><span>Error!</span></div>';
+                                echo '<div><span>verifique sus datos</span></div>';
+                            }
+                        }else{
+                            echo '<script>
+                                    if(window.history.replaceState){
+                                        window.history.replaceState(null, null, window.location.href);
+                                    }
+                                    window.location = "index.php?action=uClienteRegistrar&err=ur";
+                                </script>';
+                        }   
+                    }elseif (
+                        isset($_POST["name-user"]) && 
+                        isset($_POST["correo-user"]) && 
+                        isset($_POST["val-estado"]) && 
+                        isset($_POST["val-municipio"]) && 
+                        isset($_POST["val-colonia"]) && 
+                        isset($_POST["calle"]) && 
+                        isset($_POST["no-casa"]) && 
+                        isset($_POST["no-ext"]) && 
+                        isset($_POST["entre-calle1"]) && 
+                        isset($_POST["entre-calle2"]) && 
+                        isset($_POST["ref"])
+                    ) {
+                        echo '<span>Valido todo</span>';
+                        //Validación de campos en servidor.
+                        if (
+                            preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ&. ]{1,75}+$/", $_POST["name-user"]) && 
+                            (preg_match("/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/", $_POST["correo-user"]) || 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,150}$/", $_POST["correo-user"])) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-estado"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-municipio"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-colonia"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["calle"]) && 
+                            preg_match("/^[0-9]{0,7}+$/", $_POST["no-casa"]) && 
+                            preg_match("/^[0-9]{0,7}+$/", $_POST["no-ext"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{0,60}+$/", $_POST["entre-calle1"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{0,60}+$/", $_POST["entre-calle2"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ.,_\- ]{1,250}$/m", $_POST["ref"])
+                            ) {
+                            $tabla = "user";
+                            $datosController = array(
+                                "nombre" => $_POST["name-user"],  
+                                "correo" => $_POST["correo-user"], 
+                                "tel" => $_POST["tel-user"], 
+                                "estado" => $_POST["val-estado"], 
+                                "municipio" => $_POST["val-municipio"], 
+                                "colonia" => $_POST["val-colonia"], 
+                                "CP" => $_POST["val-CP"], 
+                                "calle" => $_POST["calle"], 
+                                "no-casa" => $_POST["no-casa"], 
+                                "no-ext" => $_POST["no-ext"], 
+                                "calle1" => $_POST["entre-calle1"], 
+                                "calle2" => $_POST["entre-calle2"], 
+                                "ref" => $_POST["ref"]
+                            );
+                            $respuesta = Datos::registrarUsuarioMoralModel($datosController, $tabla, $tipoUsuario);
+                            if ($respuesta == "ok") {
+                                echo '<script>
+                                        if(window.history.replaceState){
+                                            window.history.replaceState(null, null, window.location.href);
+                                        }
+                                        window.location = "index.php?action=uClienteRegistrar&not0=true";
+                                    </script>';
+                            }else{
+                                echo '<script>
+                                        if(window.history.replaceState){
+                                            window.history.replaceState(null, null, window.location.href);
+                                        }
+                                        window.location = "index.php?action=uClienteRegistrar";
+                                    </script>';
+                                echo '<div><span>Error!</span></div>';
+                                echo '<div><span>verifique sus datos</span></div>';
+                            }
+                        }else{
+                            echo '<script>
+                                    if(window.history.replaceState){
+                                        window.history.replaceState(null, null, window.location.href);
+                                    }
+                                    window.location = "index.php?action=uClienteRegistrar&err=ur";
+                                </script>';
+                        }
+                    }else{
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=uClienteRegistrar&err=ur";
+                            </script>';
+                    }
                 }
             }
         }

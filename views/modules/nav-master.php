@@ -140,7 +140,11 @@
                 ?>
 
                 <?php
-                    if ($_GET["action"] == "clientes") {
+                    if (
+                        $_GET["action"] == "uClientes" || $_GET["action"] == "uCliente" || $_GET["action"] == "uClienteEditar" || 
+                        $_GET["action"] == "uClienteRegistrar" || $_GET["action"] == "uClienteAddress" || 
+                        $_GET["action"] == "uClientePhone" || $_GET["action"] == "uClienteCorreo"
+                    ) {
                 ?>
                     <li id="nav-item5" title="Clientes" class="nav-items"><a class="module" href="index.php?action=uClientes"><i class="fas fa-user-friends a-module"></i></i>Clientes</a>
                         <ul class="nav-ul-li-ul">
@@ -164,9 +168,13 @@
                 ?>
 
                 <?php
-                    if ($_GET["action"] == "proveedores") {
+                    if (
+                        $_GET["action"] == "uProveedores" || $_GET["action"] == "uProveedor" || $_GET["action"] == "uProveedorEditar" || 
+                        $_GET["action"] == "uProveedorRegistrar" || $_GET["action"] == "uProveedorAddress" || 
+                        $_GET["action"] == "uProveedorPhone" || $_GET["action"] == "uProveedorCorreo"
+                    ) {
                 ?>
-                    <li id="nav-item6" title="Proveedores" class="nav-items"><a class="module" href="index.php?action=proveedores"><i class="fas fa-users a-module"></i>Proveedores</a>
+                    <li id="nav-item6" title="Proveedores" class="nav-items"><a class="module" href="index.php?action=uProveedores"><i class="fas fa-users a-module"></i>Proveedores</a>
                         <ul class="nav-ul-li-ul">
                             <li class="nav-items">
                                 <a class="aCat" href="index.php?action=uProveedorRegistrar" title="Nuevo Proveedor"><i class="fas fa-user-plus"></i>Nuevo Proveedor</a>
@@ -176,7 +184,7 @@
                 <?php
                     }else{
                 ?>
-                    <li id="nav-item6" title="Proveedores" class="nav-items"><a href="index.php?action=proveedores"><i class="fas fa-users"></i>Proveedores</a>
+                    <li id="nav-item6" title="Proveedores" class="nav-items"><a href="index.php?action=uProveedores"><i class="fas fa-users"></i>Proveedores</a>
                         <ul class="nav-ul-li-ul">
                             <li class="nav-items">
                                 <a class="aCat" href="index.php?action=uProveedorRegistrar" title="Nuevo Proveedor"><i class="fas fa-user-plus"></i>Nuevo Proveedor</a>
@@ -292,7 +300,7 @@
                         </li>
                     </ul>
                 </li>
-                <li id="nav-item6" title="Proveedores" class="nav-items"><a href="index.php?action=proveedores"><i class="fas fa-users"></i>Proveedores</a>
+                <li id="nav-item6" title="Proveedores" class="nav-items"><a href="index.php?action=uProveedores"><i class="fas fa-users"></i>Proveedores</a>
                     <ul class="nav-ul-li-ul">
                         <li class="nav-items">
                             <a class="aCat" href="index.php?action=uProveedorRegistrar" title="Nuevo Proveedor"><i class="fas fa-user-plus"></i>Nuevo Proveedor</a>

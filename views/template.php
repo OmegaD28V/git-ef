@@ -24,8 +24,10 @@
                 }elseif ($_GET['action'] == "productoCategoria" && isset($_GET["idcategoria"])) {
                     $categoria = MvcController::categoriaController($_GET["idcategoria"]);
                     $modulo = "EF | ".$categoria["categoria"];
-                }elseif ($_GET['action'] == "proveedores") {
+                }elseif ($_GET['action'] == "uProveedores") {
                     $modulo =  "EF | Proveedores";
+                }elseif ($_GET['action'] == "uClientes") {
+                    $modulo =  "EF | Clientes";
                 }elseif ($_GET['action'] == "compras") {
                     $modulo =  "EF | Compras";
                 }elseif ($_GET['action'] == "ventas") {
@@ -46,8 +48,10 @@
                     $modulo =  "EF | Editar Categoría";
                 }elseif ($_GET['action'] == "productoEntrada") {
                     $modulo =  "EF | Entrada de productos";
-                }elseif ($_GET['action'] == "proveedorRegistrar") {
+                }elseif ($_GET['action'] == "uProveedorRegistrar") {
                     $modulo =  "EF | Registrar Proveedor";
+                }elseif ($_GET['action'] == "uClienteRegistrar") {
+                    $modulo =  "EF | Registrar Cliente";
                 }elseif ($_GET['action'] == "productoCompra") {
                     $modulo =  "EF | Registrar Compra";
                 }elseif ($_GET['action'] == "producto" && isset($_GET["idpro"])) {
@@ -80,7 +84,7 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
         <!-- API Google Places -->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZXLpj_YTM5xyDp2mz3iu2m7cDkpd7Lz8&libraries=places&callback=initMap"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=&libraries=places&callback=initMap"></script>
         
         <script src="https://kit.fontawesome.com/088ef51476.js" crossorigin="anonymous"></script>
     </head>        
