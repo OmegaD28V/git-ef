@@ -434,6 +434,8 @@
     margin: 0px;
     text-align: justify;
     width: auto;
+    max-width: 200px;
+    overflow: auto;
   }
   
   table tr .precio{
@@ -646,7 +648,71 @@
 
   .a-span-bottom:hover{
     color: red;
-  }              
+  }
+
+  .btn-switch {
+    position: relative;
+    display: inline-block;
+    width: 45px;
+    height: 24px;
+  }
+  
+  .input-btn-switch { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+  
+  .check-btn-switch {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: transparent;
+    border: 1px solid #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .check-btn-switch:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    bottom: 3px;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+  }
+  
+  .input-btn-switch:checked + .check-btn-switch {
+    background-color: #2196F3;
+  }
+  
+  .input-btn-switch:checked + .check-btn-switch:before {
+    background-color: white;
+  }
+  
+  .input-btn-switch:focus + .check-btn-switch {
+    box-shadow: 0 0 1px #2196F3;
+  }
+  
+  .input-btn-switch:checked + .check-btn-switch:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+
+  .check-btn-switch.round {
+    border-radius: 34px;
+  }
+  
+  .check-btn-switch.round:before {
+    border-radius: 50%;
+  }
 
   .slider{
     display: inline-block;

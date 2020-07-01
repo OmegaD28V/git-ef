@@ -4,10 +4,17 @@
         <div class="line-form"></div>
         <h4>Datos del cliente</h4>
         <div class="input-group">
+            <label for="input-btn-switch" style="display: inline-block; width: 60%">Cambia entre persona Física o Moral</label>
+            <label for="input-btn-switch" name="btn-switch" class="btn-switch">
+                <input type="checkbox" id="input-btn-switch" class="input-btn-switch">
+                <span class="check-btn-switch round"></span>
+            </label>
+        </div>
+        <div class="input-group fisica">
             <label for="name-user">Nombre</label>
             <input type="text" name="name-user" id="name-user" required>
         </div>
-        <div class="input-group">
+        <div class="input-group fisica">
             <label for="ape-user">Apellidos</label>
             <input type="text" name="ape-user" id="ape-user" required>
         </div>
@@ -21,7 +28,7 @@
         </div>
         <div class="input-group">
             <label style="display: inline-block;" for="tel-user">Teléfono</label>
-            <input style="display: inline-block; width: 60%" type="number" name="tel-user" id="tel-user">
+            <input style="display: inline-block; width: 60%" type="number" name="tel-user" id="tel-user" min="0" step="1">
             <div class="extra-input">
                 <label style="display: inline-block; width: auto; cursor: pointer;" for="no-phone">Sin Teléfono</label>
                 <input style="display: inline-block; width: auto; cursor: pointer; margin-bottom: 0px" type="checkbox" name="no-phone" id="no-phone" onclick="noPhone()">

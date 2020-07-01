@@ -142,7 +142,7 @@
                 <?php
                     if ($_GET["action"] == "clientes") {
                 ?>
-                    <li id="nav-item5" title="Clientes" class="nav-items"><a class="module" href="index.php?action=clientes"><i class="fas fa-user-friends a-module"></i></i>Clientes</a>
+                    <li id="nav-item5" title="Clientes" class="nav-items"><a class="module" href="index.php?action=uClientes"><i class="fas fa-user-friends a-module"></i></i>Clientes</a>
                         <ul class="nav-ul-li-ul">
                             <li class="nav-items">
                                 <a class="aCat" href="index.php?action=uClienteRegistrar" title="Nuevo Cliente"><i class="fas fa-user-plus"></i>Nuevo Cliente</a>
@@ -152,7 +152,7 @@
                 <?php
                     }else{
                 ?>
-                    <li id="nav-item5" title="Clientes" class="nav-items"><a href="index.php?action=clientes"><i class="fas fa-user-friends"></i></i>Clientes</a>
+                    <li id="nav-item5" title="Clientes" class="nav-items"><a href="index.php?action=uClientes"><i class="fas fa-user-friends"></i></i>Clientes</a>
                         <ul class="nav-ul-li-ul">
                             <li class="nav-items">
                                 <a class="aCat" href="index.php?action=uClienteRegistrar" title="Nuevo Cliente"><i class="fas fa-user-plus"></i>Nuevo Cliente</a>
@@ -285,7 +285,7 @@
                              
                     </ul>
                 </li>
-                <li id="nav-item5" title="Clientes" class="nav-items"><a href="index.php?action=clientes"><i class="fas fa-user-friends"></i></i>Clientes</a>
+                <li id="nav-item5" title="Clientes" class="nav-items"><a href="index.php?action=uClientes"><i class="fas fa-user-friends"></i></i>Clientes</a>
                     <ul class="nav-ul-li-ul">
                         <li class="nav-items">
                             <a class="aCat" href="index.php?action=uClienteRegistrar" title="Nuevo Cliente"><i class="fas fa-user-plus"></i>Nuevo Cliente</a>

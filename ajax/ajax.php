@@ -5,6 +5,7 @@
     #Clase de Ajax.
     class Ajax{
         public $validEmail;
+        public $validPro;
         public $pro;
         // public $validName;
         // public $validApe;
@@ -16,10 +17,17 @@
             echo json_encode($respuesta);
         }
         
+        #Validación Producto.
+        public function validProAjax(){
+            $valor = $this -> validPro;
+            $respuesta = MvcController::validProController($valor);
+            echo json_encode($respuesta);
+        }
+        
         #Validación precio.
         public function proAjax(){
             $valor = $this -> pro;
-            $r = MvcController::seleccionarProPrecioController($valor);
+            $r = MvcController::seleccionarProPrecioMinimoController($valor);
             echo json_encode($r);
         }
         
@@ -43,6 +51,13 @@
         $objValidEmail = new Ajax();
         $objValidEmail -> validEmail = $_POST["validEmail"];
         $objValidEmail -> validEmailAjax();
+    }
+    
+    #Objeto de Ajax que recibe la variable post.
+    if (isset($_POST["validPro"])) {
+        $objValidPro = new Ajax();
+        $objValidPro -> validPro = $_POST["validPro"];
+        $objValidPro -> validProAjax();
     }
     
     #Objeto de Ajax que recibe la variable post.

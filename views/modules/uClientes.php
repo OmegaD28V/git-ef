@@ -42,65 +42,83 @@
                         <td><span class="d-p-price"><?=$value["nombre"]?></span></td>
 
                         <?php 
-                            $tel = MvcController::clientePhoneController($value["iduser"], "cli");
-                            $dom = MvcController::clienteDomicilioController($value["iduser"], "cli");
-                            $email = MvcController::clienteCorreoController($value["iduser"], "cli");
+                            $tel = MvcController::clientePhonesController($value["iduser"], "cli");
+                            $dom = MvcController::clienteDomiciliosController($value["iduser"], "cli");
+                            $email = MvcController::clienteCorreosController($value["iduser"], "cli");
                             $telefono = "";
                             $domicilio = "";
                             $correo = "";
-                            $numCasa;
-
+                            $numCasa = "";
+                                ?>
+                        <td>
+                                <?php
                             if ($email == null) {
                                 $correo = "Sin correo";
                                 ?>
-                        <td>
                             <div class="content-msg-a">
                                 <span class="d-p-price"><?=$correo?></span>
-                                <a class="a-span-bottom" href="index.php?action=cliente&cliD=<?=$value["iduser"]?>">Agregar</a>
+                                <a class="a-span-bottom" href="index.php?action=uClienteCorreo&cliD=<?=$value["iduser"]?>">Agregar</a>
                             </div>
+                            <?php
+                            }else {
+                                foreach ($email as $key => $value) {
+                                    $correo = $value["correo"];
+                                    ?>
+                            <span class="d-p-price"><?=$correo?></span>
+                                    <?php
+                                }
+                            }
+                                ?>
                         </td>
-                                <?php
-                            }else {
-                                $correo = $email["correo"];
-                                ?>
-                        <td><span class="d-p-price"><?=$correo?></span></td>
-                                <?php
-                            }
-
+                        <td>
+                                <?php  
                             if ($tel == null) {
-                                $telefono = "Sin número";
+                                $telefono = "Sin teléfono";
                                 ?>
-                        <td><span class="d-p-price"><?=$telefono?></span></td>
-                                <?php
+                            <div class="content-msg-a">
+                                <span class="d-p-price"><?=$telefono?></span>
+                                <a class="a-span-bottom" href="index.php?action=uClientePhone&cliD=<?=$value["iduser"]?>">Agregar</a>
+                            </div>
+                            <?php
                             }else {
-                                $telefono = $tel["numero"];
-                                ?>
-                        <td><span class="d-p-price"><?=$telefono?></span></td>
-                                <?php
+                                foreach ($tel as $key => $value) {
+                                    $telefono = $value["numero"];
+                                    ?>
+                            <span class="d-p-price"><?=$telefono?></span>
+                                    <?php
+                                }
                             }
-                            
+                                ?>
+                        </td>
+                        <td>
+                                <?php
                             if ($dom == null) {
                                 $domicilio = "Sin domicilio";
                                 ?>
-                        <td><span class="d-p-price"><?=$domicilio?></span></td>
-                                <?php
+                            <div class="content-msg-a">
+                                <span class="d-p-price"><?=$domicilio?></span>
+                                <a class="a-span-bottom" href="index.php?action=uClienteAddress&cliD=<?=$value["iduser"]?>">Agregar</a>
+                            </div>
+                            <?php
                             }else {
-                                if ($dom["num_casa"] == 0) {
-                                    $numCasa = $dom["num_casa"];
-                                }else {
-                                    $numCasa = $dom["num_casa"];
-                                }
-                                $domicilio = $dom["colonia"].", ".$dom["calle"].", ".$dom["num_casa"];
-                                ?>
-                        <td><span class="d-p-price"><?=$domicilio?></span></td>
-                                <?php
+                                foreach ($dom as $key => $value) {
+                                    if ($value["num_casa"] == 0) {
+                                        $numCasa = "S/N";
+                                    }else {
+                                        $numCasa = $value["num_casa"];
+                                    }
+                                    $domicilio = $value["colonia"].", ".$value["calle"].", ".$numCasa;
+                                    ?>
+                                <span class="d-p-price"><?=$domicilio?></span>
+                                    <?php
+                                }   
                             }
-                            
-                        ?>
+                                ?>
+                        </td>
 
                         <td>
-                            <a class="ver-det" href="index.php?action=cliente&cliD=<?=$value["iduser"]?>">Detalles</a>
-                            <a class="editar" href="index.php?action=clienteEditar&cliD=<?=$value["iduser"]?>"><i class="fas fa-pen-square"></i>Editar</a>        
+                            <a class="ver-det" href="index.php?action=uCliente&cliD=<?=$value["iduser"]?>">Detalles</a>
+                            <a class="editar" href="index.php?action=uClienteEditar&cliD=<?=$value["iduser"]?>"><i class="fas fa-pen-square"></i>Editar</a>        
                             <!-- <form class="formEliminarT" method="post" name="eliminarCompra">
                                 <input class="inputEliminar" type="hidden" value="" name="removeBuy">
                                 <button class="btn-remove" type="submit" value=""><i class="fas fa-times-circle"></i>Quitar</button>

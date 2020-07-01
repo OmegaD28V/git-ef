@@ -1,4 +1,10 @@
 $('#correo-user').change(function() {
+    $('.info-f').remove();
+    if ($(this).val().length > 60) {
+        $("#correo-user").val($("#correo-user").val().substring(0, 60));
+        $("#correo-user").after('<div class="info-f">Máximo de caracteres: 60</div>');
+    }
+
     var email = $(this).val();
     var datos = new FormData();
     datos.append("validEmail", email);
@@ -35,12 +41,73 @@ $('#correo-user').change(function() {
     });
 })
 
+$('#input-btn-switch').change(function(){
+    if ($('#input-btn-switch')[0].checked == true) {
+        $('.fisica').remove();
+        $('#input-btn-switch').parent().parent().after().append(
+            '<div class="input-group moral">' + 
+                '<label for="name-user">Razón Social</label>' + 
+                '<input type="text" name="name-user" id="name-user" required>' + 
+            '</div>'
+        );
+    }else{
+        $('.moral').remove();
+        $('#input-btn-switch').parent().parent().after().append(
+            '<div class="input-group fisica">' + 
+                '<label for="name-user">Nombre</label>' + 
+                '<input type="text" name="name-user" id="name-user" required>' + 
+            '</div>' + 
+            '<div class="input-group fisica">' + 
+                '<label for="ape-user">Apellidos</label>' + 
+                '<input type="text" name="ape-user" id="ape-user" required>' + 
+            '</div>'
+        );
+    }
+})
+
 $('#input3').change(function() {
+    var pro = $(this).val();
+    var datos = new FormData();
+    datos.append("validPro", pro);
+    console.log(pro);
+    
+
     $('.info-f').remove();
     if ($(this).val().length > 10) {
         $("#input3").val($("#input3").val().substring(0, 10));
         $("#input3").after('<div class="info-f">Máximo de caracteres: 10</div>');
     }
+
+    $.ajax({
+        url: "ajax/ajax.php", 
+        method: "post", 
+        data: datos, 
+        cache: false, 
+        contentType: false, 
+        processData: false, 
+        dataType: "json", 
+        success: function(respuesta){
+            if (respuesta) {
+                $("#input3").val("");
+                (async () => {
+                    const {value: pais} = await Swal.fire({
+                        showConfirmButton: false,  
+                        icon: 'info', 
+                        html: '<b style="font-size: 1.1rem">Ya existe un producto con el código ' + respuesta["codigo"] + '</b>', 
+                        backdrop: false, 
+                        toast: true, 
+                        position: 'top-left', 
+                        showCloseButton: true,
+                        width: 300, 
+                        padding: '0.5rem',
+                        background: '#fdfdfd',
+                        timer: 5000, 
+                        timerProgressBar: true
+                    });
+                })()
+            }
+        }
+    });
 })
 
 $('#input4').change(function() {
@@ -62,8 +129,7 @@ $('#input5').change(function() {
 $('#input6').change(function() {
     $('.info-f').remove();
     var pro = $('#idpro').val();
-    var precioCompra;
-    var precioCompra20p;
+    var precioMinimo;
     var proValPrecio = new FormData();
     proValPrecio.append("pro", pro);
     
@@ -78,10 +144,12 @@ $('#input6').change(function() {
         dataType: "json", 
         success: function(r){
             if(r){
-                precioCompra = parseFloat(r["precio"]);
-                if($('#input6').val() < precioCompra){
-                    $("#input6").val(precioCompra);
-                    $("#input6").after('<div class="info-f">El precio no puede ser menor al de compra + 20%: $'+ precioCompra +'</div>');
+                precioMinimo = parseFloat(r["preciominimo"]);
+                console.log(precioMinimo);
+                if($('#input6').val() < precioMinimo){
+                    
+                    $("#input6").val(precioMinimo);
+                    $("#input6").after('<div class="info-f">El precio no puede ser menor al de compra + 20% = $'+ precioMinimo +'</div>');
                     // $("#input6").autofocus();
                 }
             }
@@ -150,6 +218,79 @@ $('#cuantity').change(function() {
     }
 })
 
+$('#name-user').change(function() {
+    $('.info-f').remove();
+    if ($(this).val().length > 75) {
+        $("#name-user").val($("#name-user").val().substring(0, 75));
+        $("#name-user").after('<div class="info-f">Máximo de caracteres: 75</div>');
+    }
+})
+
+$('#ape-user').change(function() {
+    $('.info-f').remove();
+    if ($(this).val().length > 75) {
+        $("#ape-user").val($("#ape-user").val().substring(0, 75));
+        $("#ape-user").after('<div class="info-f">Máximo de caracteres: 75</div>');
+    }
+})
+
+$('#tel-user').change(function() {
+    $('.info-f').remove();
+    if ($(this).val().length > 10) {
+        $("#tel-user").val($("#tel-user").val().substring(0, 10));
+        $("#tel-user").after('<div class="info-f">Máximo de caracteres: 10</div>');
+    }
+})
+
+$('#calle').change(function() {
+    $('.info-f').remove();
+    if ($(this).val().length > 100) {
+        $("#calle").val($("#calle").val().substring(0, 100));
+        $("#calle").after('<div class="info-f">Máximo de caracteres: 100</div>');
+    }
+})
+
+$('#no-casa').change(function() {
+    $('.info-f').remove();
+    if ($(this).val().length > 6) {
+        $("#no-casa").val($("#no-casa").val().substring(0, 6));
+        $("#no-casa").after('<div class="info-f">Máximo de caracteres: 6</div>');
+    }
+})
+
+$('#no-ext').change(function() {
+    $('.info-f').remove();
+    if ($(this).val().length > 6) {
+        $("#no-ext").val($("#no-ext").val().substring(0, 6));
+        $("#no-ext").after('<div class="info-f">Máximo de caracteres: 6</div>');
+    }
+})
+
+$('#entre-calle1').change(function() {
+    $('.info-f').remove();
+    if ($(this).val().length > 60) {
+        $("#entre-calle1").val($("#entre-calle1").val().substring(0, 60));
+        $("#entre-calle1").after('<div class="info-f">Máximo de caracteres: 60</div>');
+    }
+})
+
+$('#entre-calle2').change(function() {
+    $('.info-f').remove();
+    if ($(this).val().length > 60) {
+        $("#entre-calle2").val($("#entre-calle2").val().substring(0, 60));
+        $("#entre-calle2").after('<div class="info-f">Máximo de caracteres: 60</div>');
+    }
+})
+
+$('#ref').change(function() {
+    $('.info-f').remove();
+    if ($(this).val().length > 250) {
+        $("#ref").val($("#ref").val().substring(0, 250));
+        $("#ref").after('<div class="info-f">Máximo de caracteres: 250</div>');
+    }
+})
+
+
 // Validar Imagen Producto.
 $("#imageProduct").change(function () {
     $(".aviso").remove();
@@ -178,6 +319,7 @@ $("#imageProduct").change(function () {
 
 function generateNameUser() {
     $('#correo-user').val('');
+    var sizeNombre;
     var random;
     var fechaActual;
     var nombreGenerado;
@@ -185,9 +327,14 @@ function generateNameUser() {
         random = (Math.random()*99999).toFixed();
         fechaActual = new Date();
         if ($('#name-user').val() != '') {
-            nombreGenerado = $('#name-user').val() + '_' + fechaActual.getFullYear() + fechaActual.getMonth() + fechaActual.getDate() + fechaActual.getHours() + fechaActual.getMinutes() + fechaActual.getSeconds() + fechaActual.getUTCMilliseconds() + random;
-            $('#correo-user').val(nombreGenerado);
-            
+            sizeNombre = $('#name-user').val().length;
+            if (sizeNombre > 10) {
+                nombreGenerado = $('#name-user').val().substring(0, 10) + '_' + fechaActual.getFullYear() + fechaActual.getMonth() + fechaActual.getDate() + fechaActual.getHours() + fechaActual.getMinutes() + fechaActual.getSeconds() + fechaActual.getUTCMilliseconds() + random;
+                $('#correo-user').val(nombreGenerado);
+            }else{
+                nombreGenerado = $('#name-user').val().substring(0, sizeNombre) + '_' + fechaActual.getFullYear() + fechaActual.getMonth() + fechaActual.getDate() + fechaActual.getHours() + fechaActual.getMinutes() + fechaActual.getSeconds() + fechaActual.getUTCMilliseconds() + random;
+                $('#correo-user').val(nombreGenerado);
+            }
         }else{
             nombreGenerado = 'user_' + fechaActual.getFullYear() + fechaActual.getMonth() + fechaActual.getDate() + fechaActual.getHours() + fechaActual.getMinutes() + fechaActual.getSeconds() + fechaActual.getUTCMilliseconds() + random;
             $('#correo-user').val(nombreGenerado);
@@ -303,11 +450,11 @@ $(document).ready(function () {
                     '</div>' + 
                     '<div class="form-group">' + 
                         '<label for="no-casa">No. Casa:</label>' + 
-                        '<input type="number" id="no-casa" name="no-casa">' + 
+                        '<input type="number" id="no-casa" name="no-casa" min="0" step="1">' + 
                     '</div>' + 
                     '<div class="form-group">' + 
                         '<label for="no-ext">No. Exterior (Opcional):</label>' + 
-                        '<input type="number" id="no-ext" name="no-ext">' + 
+                        '<input type="number" id="no-ext" name="no-ext" min="0" step="0">' + 
                     '</div>' + 
                     '<h5>Entre Calles</h5>' + 
                     '<div class="form-group">' + 

@@ -35,7 +35,7 @@
         </div>
         <div class="input-group">
             <label style="display: inline-block;" for="tel-user">Teléfono</label>
-            <input style="display: inline-block; width: 60%" type="number" name="tel-user" id="tel-user" value="<?=$phone["numero"]?>">
+            <input style="display: inline-block; width: 60%" type="number" name="tel-user" id="tel-user" pattern="[0-9]{7,10}" maxlength="10" minlength="7" value="<?=$phone["numero"]?>">
             <div class="extra-input">
                 <label style="display: inline-block; width: auto; cursor: pointer;" for="no-phone">Sin Teléfono</label>
                 <input style="display: inline-block; width: auto; cursor: pointer; margin-bottom: 0px" type="checkbox" name="no-phone" id="no-phone" onclick="noPhone()">

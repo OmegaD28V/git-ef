@@ -5,8 +5,8 @@
         #Registro de productos
         static public function registrarProductoModel($datosModel, $tabla){
             $stmt = Conexion::conectar() -> prepare(
-                "insert into $tabla (idpro_categoria, idpro_marca, codigo, nombre, modelo, descripcion, existencia) 
-                values (:idpro_categoria, :idpro_marca, :codigo, :nombre, :modelo, :descripcion, 0);"
+                "insert into $tabla (idpro_categoria, idpro_marca, codigo, nombre, modelo, descripcion, existencia, preciominimo) 
+                values (:idpro_categoria, :idpro_marca, :codigo, :nombre, :modelo, :descripcion, 0, 0);"
             );
 
             $stmt -> bindParam(":idpro_categoria", $datosModel["idpro_categoria"], PDO::PARAM_INT);
@@ -271,6 +271,18 @@
             $stmt = null;
         }
         
+        #Seleccionar Precio Minimo Producto
+        static public function seleccionarProPrecioMinimoModel($tabla, $valor){
+            $stmt = Conexion::conectar() -> prepare(
+                "select preciominimo from $tabla where idpro = :idpro and status >= 1;"
+            );
+            $stmt -> bindParam(":idpro", $valor, PDO::PARAM_INT);
+            $stmt -> execute();
+            return $stmt -> fetch();
+            $stmt -> close();
+            $stmt = null;
+        }
+        
         #Seleccionar categoria
         static public function categoriaModel($tabla, $valor){
             $stmt = Conexion::conectar() -> prepare("select * from $tabla where idcategoria = :idcategoria;");
@@ -426,6 +438,18 @@
             }else {
                 return "error";
             }
+            $stmt -> close();
+            $stmt = null;
+        }
+        
+        #Validar productos
+        static public function validProModel($tabla, $valor){
+            $stmt = Conexion::conectar() -> prepare("
+                select codigo from $tabla where codigo = :codigo;
+            ");
+            $stmt -> bindParam(":codigo", $valor, PDO::PARAM_STR);
+            $stmt -> execute();
+            return $stmt -> fetch();
             $stmt -> close();
             $stmt = null;
         }
@@ -818,17 +842,26 @@
                 $precioCompra20p = (float) $value["preciocompra"] + (($value["preciocompra"] / 100) * 20);
                 if ($result0_1 == null) {
                     
-                }elseif($precioAnterior < $precioCompra){
-                    $stmt3_1 = Conexion::conectar() -> prepare("
-                        update pro_precio set precio = :precio where idpro = :idpro and tipo = 1;
+                }else{
+                    if($precioAnterior < $precioCompra){
+                        $stmt3_1 = Conexion::conectar() -> prepare("
+                            update pro_precio set precio = :precio where idpro = :idpro and tipo = 1;
+                        ");
+                        $stmt3_1 -> bindParam(":precio", $precioCompra20p, PDO::PARAM_INT);
+                        $stmt3_1 -> bindParam(":idpro", $result0_1["idpro"], PDO::PARAM_INT);
+                        if ($stmt3_1 -> execute()) {
+                            $result1 = "terminado";
+                        }else {
+                            $result1 = "error";
+                        }   
+                    }
+                    
+                    $stmt3_minimo = Conexion::conectar() -> prepare("
+                        update pro set preciominimo = :preciominimo where idpro = :idpro;
                     ");
-                    $stmt3_1 -> bindParam(":precio", $precioCompra20p, PDO::PARAM_INT);
-                    $stmt3_1 -> bindParam(":idpro", $result0_1["idpro"], PDO::PARAM_INT);
-                    if ($stmt3_1 -> execute()) {
-                        $result1 = "terminado";
-                    }else {
-                        $result1 = "error";
-                    }                    
+                    $stmt3_minimo -> bindParam(":preciominimo", $precioCompra20p, PDO::PARAM_INT);
+                    $stmt3_minimo -> bindParam(":idpro", $result0_1["idpro"], PDO::PARAM_INT);
+                    $stmt3_minimo -> execute();
                 }
             }
 
@@ -898,14 +931,31 @@
                 $stmt -> bindParam(":nombre", $nombre, PDO::PARAM_STR);
                 $stmt -> bindParam(":usuario", $datosModel["correo"], PDO::PARAM_STR);
                 $stmt -> bindParam(":contrasena", $datosModel["contrasena"], PDO::PARAM_STR);
-    
-                if($stmt -> execute()){
+                $stmt -> execute();
+
+                $stmt2 = Conexion::conectar() -> prepare("
+                    select iduser from $tabla where tipo = 3 and status = 1 and usuario = :usuario;
+                ");
+                $stmt2 -> bindParam(":usuario", $datosModel["correo"], PDO::PARAM_STR);
+                $stmt2 -> execute();
+                $result = $stmt2 -> fetch();
+
+                $stmt3 = Conexion::conectar() -> prepare("
+                    insert into user_correo(iduser, correo) value(:iduser, :correo);
+                ");
+                $stmt3 -> bindParam(":iduser", $result["iduser"], PDO::PARAM_INT);
+                $stmt3 -> bindParam(":correo", $datosModel["correo"], PDO::PARAM_STR);
+                if($stmt3 -> execute()){
                     return "ok";
                 }else{
                     return "error";
                 }
                 $stmt -> close();
+                $stmt2 -> close();
+                $stmt3 -> close();
                 $stmt = null;
+                $stmt2 = null;
+                $stmt3 = null;
             }elseif ($tipoUsuario == 33) {
                 //Primera consulta: Registra al usuario.
                 $stmt = Conexion::conectar() -> prepare(
@@ -929,6 +979,18 @@
                     $stmt2 -> execute();
                     $usuario = $stmt2 -> fetch();
                     $user = $usuario["iduser"];
+
+                    if (preg_match("/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/", $datosModel["correo"])) {
+                        $stmtCorreo = Conexion::conectar() -> prepare(
+                            "insert into user_correo(iduser, correo) value(:iduser, :correo);"
+                        );
+    
+                        $stmtCorreo -> bindParam(":iduser", $user, PDO::PARAM_INT);
+                        $stmtCorreo -> bindParam(":correo", $datosModel["correo"], PDO::PARAM_STR);
+                        $stmtCorreo -> execute();
+                    }else{
+
+                    }
 
                     if ($datosModel["tel"] != "") {//Verificar si se registró un teléfono
                         //Tercera consulta: Registro de teléfono.
@@ -971,10 +1033,120 @@
 
                 $stmt -> close();
                 $stmt2 -> close();
+                $stmtCorreo -> close();
+                $stmt3 -> close();
+                $stmt4 -> close();
+                $stmt5 -> close();
+                $stmt = null;
+                $stmt2 = null;
+                $stmtCorreo = null;
+                $stmt3 = null;
+                $stmt4 = null;
+                $stmt5 = null;
+            }
+        }
+        
+        #Registro de usuario Moral
+        static public function registrarUsuarioMoralModel($datosModel, $tabla, $tipoUsuario){
+            if($tipoUsuario == 3){
+                $stmt = Conexion::conectar() -> prepare(
+                    "insert into $tabla (tipo, nombre, usuario, contrasena, fecha) 
+                     values (:tipo, :nombre, :usuario, :contrasena, now());"
+                );
+    
+                $stmt -> bindParam(":tipo", $tipoUsuario, PDO::PARAM_INT);
+                $stmt -> bindParam(":nombre", $datosModel["nombre"], PDO::PARAM_STR);
+                $stmt -> bindParam(":usuario", $datosModel["correo"], PDO::PARAM_STR);
+                $stmt -> bindParam(":contrasena", $datosModel["contrasena"], PDO::PARAM_STR);
+    
+                if($stmt -> execute()){
+                    return "ok";
+                }else{
+                    return "error";
+                }
+                $stmt -> close();
+                $stmt = null;
+            }elseif ($tipoUsuario == 33) {
+                //Primera consulta: Registra al usuario.
+                $stmt = Conexion::conectar() -> prepare(
+                    "insert into $tabla (tipo, nombre, usuario, contrasena, fecha, status) 
+                     values (3, :nombre, :usuario, :contrasena, now(), 3);"
+                );
+    
+                $stmt -> bindParam(":nombre", $datosModel["nombre"], PDO::PARAM_STR);
+                $stmt -> bindParam(":usuario", $datosModel["correo"], PDO::PARAM_STR);
+                $stmt -> bindParam(":contrasena", $datosModel["correo"], PDO::PARAM_STR);
+    
+                $stmt -> execute();
+                    //Segunda consulta: Consulta al usuario recién registrado.
+                    $stmt2 = Conexion::conectar() -> prepare(
+                        "select iduser from user where tipo = 3 and status = 3 and usuario = :usuario;"
+                    );
+
+                    $stmt2 -> bindParam(":usuario", $datosModel["correo"], PDO::PARAM_STR);
+                    $stmt2 -> execute();
+                    $usuario = $stmt2 -> fetch();
+                    $user = $usuario["iduser"];
+
+                    if (preg_match("/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/", $datosModel["correo"])) {
+                        $stmtCorreo = Conexion::conectar() -> prepare(
+                            "insert into user_correo(iduser, correo) value(:iduser, :correo);"
+                        );
+    
+                        $stmtCorreo -> bindParam(":iduser", $user, PDO::PARAM_INT);
+                        $stmtCorreo -> bindParam(":correo", $datosModel["correo"], PDO::PARAM_STR);
+                        $stmtCorreo -> execute();
+                    }else{
+
+                    }
+
+                    if ($datosModel["tel"] != "") {//Verificar si se registró un teléfono
+                        //Tercera consulta: Registro de teléfono.
+                        $stmt3 = Conexion::conectar() -> prepare(
+                            "insert into user_telefono (iduser, tipo, numero) values (:iduser, 1, :numero);"
+                        );
+                        $stmt3 -> bindParam(":iduser", $user, PDO::PARAM_INT);
+                        $stmt3 -> bindParam(":numero", $datosModel["tel"], PDO::PARAM_INT);
+                        $stmt3 -> execute();
+                    }else{
+                    }
+
+                    
+                        $stmt4 = Conexion::conectar() -> prepare(
+                            "insert into 
+                            user_domicilio (iduser, estado, localidad, colonia, calle, num_casa, num_casa2, calle1, calle2, referencia) 
+                            values(:iduser, :estado, :localidad, :colonia, :calle, :num_casa, :num_casa2, :calle1, :calle2, :referencia);"
+                        );
+                        $stmt4 -> bindParam(":iduser", $user, PDO::PARAM_INT);
+                        $stmt4 -> bindParam(":estado", $datosModel["estado"], PDO::PARAM_STR);
+                        $stmt4 -> bindParam(":localidad", $datosModel["municipio"], PDO::PARAM_STR);
+                        $stmt4 -> bindParam(":colonia", $datosModel["colonia"], PDO::PARAM_STR);
+                        $stmt4 -> bindParam(":calle", $datosModel["calle"], PDO::PARAM_STR);
+                        $stmt4 -> bindParam(":num_casa", $datosModel["no-casa"], PDO::PARAM_INT);
+                        $stmt4 -> bindParam(":num_casa2", $datosModel["no-ext"], PDO::PARAM_INT);
+                        $stmt4 -> bindParam(":calle1", $datosModel["calle1"], PDO::PARAM_STR);
+                        $stmt4 -> bindParam(":calle2", $datosModel["calle2"], PDO::PARAM_STR);
+                        $stmt4 -> bindParam(":referencia", $datosModel["ref"], PDO::PARAM_STR);
+                        $stmt4 -> execute();
+
+                            $stmt5 = Conexion::conectar() -> prepare(
+                                "update user set status = 1 where iduser = :iduser;"
+                            );
+                            $stmt5 -> bindParam(":iduser", $user, PDO::PARAM_INT);
+                            if($stmt5 -> execute()){
+                                return "ok";
+                            }else{
+                                return "error";
+                            }
+
+                $stmt -> close();
+                $stmt2 -> close();
+                $stmtCorreo -> close();
                 $stmt3 -> close();
                 $stmt4 -> close();
                 $stmt = null;
                 $stmt2 = null;
+                $stmtCorreo = null;
                 $stmt3 = null;
                 $stmt4 = null;
             }
@@ -994,10 +1166,11 @@
                 $stmt -> execute();
                     //Segunda consulta: Actualizar teléfono de usuario.
                     $stmt2 = Conexion::conectar() -> prepare(
-                        "update user_telefono set numero = :numero where iduser_telefono = :iduser_telefono:"
+                        "update user_telefono set numero = :numero 
+                        where tipo = 1 and status = 1 and iduser_telefono = :iduser_telefono;"
                     );
 
-                    $stmt2 -> bindParam(":usuario", $datosModel["tel"], PDO::PARAM_STR);
+                    $stmt2 -> bindParam(":numero", $datosModel["tel"], PDO::PARAM_STR);
                     $stmt2 -> bindParam(":iduser_telefono", $idPhone, PDO::PARAM_INT);
                     $stmt2 -> execute();
                         //Tercera consulta: Actualizar domicilio.
@@ -1016,7 +1189,7 @@
                         $stmt3 -> bindParam(":num_casa", $datosModel["no-casa"], PDO::PARAM_INT);
                         $stmt3 -> bindParam(":num_casa2", $datosModel["no-ext"], PDO::PARAM_INT);
                         $stmt3 -> bindParam(":calle1", $datosModel["calle1"], PDO::PARAM_STR);
-                        $stmt3 -> bindParam(":calle2", $datosModel["calle1"], PDO::PARAM_STR);
+                        $stmt3 -> bindParam(":calle2", $datosModel["calle2"], PDO::PARAM_STR);
                         $stmt3 -> bindParam(":referencia", $datosModel["ref"], PDO::PARAM_STR);
                         $stmt3 -> bindParam(":iduser_domicilio", $idDomicilio, PDO::PARAM_INT);
                         if($stmt3 -> execute()){
@@ -1031,6 +1204,58 @@
                 $stmt = null;
                 $stmt2 = null;
                 $stmt3 = null;
+            }
+        }
+
+        #reg correo de usuario.
+        static public function regUCorreoModel($tabla, $email, $cli){
+            $stmt = Conexion::conectar() -> prepare("
+                insert into $tabla(iduser, correo) value(:iduser, :correo);
+            ");
+            $stmt -> bindParam(":iduser", $cli, PDO::PARAM_INT);
+            $stmt -> bindParam(":correo", $email, PDO::PARAM_STR);
+            if($stmt -> execute()){
+                return "ok";
+            }else{
+                return "error";
+            }
+        }
+        
+        #reg domicilio de usuario.
+        static public function regUDomicilioModel($tabla, $domicilio, $cli){
+            $stmt = Conexion::conectar() -> prepare("
+                insert into 
+                $tabla(iduser, estado, localidad, colonia, calle, num_casa, num_casa2, calle1, calle2, referencia) 
+                value(:iduser, :estado, :localidad, :colonia, :calle, :num_casa, :num_casa2, :calle1, :calle2, :referencia);
+            ");
+            $stmt -> bindParam(":iduser", $cli, PDO::PARAM_INT);
+            $stmt -> bindParam(":estado", $domicilio["estado"], PDO::PARAM_STR);
+            $stmt -> bindParam(":localidad", $domicilio["municipio"], PDO::PARAM_STR);
+            $stmt -> bindParam(":colonia", $domicilio["colonia"], PDO::PARAM_STR);
+            $stmt -> bindParam(":calle", $domicilio["calle"], PDO::PARAM_STR);
+            $stmt -> bindParam(":num_casa", $domicilio["no-casa"], PDO::PARAM_INT);
+            $stmt -> bindParam(":num_casa2", $domicilio["no-ext"], PDO::PARAM_INT);
+            $stmt -> bindParam(":calle1", $domicilio["calle1"], PDO::PARAM_STR);
+            $stmt -> bindParam(":calle2", $domicilio["calle2"], PDO::PARAM_STR);
+            $stmt -> bindParam(":referencia", $domicilio["ref"], PDO::PARAM_STR);
+            if($stmt -> execute()){
+                return "ok";
+            }else{
+                return "error";
+            }
+        }
+        
+        #reg telefono de usuario.
+        static public function regUPhoneModel($tabla, $tel, $cli){
+            $stmt = Conexion::conectar() -> prepare("
+                insert into $tabla(iduser, tipo, numero) value(:iduser, 1, :numero);
+            ");
+            $stmt -> bindParam(":iduser", $cli, PDO::PARAM_INT);
+            $stmt -> bindParam(":numero", $tel, PDO::PARAM_STR);
+            if($stmt -> execute()){
+                return "ok";
+            }else{
+                return "error";
             }
         }
 
@@ -1064,6 +1289,108 @@
                 return $stmt -> fetch();
                 $stmt -> close();
                 $stmt = null;
+            }
+        }
+        
+        #Seleccionar domicilio de cliente.
+        static public function clienteDomiciliosModel($tabla, $user, $tipo){
+            if ($tipo == "cli") {
+                $stmt = Conexion::conectar() -> prepare("
+                    select * 
+                    from $tabla 
+                    where iduser = :iduser and status = 1;
+                ");
+                $stmt -> bindParam(":iduser", $user, PDO::PARAM_INT);
+                $stmt -> execute();
+                return $stmt -> fetchAll();
+                $stmt -> close();
+                $stmt = null;
+            }elseif ($user == "prov") {
+                // $stmt = Conexion::conectar() -> prepare("
+                //     select usuario from $tabla where usuario = :usuario;
+                // ");
+                // $stmt -> bindParam(":usuario", $valor, PDO::PARAM_STR);
+                // $stmt -> execute();
+                // return $stmt -> fetch();
+                // $stmt -> close();
+                // $stmt = null;
+            }else{
+                // $stmt = Conexion::conectar() -> prepare("
+                //     select usuario from $tabla where usuario = :usuario;
+                // ");
+                // $stmt -> bindParam(":usuario", $valor, PDO::PARAM_STR);
+                // $stmt -> execute();
+                // return $stmt -> fetch();
+                // $stmt -> close();
+                // $stmt = null;
+            }
+        }
+        
+        #Seleccionar correo de cliente.
+        static public function clienteCorreosModel($tabla, $user, $tipo){
+            if ($tipo == "cli") {
+                $stmt = Conexion::conectar() -> prepare("
+                    select * 
+                    from $tabla 
+                    where iduser = :iduser and status = 1;
+                ");
+                $stmt -> bindParam(":iduser", $user, PDO::PARAM_INT);
+                $stmt -> execute();
+                return $stmt -> fetchAll();
+                $stmt -> close();
+                $stmt = null;
+            }elseif ($user == "prov") {
+                // $stmt = Conexion::conectar() -> prepare("
+                //     select usuario from $tabla where usuario = :usuario;
+                // ");
+                // $stmt -> bindParam(":usuario", $valor, PDO::PARAM_STR);
+                // $stmt -> execute();
+                // return $stmt -> fetch();
+                // $stmt -> close();
+                // $stmt = null;
+            }else{
+                // $stmt = Conexion::conectar() -> prepare("
+                //     select usuario from $tabla where usuario = :usuario;
+                // ");
+                // $stmt -> bindParam(":usuario", $valor, PDO::PARAM_STR);
+                // $stmt -> execute();
+                // return $stmt -> fetch();
+                // $stmt -> close();
+                // $stmt = null;
+            }
+        }
+        
+        #Seleccionar telefono de cliente.
+        static public function clientePhonesModel($tabla, $user, $tipo){
+            if ($tipo == "cli") {
+                $stmt = Conexion::conectar() -> prepare("
+                    select * 
+                    from $tabla 
+                    where iduser = :iduser and status = 1 and tipo = 1;
+                ");
+                $stmt -> bindParam(":iduser", $user, PDO::PARAM_INT);
+                $stmt -> execute();
+                return $stmt -> fetchAll();
+                $stmt -> close();
+                $stmt = null;
+            }elseif ($user == "prov") {
+                // $stmt = Conexion::conectar() -> prepare("
+                //     select usuario from $tabla where usuario = :usuario;
+                // ");
+                // $stmt -> bindParam(":usuario", $valor, PDO::PARAM_STR);
+                // $stmt -> execute();
+                // return $stmt -> fetch();
+                // $stmt -> close();
+                // $stmt = null;
+            }else{
+                // $stmt = Conexion::conectar() -> prepare("
+                //     select usuario from $tabla where usuario = :usuario;
+                // ");
+                // $stmt -> bindParam(":usuario", $valor, PDO::PARAM_STR);
+                // $stmt -> execute();
+                // return $stmt -> fetch();
+                // $stmt -> close();
+                // $stmt = null;
             }
         }
         
@@ -1200,6 +1527,28 @@
                 // return $stmt -> fetch();
                 // $stmt -> close();
                 // $stmt = null;
+            }
+        }
+
+        #Detalle de Usuario
+        static public function detalleUsuarioModel($tabla, $user, $tipo){
+            if ($tipo == "cli") {
+                $stmt = Conexion::conectar() -> prepare("
+                select u.nombre, u.usuario, u_c.correo, u_t.numero, 
+                u_d.estado, u_d.localidad, u_d.colonia, u_d.calle, u_d.num_casa, 
+                u_d.num_casa2, u_d.calle1, u_d.calle2, u_d.referencia, 
+                DATE_FORMAT(u.fecha, '%d/%M/%Y - %H:%i:%S') fecha 
+                from $tabla u 
+                left outer join user_correo u_c on u.iduser = u_c.iduser 
+                left outer join user_telefono u_t on u.iduser = u_t.iduser 
+                left outer join user_domicilio u_d on u.iduser = u_d.iduser 
+                where u.iduser = :iduser and u.status = 1 and u.tipo = 3;");
+    
+                $stmt -> bindParam(":iduser", $user, PDO::PARAM_INT);
+                $stmt -> execute();
+                return $stmt -> fetch();
+                $stmt -> close();
+                $stmt = null;
             }
         }
         

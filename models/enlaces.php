@@ -13,8 +13,9 @@
              || $enlaces == "productoSinStock" || $enlaces == "productoMarca" || $enlaces == "productoCaracteristica" 
              || $enlaces == "productoCEditar" || $enlaces == "marcaEditar" || $enlaces == "compra" 
              || $enlaces == "removeIntro" || $enlaces == "compraEditar" || $enlaces == "productoImagenes" 
-             || $enlaces == "uClienteRegistrar" || $enlaces == "clientes" || $enlaces == "cliente" 
-             || $enlaces == "clienteEditar"){
+             || $enlaces == "uClienteRegistrar" || $enlaces == "uClientes" || $enlaces == "uCliente" 
+             || $enlaces == "uClienteEditar" || $enlaces == "uClienteCorreo" || $enlaces == "uClienteAddress" 
+             || $enlaces == "uClientePhone"){
                 $module =  "views/modules/".$enlaces.".php";
             }else if($enlaces == "index"){
                 $module =  "views/modules/inicio.php";

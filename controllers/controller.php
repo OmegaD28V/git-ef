@@ -181,6 +181,13 @@
             $respuesta = Datos::seleccionarProPrecioModel($tabla, $valor);
             return $respuesta;
         }
+        
+        #Seleccionar Precio Minimo Producto
+        static public function seleccionarProPrecioMinimoController($valor){
+            $tabla = "pro";
+            $respuesta = Datos::seleccionarProPrecioMinimoModel($tabla, $valor);
+            return $respuesta;
+        }
 
         #Seleccionar ProductoCategorías
         static public function seleccionarProductoCategoriaController($item, $valor, $modo){
@@ -204,6 +211,13 @@
                 $respuesta = Datos::seleccionarProductoMarcaModel($tabla, $item, $valor, $modo);
                 return $respuesta;
             }            
+        }
+        
+        #Validar Productos
+        static public function validProController($valor){
+            $tabla = "pro";
+            $respuesta = Datos::validProModel($tabla, $valor);
+            return $respuesta;
         }
         
         #Seleccionar Productos
@@ -857,7 +871,7 @@
         }
 
         #Concluir compra
-        public function compraFinalizadaController($item, $valor){
+        static public function compraFinalizadaController($item, $valor){
             $tabla = "compra";
             $respuesta = Datos::compraFinalizadaModel($item, $valor, $tabla);
             if ($respuesta == "ok") {
@@ -1021,7 +1035,6 @@
                         isset($_POST["name-user"]) && 
                         isset($_POST["ape-user"]) && 
                         isset($_POST["correo-user"]) && 
-                        isset($_POST["tel-user"]) && 
                         isset($_POST["val-estado"]) && 
                         isset($_POST["val-municipio"]) && 
                         isset($_POST["val-colonia"]) && 
@@ -1093,6 +1106,84 @@
                                     window.location = "index.php?action=uClienteRegistrar&err=ur";
                                 </script>';
                         }   
+                    }elseif (
+                        isset($_POST["name-user"]) && 
+                        isset($_POST["correo-user"]) && 
+                        isset($_POST["val-estado"]) && 
+                        isset($_POST["val-municipio"]) && 
+                        isset($_POST["val-colonia"]) && 
+                        isset($_POST["calle"]) && 
+                        isset($_POST["no-casa"]) && 
+                        isset($_POST["no-ext"]) && 
+                        isset($_POST["entre-calle1"]) && 
+                        isset($_POST["entre-calle2"]) && 
+                        isset($_POST["ref"])
+                    ) {
+                        echo '<span>Valido todo</span>';
+                        //Validación de campos en servidor.
+                        if (
+                            preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ&. ]{1,75}+$/", $_POST["name-user"]) && 
+                            (preg_match("/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/", $_POST["correo-user"]) || 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,150}$/", $_POST["correo-user"])) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-estado"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-municipio"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-colonia"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["calle"]) && 
+                            preg_match("/^[0-9]{0,7}+$/", $_POST["no-casa"]) && 
+                            preg_match("/^[0-9]{0,7}+$/", $_POST["no-ext"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{0,60}+$/", $_POST["entre-calle1"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{0,60}+$/", $_POST["entre-calle2"]) && 
+                            preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ.,_\- ]{1,250}$/m", $_POST["ref"])
+                            ) {
+                            $tabla = "user";
+                            $datosController = array(
+                                "nombre" => $_POST["name-user"],  
+                                "correo" => $_POST["correo-user"], 
+                                "tel" => $_POST["tel-user"], 
+                                "estado" => $_POST["val-estado"], 
+                                "municipio" => $_POST["val-municipio"], 
+                                "colonia" => $_POST["val-colonia"], 
+                                "CP" => $_POST["val-CP"], 
+                                "calle" => $_POST["calle"], 
+                                "no-casa" => $_POST["no-casa"], 
+                                "no-ext" => $_POST["no-ext"], 
+                                "calle1" => $_POST["entre-calle1"], 
+                                "calle2" => $_POST["entre-calle2"], 
+                                "ref" => $_POST["ref"]
+                            );
+                            $respuesta = Datos::registrarUsuarioMoralModel($datosController, $tabla, $tipoUsuario);
+                            if ($respuesta == "ok") {
+                                echo '<script>
+                                        if(window.history.replaceState){
+                                            window.history.replaceState(null, null, window.location.href);
+                                        }
+                                        window.location = "index.php?action=uClienteRegistrar&not0=true";
+                                    </script>';
+                            }else{
+                                echo '<script>
+                                        if(window.history.replaceState){
+                                            window.history.replaceState(null, null, window.location.href);
+                                        }
+                                        window.location = "index.php?action=uClienteRegistrar";
+                                    </script>';
+                                echo '<div><span>Error!</span></div>';
+                                echo '<div><span>verifique sus datos</span></div>';
+                            }
+                        }else{
+                            echo '<script>
+                                    if(window.history.replaceState){
+                                        window.history.replaceState(null, null, window.location.href);
+                                    }
+                                    window.location = "index.php?action=uClienteRegistrar&err=ur";
+                                </script>';
+                        }
+                    }else{
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=uClienteRegistrar&err=ur";
+                            </script>';
                     }
                 }
             }
@@ -1149,14 +1240,14 @@
                                     if(window.history.replaceState){
                                         window.history.replaceState(null, null, window.location.href);
                                     }
-                                    window.location = "index.php?action=clientes&not0=true";
+                                    window.location = "index.php?action=uClientes&not0=true";
                                 </script>';
                         }else{
                             echo '<script>
                                     if(window.history.replaceState){
                                         window.history.replaceState(null, null, window.location.href);
                                     }
-                                    window.location = "index.php?action=clienteEditar&cliD='.$cli.'";
+                                    window.location = "index.php?action=uClienteEditar&cliD='.$cli.'";
                                 </script>';
                             echo '<div><span>Error!</span></div>';
                             echo '<div><span>verifique sus datos</span></div>';
@@ -1166,17 +1257,167 @@
                                 if(window.history.replaceState){
                                     window.history.replaceState(null, null, window.location.href);
                                 }
-                                window.location = "index.php?action=clienteEditar&cliD='.$cli.'&err=ur";
+                                window.location = "index.php?action=uClienteEditar&cliD='.$cli.'&err=ur";
                             </script>';
                     }   
                 }
             }
         }
 
+        #reg correo de usuario.
+        static public function regUCorreoController($cli){
+            if (isset($_POST["correo-user"])) {
+                if(preg_match("/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/", $_POST["correo-user"])){
+                    $email = $_POST["correo-user"];
+                    $tabla = "user_correo";
+                    $respuesta = Datos::regUCorreoModel($tabla, $email, $cli);
+                    if ($respuesta == "ok") {
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=uClientes&not0=true";
+                            </script>';
+                    }else{
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=uClienteCorreo&cliD='.$cli.'&err=ur";
+                            </script>';
+                    }
+                }else {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=uClienteCorreo&cliD='.$cli.'&err=ur";
+                        </script>';
+                }
+            }
+        }
+        
+        #reg domicilio correo.
+        static public function regUDomicilioController($cli){
+            if (
+                isset($_POST["val-estado"]) && 
+                isset($_POST["val-municipio"]) && 
+                isset($_POST["val-colonia"]) && 
+                isset($_POST["calle"]) && 
+                isset($_POST["no-casa"]) && 
+                isset($_POST["no-ext"]) && 
+                isset($_POST["entre-calle1"]) && 
+                isset($_POST["entre-calle2"]) && 
+                isset($_POST["ref"])
+            ) {
+                if(
+                    preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-estado"]) && 
+                    preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-municipio"]) && 
+                    preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-colonia"]) && 
+                    preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["calle"]) && 
+                    preg_match("/^[0-9]{0,7}+$/", $_POST["no-casa"]) && 
+                    preg_match("/^[0-9]{0,7}+$/", $_POST["no-ext"]) && 
+                    preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{0,60}+$/", $_POST["entre-calle1"]) && 
+                    preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{0,60}+$/", $_POST["entre-calle2"]) && 
+                    preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ.,_\- ]{1,250}$/m", $_POST["ref"])
+                ){
+                    $domicilio = array(
+                        "estado" => $_POST["val-estado"], 
+                        "municipio" => $_POST["val-municipio"], 
+                        "colonia" => $_POST["val-colonia"], 
+                        "calle" => $_POST["calle"], 
+                        "no-casa" => $_POST["no-casa"], 
+                        "no-ext" => $_POST["no-ext"], 
+                        "calle1" => $_POST["entre-calle1"], 
+                        "calle2" => $_POST["entre-calle2"], 
+                        "ref" => $_POST["ref"]
+                    );
+                    $tabla = "user_domicilio";
+                    $respuesta = Datos::regUDomicilioModel($tabla, $domicilio, $cli);
+                    if ($respuesta == "ok") {
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=uClientes&not0=true";
+                            </script>';
+                    }else{
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=uClienteAddress&cliD='.$cli.'&err=ur";
+                            </script>';
+                    }
+                }else {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=uClienteAddress&cliD='.$cli.'&err=ur";
+                        </script>';
+                }
+            }
+        }
+        
+        #reg telefono usuario.
+        static public function regUPhoneController($cli){
+            if (isset($_POST["tel-user"])) {
+                if(preg_match("/^[0-9]{7,10}+$/", $_POST["tel-user"])){
+                    $tel = $_POST["tel-user"];
+                    $tabla = "user_telefono";
+                    $respuesta = Datos::regUPhoneModel($tabla, $tel, $cli);
+                    if ($respuesta == "ok") {
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=uClientes&not0=true";
+                            </script>';
+                    }else{
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=uClientes&cliD='.$cli.'err=ur";
+                            </script>';
+                    }
+                }else {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=uClientes&cliD='.$cli.'err=ur";
+                        </script>';
+                }
+            }
+        }
+        
         #Seleccionar todos los usuarios.
         static public function seleccionarUsuariosController($valor){
             $tabla = "user";
             $respuesta = Datos::seleccionarUsuariosModel($tabla, $valor);
+            return $respuesta;
+        }
+        
+        #Seleccionar domicilios de usuario.
+        static public function clienteDomiciliosController($user, $valor){
+            $tabla = "user_domicilio";
+            $respuesta = Datos::clienteDomiciliosModel($tabla, $user, $valor);
+            return $respuesta;
+        }
+        
+        #Seleccionar correos de usuario.
+        static public function clienteCorreosController($user, $valor){
+            $tabla = "user_correo";
+            $respuesta = Datos::clienteCorreosModel($tabla, $user, $valor);
+            return $respuesta;
+        }
+        
+        #Seleccionar telefonos de usuario.
+        static public function clientePhonesController($user, $valor){
+            $tabla = "user_telefono";
+            $respuesta = Datos::clientePhonesModel($tabla, $user, $valor);
             return $respuesta;
         }
         
@@ -1205,6 +1446,13 @@
         static public function seleccionarUsuarioController($user, $tipo){
             $tabla = "user";
             $respuesta = Datos::seleccionarUsuarioModel($tabla, $user, $tipo);
+            return $respuesta;
+        }
+
+        #Detalle usuario.
+        static public function detalleUsuarioController($user, $tipo){
+            $tabla = "user";
+            $respuesta = Datos::detalleUsuarioModel($tabla, $user, $tipo);
             return $respuesta;
         }
 
