@@ -756,14 +756,14 @@
                                     if(window.history.replaceState){
                                         window.history.replaceState(null, null, window.location.href);
                                     }
-                                    window.location = "index.php?action=productoEntrada&into='.$ticket.'";
+                                    window.location = "index.php?action=compraEntrada&into='.$ticket.'";
                                 </script>';
                         }else{
                             echo '<script>
                                     if(window.history.replaceState){
                                         window.history.replaceState(null, null, window.location.href);
                                     }
-                                    window.location = "index.php?action=productoCompra&err=pc";
+                                    window.location = "index.php?action=compraRegistrar&err=pc";
                                 </script>';
                         }
                     }  
@@ -772,7 +772,7 @@
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
                             }
-                            window.location = "index.php?action=productoCompra&err=pc";
+                            window.location = "index.php?action=compraRegistrar&err=pc";
                         </script>';
                 }
             }
@@ -826,7 +826,7 @@
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
                             }
-                            window.location = "index.php?action=productoEntrada&into='.$ticket.'&not3=true";
+                            window.location = "index.php?action=compraEntrada&into='.$ticket.'&not3=true";
                         </script>';
                 }
                 return $respuesta;
@@ -852,7 +852,7 @@
             }
         }
 
-        #Quitar Compra sin concluir
+        #Quitar Compra.
         public function quitarCompraController(){
             if (isset($_POST["removeBuy"])) {
                 $tabla = "compra";
@@ -879,14 +879,14 @@
                         if(window.history.replaceState){
                             window.history.replaceState(null, null, window.location.href);
                         }
-                        window.location = "index.php?action=productoCompra&not1=true";
+                        window.location = "index.php?action=compraRegistrar&not1=true";
                     </script>';
             }else{
                 echo '<script>
                         if(window.history.replaceState){
                             window.history.replaceState(null, null, window.location.href);
                         }
-                        window.location = "index.php?action=productoCompra";
+                        window.location = "index.php?action=compraRegistrar";
                     </script>';
             }
         }
@@ -912,14 +912,14 @@
                                 if(window.history.replaceState){
                                     window.history.replaceState(null, null, window.location.href);
                                 }
-                                window.location = "index.php?action=productoEntrada&into='.$ticket.'&not0=true";
+                                window.location = "index.php?action=compraEntrada&into='.$ticket.'&not0=true";
                             </script>';
                     }else{
                         echo '<script>
                                 if(window.history.replaceState){
                                     window.history.replaceState(null, null, window.location.href);
                                 }
-                                window.location = "index.php?action=productoEntrada&into='.$ticket.'&err=re";
+                                window.location = "index.php?action=compraEntrada&into='.$ticket.'&err=re";
                             </script>';
                     }   
                 }else {
@@ -927,7 +927,7 @@
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
                             }
-                            window.location = "index.php?action=productoEntrada&into='.$ticket.'&err=re";
+                            window.location = "index.php?action=compraEntrada&into='.$ticket.'&err=re";
                         </script>'; 
                 }
             }
@@ -1241,14 +1241,14 @@
                                         if(window.history.replaceState){
                                             window.history.replaceState(null, null, window.location.href);
                                         }
-                                        window.location = "index.php?action=uClienteRegistrar&not0=true";
+                                        window.location = "index.php?action=uProveedorRegistrar&not0=true";
                                     </script>';
                             }else{
                                 echo '<script>
                                         if(window.history.replaceState){
                                             window.history.replaceState(null, null, window.location.href);
                                         }
-                                        window.location = "index.php?action=uClienteRegistrar";
+                                        window.location = "index.php?action=uProveedorRegistrar";
                                     </script>';
                                 echo '<div><span>Error!</span></div>';
                                 echo '<div><span>verifique sus datos</span></div>';
@@ -1258,7 +1258,7 @@
                                     if(window.history.replaceState){
                                         window.history.replaceState(null, null, window.location.href);
                                     }
-                                    window.location = "index.php?action=uClienteRegistrar&err=ur";
+                                    window.location = "index.php?action=uProveedorRegistrar&err=ur";
                                 </script>';
                         }   
                     }elseif (
@@ -1312,14 +1312,14 @@
                                         if(window.history.replaceState){
                                             window.history.replaceState(null, null, window.location.href);
                                         }
-                                        window.location = "index.php?action=uClienteRegistrar&not0=true";
+                                        window.location = "index.php?action=uProveedorRegistrar&not0=true";
                                     </script>';
                             }else{
                                 echo '<script>
                                         if(window.history.replaceState){
                                             window.history.replaceState(null, null, window.location.href);
                                         }
-                                        window.location = "index.php?action=uClienteRegistrar";
+                                        window.location = "index.php?action=uProveedorRegistrar";
                                     </script>';
                                 echo '<div><span>Error!</span></div>';
                                 echo '<div><span>verifique sus datos</span></div>';
@@ -1329,7 +1329,7 @@
                                     if(window.history.replaceState){
                                         window.history.replaceState(null, null, window.location.href);
                                     }
-                                    window.location = "index.php?action=uClienteRegistrar&err=ur";
+                                    window.location = "index.php?action=uProveedorRegistrar&err=ur";
                                 </script>';
                         }
                     }else{
@@ -1337,7 +1337,7 @@
                                 if(window.history.replaceState){
                                     window.history.replaceState(null, null, window.location.href);
                                 }
-                                window.location = "index.php?action=uClienteRegistrar&err=ur";
+                                window.location = "index.php?action=uProveedorRegistrar&err=ur";
                             </script>';
                     }
                 }
@@ -1363,7 +1363,7 @@
                     echo '<span>Valido todo</span>';
                     //Validación de campos en servidor.
                     if (
-                        preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ. ]{1,75}+$/", $_POST["name-user"]) && 
+                        preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ.&_\- ]{1,75}+$/", $_POST["name-user"]) && 
                         preg_match("/^[0-9]{0,10}+$/", $_POST["tel-user"]) && 
                         preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-estado"]) && 
                         preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-municipio"]) && 
@@ -1390,19 +1390,28 @@
                             "ref" => $_POST["ref"]
                         );
                         $respuesta = Datos::actualizarUsuarioModel($datosController, $tabla, $cli, $idDomicilio, $idPhone, $gestor);
-                        if ($respuesta == "ok") {
+                        if ($respuesta != "error") {
+                            $urlTipoUsuario = "";
+                            $urlTipoUsuarios = "";
+                            if ($respuesta["tipo"] == 2) {
+                                $urlTipoUsuario = "uProveedor";
+                                $urlTipoUsuarios = "uProveedores";
+                            }elseif ($respuesta["tipo"] == 3) {
+                                $urlTipoUsuario = "uCliente";
+                                $urlTipoUsuarios = "uClientes";
+                            }
                             echo '<script>
                                     if(window.history.replaceState){
                                         window.history.replaceState(null, null, window.location.href);
                                     }
-                                    window.location = "index.php?action=uClientes&not0=true";
+                                    window.location = "index.php?action='.$urlTipoUsuarios.'&not0=true";
                                 </script>';
                         }else{
                             echo '<script>
                                     if(window.history.replaceState){
                                         window.history.replaceState(null, null, window.location.href);
                                     }
-                                    window.location = "index.php?action=uClienteEditar&cliD='.$cli.'";
+                                    window.location = "index.php?action='.$urlTipoUsuario.'Editar&provD='.$cli.'";
                                 </script>';
                             echo '<div><span>Error!</span></div>';
                             echo '<div><span>verifique sus datos</span></div>';
@@ -1412,7 +1421,7 @@
                                 if(window.history.replaceState){
                                     window.history.replaceState(null, null, window.location.href);
                                 }
-                                window.location = "index.php?action=uClienteEditar&cliD='.$cli.'&err=ur";
+                                window.location = "index.php?action='.$urlTipoUsuario.'Editar&provD='.$cli.'&err=ur";
                             </script>';
                     }   
                 }
@@ -1420,8 +1429,20 @@
         }
 
         #reg correo de usuario.
-        static public function regUCorreoController($cli){
+        static public function regUCorreoController($cli, $tipo){
             if (isset($_POST["correo-user"])) {
+                $urlTipoUsuario = "";
+                $urlTipoUsuarios = "";
+                $urlGET = "";
+                if ($tipo == 2) {
+                    $urlTipoUsuario = "uProveedor";
+                    $urlTipoUsuarios = "uProveedores";
+                    $urlGET = "provD";
+                }elseif ($tipo == 3) {
+                    $urlTipoUsuario = "uCliente";
+                    $urlTipoUsuarios = "uClientes";
+                    $urlGET = "cliD";
+                }
                 if(preg_match("/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/", $_POST["correo-user"])){
                     $email = $_POST["correo-user"];
                     $tabla = "user_correo";
@@ -1431,14 +1452,14 @@
                                 if(window.history.replaceState){
                                     window.history.replaceState(null, null, window.location.href);
                                 }
-                                window.location = "index.php?action=uClientes&not0=true";
+                                window.location = "index.php?action='.$urlTipoUsuarios.'&not0=true";
                             </script>';
                     }else{
                         echo '<script>
                                 if(window.history.replaceState){
                                     window.history.replaceState(null, null, window.location.href);
                                 }
-                                window.location = "index.php?action=uClienteCorreo&cliD='.$cli.'&err=ur";
+                                window.location = "index.php?action='.$urlTipoUsuario.'Correo&'.$urlGET.'='.$cli.'&err=ur";
                             </script>';
                     }
                 }else {
@@ -1446,14 +1467,14 @@
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
                             }
-                            window.location = "index.php?action=uClienteCorreo&cliD='.$cli.'&err=ur";
+                            window.location = "index.php?action='.$urlTipoUsuario.'Correo&'.$urlGET.'='.$cli.'&err=ur";
                         </script>';
                 }
             }
         }
         
         #reg domicilio correo.
-        static public function regUDomicilioController($cli){
+        static public function regUDomicilioController($cli, $tipo){
             if (
                 isset($_POST["val-estado"]) && 
                 isset($_POST["val-municipio"]) && 
@@ -1465,6 +1486,18 @@
                 isset($_POST["entre-calle2"]) && 
                 isset($_POST["ref"])
             ) {
+                $urlTipoUsuario = "";
+                $urlTipoUsuarios = "";
+                $urlGET = "";
+                if ($tipo == 2) {
+                    $urlTipoUsuario = "uProveedor";
+                    $urlTipoUsuarios = "uProveedores";
+                    $urlGET = "provD";
+                }elseif ($tipo == 3) {
+                    $urlTipoUsuario = "uCliente";
+                    $urlTipoUsuarios = "uClientes";
+                    $urlGET = "cliD";
+                }
                 if(
                     preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-estado"]) && 
                     preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ._\- ]{1,100}$/", $_POST["val-municipio"]) && 
@@ -1494,14 +1527,14 @@
                                 if(window.history.replaceState){
                                     window.history.replaceState(null, null, window.location.href);
                                 }
-                                window.location = "index.php?action=uClientes&not0=true";
+                                window.location = "index.php?action='.$urlTipoUsuarios.'&not0=true";
                             </script>';
                     }else{
                         echo '<script>
                                 if(window.history.replaceState){
                                     window.history.replaceState(null, null, window.location.href);
                                 }
-                                window.location = "index.php?action=uClienteAddress&cliD='.$cli.'&err=ur";
+                                window.location = "index.php?action='.$urlTipoUsuario.'Address&'.$urlGET.'='.$cli.'&err=ur";
                             </script>';
                     }
                 }else {
@@ -1509,15 +1542,27 @@
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
                             }
-                            window.location = "index.php?action=uClienteAddress&cliD='.$cli.'&err=ur";
+                            window.location = "index.php?action='.$urlTipoUsuario.'Address&'.$urlGET.'='.$cli.'&err=ur";
                         </script>';
                 }
             }
         }
         
         #reg telefono usuario.
-        static public function regUPhoneController($cli){
+        static public function regUPhoneController($cli, $tipo){
             if (isset($_POST["tel-user"])) {
+                $urlTipoUsuario = "";
+                $urlTipoUsuarios = "";
+                $urlGET = "";
+                if ($tipo == 2) {
+                    $urlTipoUsuario = "uProveedor";
+                    $urlTipoUsuarios = "uProveedores";
+                    $urlGET = "provD";
+                }elseif ($tipo == 3) {
+                    $urlTipoUsuario = "uCliente";
+                    $urlTipoUsuarios = "uClientes";
+                    $urlGET = "cliD";
+                }
                 if(preg_match("/^[0-9]{7,10}+$/", $_POST["tel-user"])){
                     $tel = $_POST["tel-user"];
                     $tabla = "user_telefono";
@@ -1527,14 +1572,14 @@
                                 if(window.history.replaceState){
                                     window.history.replaceState(null, null, window.location.href);
                                 }
-                                window.location = "index.php?action=uClientes&not0=true";
+                                window.location = "index.php?action='.$urlTipoUsuarios.'&not0=true";
                             </script>';
                     }else{
                         echo '<script>
                                 if(window.history.replaceState){
                                     window.history.replaceState(null, null, window.location.href);
                                 }
-                                window.location = "index.php?action=uClientes&cliD='.$cli.'err=ur";
+                                window.location = "index.php?action='.$urlTipoUsuario.'Phone&'.$urlGET.'='.$cli.'err=ur";
                             </script>';
                     }
                 }else {
@@ -1542,7 +1587,7 @@
                             if(window.history.replaceState){
                                 window.history.replaceState(null, null, window.location.href);
                             }
-                            window.location = "index.php?action=uClientes&cliD='.$cli.'err=ur";
+                            window.location = "index.php?action='.$urlTipoUsuario.'Phone&'.$urlGET.'='.$cli.'err=ur";
                         </script>';
                 }
             }
@@ -1609,6 +1654,29 @@
             $tabla = "user";
             $respuesta = Datos::detalleUsuarioModel($tabla, $user, $tipo);
             return $respuesta;
+        }
+
+        #Quitar usuario sin concluir
+        public function quitarUsuarioController($tipo){
+            if (isset($_POST["removeUser"])) {
+                $urlTipoUsuarios = "";
+                if ($tipo == 2) {
+                    $urlTipoUsuarios = "uProveedores";
+                }elseif($tipo == 3){
+                    $urlTipoUsuarios = "uClientes";
+                }
+                $tabla = "user";
+                $valor = $_POST["removeUser"];
+                $respuesta = Datos::quitarUsuarioModel($tabla, $valor);
+                if ($respuesta == "ok") {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action='.$urlTipoUsuarios.'&not3=true";
+                        </script>';
+                }
+            }
         }
 
         #Inicio Sesion de usuario

@@ -26,7 +26,7 @@
         <div class="line-form"></div>
         <h4>Datos del cliente</h4>
         <div class="input-group">
-            <label for="name-user">Nombre y Apellido</label>
+            <label for="name-user">Nombre y Apellido o Razón Social</label>
             <input type="text" name="name-user" id="name-user" value="<?=$cliente["nombre"]?>" required>
         </div>
         <div class="input-group">
@@ -54,7 +54,7 @@
                 <input type="hidden" id="val-municipio" name="val-municipio" value="<?=$domicilio["localidad"]?>" required>
                 <input type="hidden" id="val-localidad" name="val-localidad" value="<?=$domicilio["localidad"]?>" required>
                 <input type="hidden" id="val-colonia" name="val-colonia" value="<?=$domicilio["colonia"]?>" required>
-                <input type="hidden" id="val-CP" name="val-CP" value="<?=$domicilio["0"]?>" required>
+                <input type="hidden" id="val-CP" name="val-CP" required>
             </div>
             <div id="super-form">
                 <div class="form-group">

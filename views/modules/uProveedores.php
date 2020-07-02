@@ -118,13 +118,21 @@
 
                         <td>
                             <a class="ver-det" href="index.php?action=uProveedor&provD=<?=$value["iduser"]?>">Detalles</a>
+                            <?php
+                                if ($tel == null || $dom == null || $email == null) {
+                                        
+                                }else{
+                                   ?>
                             <a class="editar" href="index.php?action=uProveedorEditar&provD=<?=$value["iduser"]?>"><i class="fas fa-pen-square"></i>Editar</a>        
-                            <!-- <form class="formEliminarT" method="post" name="eliminarCompra">
-                                <input class="inputEliminar" type="hidden" value="" name="removeBuy">
-                                <button class="btn-remove" type="submit" value=""><i class="fas fa-times-circle"></i>Quitar</button>
+                                   <?php 
+                                }
+                            ?>
+                            <!-- <form class="formEliminarT" method="post" name="eliminarUsuario">
+                                <input class="inputEliminar" type="hidden" value="" name="removeUser">
+                                <button class="btn-remove" type="submit"><i class="fas fa-times-circle"></i>Quitar</button>
                                 <?php
-                                    // $quitarCompra = new MvcController();
-                                    // $quitarCompra -> quitarCompraController();
+                                    // $quitarUsuario = new MvcController();
+                                    // $quitarUsuario -> quitarUsuarioController(2);
                                 ?>
                             </form> -->
                         </td>

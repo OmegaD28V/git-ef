@@ -46,14 +46,22 @@
                     $modulo =  "EF | Registrar Marca";
                 }elseif ($_GET['action'] == "categoriaEditar") {
                     $modulo =  "EF | Editar Categoría";
-                }elseif ($_GET['action'] == "productoEntrada") {
+                }elseif ($_GET['action'] == "compraEntrada") {
                     $modulo =  "EF | Entrada de productos";
+                }elseif ($_GET['action'] == "ventaSalida") {
+                    $modulo =  "EF | Salida de productos";
+                }elseif ($_GET['action'] == "compraEditar") {
+                    $modulo =  "EF | Editar Compra";
+                }elseif ($_GET['action'] == "ventaEditar") {
+                    $modulo =  "EF | Editar Venta";
                 }elseif ($_GET['action'] == "uProveedorRegistrar") {
                     $modulo =  "EF | Registrar Proveedor";
                 }elseif ($_GET['action'] == "uClienteRegistrar") {
                     $modulo =  "EF | Registrar Cliente";
-                }elseif ($_GET['action'] == "productoCompra") {
+                }elseif ($_GET['action'] == "compraRegistrar") {
                     $modulo =  "EF | Registrar Compra";
+                }elseif ($_GET['action'] == "ventaRegistrar") {
+                    $modulo =  "EF | Registrar venta";
                 }elseif ($_GET['action'] == "producto" && isset($_GET["idpro"])) {
                     $valor = $_GET["idpro"];
                     $producto = MvcController::tabProductoController($valor);
@@ -64,6 +72,8 @@
                     $modulo =  "EF | Productos Sin Stock";
                 }elseif ($_GET['action'] == "compra") {
                     $modulo =  "EF | Detalle de Compra";
+                }elseif ($_GET['action'] == "venta") {
+                    $modulo =  "EF | Detalle de Venta";
                 }else{
                     $modulo = "Electrónica Fonseca.";
                 }
@@ -84,6 +94,8 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
         <!-- API Google Places -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFiGfcxMZchQlUNIGD6dz2RZc7Y_9iAi8&libraries=places"></script>
+        <!-- <script src="https://maps.googleapis.com/maps/api/geocode/json?latlng=20.065136,-97.054607&key=AIzaSyBZXLpj_YTM5xyDp2mz3iu2m7cDkpd7Lz8"></script> -->
         
         <script src="https://kit.fontawesome.com/088ef51476.js" crossorigin="anonymous"></script>
     </head>        

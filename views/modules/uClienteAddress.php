@@ -16,7 +16,7 @@
 ?>
 <div class="contenedor-formulario">
     <form class="user-form" name="editarTelefonoCliente" method="post">
-        <h2>Teléfono del cliente</h2>
+        <h2>Domicilio del cliente</h2>
         <div class="line-form"></div>
         <div class="input-group">
             <h4 style="text-align: center; color: blue"><?=$cliente["nombre"]?></h4>
@@ -40,7 +40,7 @@
 </div>
 
 <?php
-    $regCorreo = MvcController::regUDomicilioController($cliente["iduser"]);
+    $regCorreo = MvcController::regUDomicilioController($cliente["iduser"], 3);
     if (isset($_GET["err"])) {
         if ($_GET["err"] == "ur") {
             ?>

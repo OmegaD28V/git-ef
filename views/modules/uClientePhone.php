@@ -32,7 +32,7 @@
 </div>
 
 <?php
-    $regCorreo = MvcController::regUPhoneController($cliente["iduser"]);
+    $regCorreo = MvcController::regUPhoneController($cliente["iduser"], 3);
     if (isset($_GET["err"])) {
         if ($_GET["err"] == "ur") {
             ?>

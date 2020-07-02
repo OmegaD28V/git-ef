@@ -196,12 +196,16 @@
                 ?>
 
                 <?php
-                    if ($_GET["action"] == "compras") {
+                    if (
+                        $_GET["action"] == "compras" || $_GET["action"] == "compraRegistrar" || 
+                        $_GET["action"] == "compraEntrada" || $_GET["action"] == "compra" || 
+                        $_GET["action"] == "compraEditar"
+                    ) {
                 ?>
                     <li id="nav-item7" title="Compra" class="nav-items"><a class="module" href="index.php?action=compras"><i class="fas fa-shopping-cart a-module"></i>Compras</a>
                         <ul class="nav-ul-li-ul">
                             <li class="nav-items">
-                                <a class="aCat" href="index.php?action=productoCompra" title="Nueva Compra"><i class="fas fa-cart-plus"></i>Nueva Compra</a>
+                                <a class="aCat" href="index.php?action=compraRegistrar" title="Nueva Compra"><i class="fas fa-cart-plus"></i>Nueva Compra</a>
                             </li>
                             <!-- <li class="nav-items"><a href="index.php?action=devoluciones"><i class="fas fa-reply"></i>Ver Devoluciones</a></li>
                             <li class="nav-items"><a href="index.php?action=devolucionRegistrar"><i class="fas fa-hand-holding-usd"></i>Nueva Devolución</a></li> -->
@@ -214,7 +218,7 @@
                     <li id="nav-item7" title="Compra" class="nav-items"><a href="index.php?action=compras"><i class="fas fa-shopping-cart"></i>Compras</a>
                         <ul class="nav-ul-li-ul">
                             <li class="nav-items">
-                                <a class="aCat" href="index.php?action=productoCompra" title="Nueva Compra"><i class="fas fa-cart-plus"></i>Nueva Compra</a>
+                                <a class="aCat" href="index.php?action=compraRegistrar" title="Nueva Compra"><i class="fas fa-cart-plus"></i>Nueva Compra</a>
                             </li>
                             <!-- <li class="nav-items"><a href="index.php?action=devoluciones"><i class="fas fa-reply"></i>Ver Devoluciones</a></li>
                             <li class="nav-items"><a href="index.php?action=devolucionRegistrar"><i class="fas fa-hand-holding-usd"></i>Nueva Devolución</a></li> -->
@@ -226,7 +230,11 @@
                 ?>
 
                 <?php
-                    if ($_GET["action"] == "ventas") {
+                    if (
+                        $_GET["action"] == "ventas" || $_GET["action"] == "ventaRegistrar" || 
+                        $_GET["action"] == "ventaSalida" || $_GET["action"] == "venta" || 
+                        $_GET["action"] == "ventaEditar"
+                    ) {
                 ?>
                     <li id="nav-item8" title="Venta" class="nav-items"><a class="module" href="index.php?action=ventas"><i class="fas fa-cash-register a-module"></i>Ventas</a>
                         <ul class="nav-ul-li-ul">
@@ -310,7 +318,7 @@
                 <li id="nav-item7" title="Compra" class="nav-items"><a href="index.php?action=compras"><i class="fas fa-shopping-cart"></i>Compras</a>
                     <ul class="nav-ul-li-ul">
                         <li class="nav-items">
-                            <a class="aCat" href="index.php?action=productoCompra" title="Nueva Compra"><i class="fas fa-cart-plus"></i>Nueva Compra</a>
+                            <a class="aCat" href="index.php?action=compraRegistrar" title="Nueva Compra"><i class="fas fa-cart-plus"></i>Nueva Compra</a>
                         </li>
                         <!-- <li class="nav-items"><a href="index.php?action=devoluciones"><i class="fas fa-reply"></i>Ver Devoluciones</a></li>
                         <li class="nav-items"><a href="index.php?action=devolucionRegistrar"><i class="fas fa-hand-holding-usd"></i>Nueva Devolución</a></li> -->
