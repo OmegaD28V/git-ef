@@ -271,6 +271,20 @@
             $stmt = null;
         }
         
+        #Seleccionar Existencia de Producto
+        static public function seleccionarProPrecioExistenciaModel($tabla, $valor){
+            $stmt = Conexion::conectar() -> prepare("
+            select p_p.precio, p.existencia from $tabla p 
+            inner join pro_precio p_p on p.idpro = p_p.idpro 
+            where p.idpro = :idpro and p_p.tipo = 1;"
+            );
+            $stmt -> bindParam(":idpro", $valor, PDO::PARAM_INT);
+            $stmt -> execute();
+            return $stmt -> fetch();
+            $stmt -> close();
+            $stmt = null;
+        }
+        
         #Seleccionar Precio Minimo Producto
         static public function seleccionarProPrecioMinimoModel($tabla, $valor){
             $stmt = Conexion::conectar() -> prepare(
@@ -515,7 +529,7 @@
                 $stmt -> close();
                 $stmt = null;
             }elseif ($modo == "entrada") {
-                $stmt = Conexion::conectar() -> prepare("select idpro, nombre from $tabla 
+                $stmt = Conexion::conectar() -> prepare("select idpro, nombre, existencia from $tabla 
                 where status >= 1 and status <= 2;");
                 $stmt -> execute();
                 return $stmt -> fetchAll();
@@ -629,10 +643,12 @@
             $stmt = null;
         }
 
-        #Seleccionar productos
+        #Seleccionar Proveedor Compra
         static public function seleccionarProveedorModel($item, $valor){
             if ($item == null && $valor == null) {
-                $stmt = Conexion::conectar() -> prepare("select iduser, nombre from user where tipo = 2 and status = 1;");
+                $stmt = Conexion::conectar() -> prepare("
+                    select iduser, nombre from user where tipo = 2 and status = 1 order by nombre asc;
+                ");
                 $stmt -> execute();
                 return $stmt -> fetchAll();
                 $stmt -> close();
@@ -659,6 +675,7 @@
             $stmt -> close();
             $stmt = null;
         }
+
         #Registrar Compra
         static public function registrarCompraModel($tabla, $datosModel){
             $stmt = Conexion::conectar() -> prepare(
@@ -913,6 +930,170 @@
             }else{
                 return "error";
             }
+            $stmt -> close();
+            $stmt = null;
+        }
+
+        #Registrar Venta
+        static public function registrarVentaModel($tabla, $datosModel){
+            $stmt = Conexion::conectar() -> prepare(
+                "insert into $tabla (folio, iduser, momento) 
+                 values (:folio, :cliente, now());"
+            );
+
+            $stmt -> bindParam(":folio", $datosModel["folio"], PDO::PARAM_STR);
+            $stmt -> bindParam(":cliente", $datosModel["cliente"], PDO::PARAM_INT);
+
+            if($stmt -> execute()){
+                return "ok";
+            }else{
+                return "error";
+            }
+            $stmt -> close();
+            $stmt = null;
+        }
+        
+        #Seleccionar Ventas
+        static public function seleccionarVentasModel($tabla){
+            $stmt = Conexion::conectar() -> prepare("select 
+            v.idventa, v.folio, v.iduser, v.status, u.nombre, 
+            DATE_FORMAT(v.momento, '%d/%M/%Y - %H:%i:%S') momento 
+            from $tabla v inner join user u on u.iduser = v.iduser 
+            where v.status >= 1 order by v.momento desc;");
+            $stmt -> execute();
+            return $stmt -> fetchAll();
+            $stmt -> close();
+            $stmt = null;
+        }
+
+        #Seleccionar Venta
+        static public function seleccionarVentaModel($tabla, $datosModel, $ticket){
+            if ($ticket == null) {
+                $stmt = Conexion::conectar() -> prepare("select v.idventa, v.folio, u.nombre from $tabla v 
+                inner join user u on u.iduser = v.iduser 
+                where v.folio = :folio and v.iduser = :cliente and v.status = 1;");
+
+                $stmt -> bindParam(':folio', $datosModel["folio"], PDO::PARAM_STR);
+                $stmt -> bindParam(':cliente', $datosModel["cliente"], PDO::PARAM_INT);
+                $stmt -> execute();
+                return $stmt -> fetch();
+                $stmt -> close();
+                $stmt = null;
+            } elseif ($datosModel == null) {
+                $stmt = Conexion::conectar() -> prepare("select v.idventa, v.folio, u.nombre from $tabla v 
+                inner join user u on u.iduser = v.iduser 
+                where v.idventa = :idventa and v.status = 1;");
+
+                $stmt -> bindParam(':idventa', $ticket, PDO::PARAM_INT);
+
+                $stmt -> execute();
+                return $stmt -> fetch();
+                $stmt -> close();
+                $stmt = null;
+            }
+        }
+
+        #Detalle de venta
+        static public function detalleVentaModel($tabla, $valor){
+            $stmt = Conexion::conectar() -> prepare("
+            select v.folio, DATE_FORMAT(v.momento, '%d/%M/%Y - %H:%i:%S') momento, u.nombre as cliente, 
+            sum(v_s.precioventa * v_s.cantidad) as total from $tabla v 
+            inner join venta_salida v_s on v.idventa = v_s.idventa 
+            inner join user u on v.iduser = u.iduser 
+            where v.idventa = :idventa and v_s.status = 1;");
+
+            $stmt -> bindParam(":idventa", $valor, PDO::PARAM_INT);
+            $stmt -> execute();
+            return $stmt -> fetch();
+            $stmt -> close();
+            $stmt = null;
+        }
+
+        #Detalle de Venta producto
+        static public function detalleVPModel($tabla, $valor){
+            $stmt = Conexion::conectar() -> prepare("select 
+            v_s.idventa_salida, p.nombre as producto, p.idpro, v_s.precioventa, v_s.cantidad from $tabla v_s 
+            inner join pro p on v_s.idpro = p.idpro where v_s.idventa = :idventa and v_s.status = 1;");
+
+            $stmt -> bindParam(":idventa", $valor, PDO::PARAM_INT);
+            $stmt -> execute();
+            return $stmt -> fetchAll();
+            $stmt -> close();
+            $stmt = null;
+        }
+
+        #Quitar Salida
+        static public function quitarSalidaModel($tabla, $valor){
+            $stmt = Conexion::conectar() -> prepare(
+                "update $tabla set status = 0 where idventa_salida = :idventa_salida;"
+            );
+
+            $stmt -> bindParam(":idventa_salida", $valor, PDO::PARAM_INT);
+
+            if($stmt -> execute()){
+                return "ok";
+            }else{
+                return "error";
+            }
+            $stmt -> close();
+            $stmt = null;
+        }
+
+        #Registrar Salida de productos
+        static public function registrarSalidaModel($datosModel, $tabla){
+            $stmt = Conexion::conectar() -> prepare(
+                "insert into $tabla (idventa, idpro, precioventa, cantidad) 
+                 values (:idventa, :idpro, :precioventa, :cantidad);"
+            );
+
+            $stmt -> bindParam(":idventa", $datosModel["venta"], PDO::PARAM_INT);
+            $stmt -> bindParam(":idpro", $datosModel["producto"], PDO::PARAM_INT);
+            $stmt -> bindParam(":precioventa", $datosModel["precioventa"], PDO::PARAM_INT);
+            $stmt -> bindParam(":cantidad", $datosModel["cantidad"], PDO::PARAM_INT);
+
+            if($stmt -> execute()){
+                return "ok";
+            }else{
+                return "error";
+            }
+            $stmt -> close();
+            $stmt = null;
+        }
+
+        #Seleccionar Cliente Venta
+        static public function seleccionarClienteModel($tabla, $item, $valor){
+            if ($item == null && $valor == null) {
+                $stmt = Conexion::conectar() -> prepare("
+                    select iduser, nombre from $tabla where tipo = 3 and status = 1 order by nombre asc;
+                ");
+                $stmt -> execute();
+                return $stmt -> fetchAll();
+                $stmt -> close();
+                $stmt = null;
+            }else{
+                $stmt = Conexion::conectar() -> prepare("
+                    select nombre from $tabla where iduser = :iduser and tipo = 3 and status = 1;
+                ");
+                $stmt -> bindParam(":".$item, $valor, PDO::PARAM_INT);
+                $stmt -> execute();
+                return $stmt -> fetch();
+                $stmt -> close();
+                $stmt = null;
+            }
+        }
+
+        #Verificar Ventas
+        static public function verificarVentaModel($tabla, $datosModel){
+            $stmt = Conexion::conectar() -> prepare("
+            select count(*) as coincide from $tabla v 
+            inner join user u on u.iduser = v.iduser 
+            where v.folio = :folio and v.iduser = :cliente and v.status >= 1;
+            ");
+
+            $stmt -> bindParam(':folio', $datosModel["folio"], PDO::PARAM_STR);
+            $stmt -> bindParam(':cliente', $datosModel["cliente"], PDO::PARAM_INT);
+            $stmt -> execute();
+            return $stmt -> fetch();
             $stmt -> close();
             $stmt = null;
         }
@@ -1792,6 +1973,5 @@
             $stmt -> close();
             $stmt = null;
         }
-
         
     }

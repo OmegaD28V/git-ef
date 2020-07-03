@@ -25,7 +25,7 @@
             }else if ($enlaces == "ok") {
                 $module = "views/modules/inicio.php";
             }else{
-                $module =  "views/modules/inicio.php";
+                $module =  "views/modules/manager404.php";
             }
             return $module;
         }

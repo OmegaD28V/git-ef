@@ -731,6 +731,16 @@
     align-content: center;
     padding: 5px 0;
   }
+  
+  .error404-img{
+    justify-content: center;
+    align-content: center;
+    padding: 5px 0;
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    padding: 0px;
+  }
 
   .form-quitar-image{
     display: inline-block;
@@ -1183,6 +1193,29 @@
     padding: 2px 0;
   }
 
+  .extra-button-small{
+    display: inline-block;
+     font-size: 1.1rem;
+    /*font-weight: lighter;
+    font-family: 'Poppins'; */
+    background-color: transparent;
+    color: rgb(17, 50, 238);
+    border-radius: 20px;
+    text-decoration: none;
+    outline: none;
+    border: 1px solid rgb(17, 50, 238);
+    width: auto;
+    text-align: center;
+    margin: 10px 0 auto 0;
+    padding: 2px 15px;
+  }
+  
+  .extra-button-small:hover, .extra-button:hover{
+    background-color: rgb(17, 50, 238);
+    color: white;
+    box-shadow: 0px 0px 10px rgb(112, 257, 241);
+  }
+
   .contenedor-formulario > .user-form{
     min-width: 300px;
   }
@@ -1364,6 +1397,19 @@
     padding: 10px;
     background-color: limegreen;
     color: white;
+  }
+
+  .info-nodata{
+    display: inline-block;
+    width: calc(100% - 20px);
+    font-size: 1rem;
+    text-align: center;
+    border-radius: 4px;
+    margin: 20px 0 0 0;
+    padding: 10px;
+    background-color: rgb(255, 243, 204);
+    color: rgb(133, 100, 4);
+    border: 1px solid rgb(0, 0, 0);
   }
   
   .main-container .section .contenedorImagen{

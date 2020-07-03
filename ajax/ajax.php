@@ -7,6 +7,7 @@
         public $validEmail;
         public $validPro;
         public $pro;
+        public $proFPrice;
         // public $validName;
         // public $validApe;
 
@@ -28,6 +29,13 @@
         public function proAjax(){
             $valor = $this -> pro;
             $r = MvcController::seleccionarProPrecioMinimoController($valor);
+            echo json_encode($r);
+        }
+        
+        #Obtener precio de venta.
+        public function proFPriceAjax(){
+            $valor = $this -> proFPrice;
+            $r = MvcController::seleccionarProPrecioExistenciaController($valor);
             echo json_encode($r);
         }
         
@@ -65,6 +73,13 @@
         $objPro = new Ajax();
         $objPro -> pro = $_POST["pro"];
         $objPro -> proAjax();
+    }
+    
+    #Objeto de Ajax que recibe la variable post.
+    if (isset($_POST["proFPrice"])) {
+        $objProFPrice = new Ajax();
+        $objProFPrice -> proFPrice = $_POST["proFPrice"];
+        $objProFPrice -> proFPriceAjax();
     }
     
     // #Objeto de Ajax que recibe la variable post.

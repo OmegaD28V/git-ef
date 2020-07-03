@@ -74,6 +74,8 @@
                     $modulo =  "EF | Detalle de Compra";
                 }elseif ($_GET['action'] == "venta") {
                     $modulo =  "EF | Detalle de Venta";
+                }elseif ($_GET['action'] == "manager404") {
+                    $modulo =  "EF | Página no encontrada";
                 }else{
                     $modulo = "Electrónica Fonseca.";
                 }

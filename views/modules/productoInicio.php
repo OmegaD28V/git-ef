@@ -56,6 +56,10 @@
                     ?>
                 </form>
                     <?php
+                        }else {
+                            ?>
+                <a class="ver-mas" href="index.php?action=producto&idpro=<?=$value["idpro"]?>">Ver más</a>
+                            <?php
                         }
                     }else {
                         ?>

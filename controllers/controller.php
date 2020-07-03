@@ -182,6 +182,13 @@
             return $respuesta;
         }
         
+        #Seleccionar Existencia de Producto
+        static public function seleccionarProPrecioExistenciaController($valor){
+            $tabla = "pro";
+            $respuesta = Datos::seleccionarProPrecioExistenciaModel($tabla, $valor);
+            return $respuesta;
+        }
+        
         #Seleccionar Precio Minimo Producto
         static public function seleccionarProPrecioMinimoController($valor){
             $tabla = "pro";
@@ -715,7 +722,7 @@
             }
         }
 
-        #Seleccionar Productos
+        #Seleccionar Proveedores Compra
         static public function seleccionarProveedorController($item, $valor){
             if ($item == null && $valor == null) {
                 $respuesta = Datos::seleccionarProveedorModel(null, $item, $valor);
@@ -972,6 +979,177 @@
                             window.location = "index.php?action=compraEditar&into='.$ticket.'&err=re";
                         </script>';
                 }
+            }
+        }
+
+        #Registrar Venta
+        static public function registrarVentaController(){
+            $tabla = "venta";
+            if (isset($_POST["client"])) {
+                $nameClient = Datos::seleccionarClienteModel("user", "iduser", $_POST["client"]);
+                $nombreCliente = "";
+                if ($nameClient == null) {
+                    $nombreCliente = "NoEncontrado";
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=ventaRegistrar&err=pc";
+                        </script>';
+                }else{
+                    $nombreCliente = $nameClient["nombre"];
+                    $date = new DateTime("now", new DateTimeZone("America/Mexico_City"));
+                    $fechaActual = $date -> format("YmdHis");
+                    $num = mt_rand(0, 99);
+                    if ($num < 10) {
+                        $num = "0".$num;
+                    }
+                    $folio = substr($nombreCliente, 0, 3)."-".$fechaActual.$num;
+                    if(preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ0-9-_ ]{20}+$/", $folio)){
+                        $datosController = array(
+                            "folio" => $folio, 
+                            "cliente" => $_POST["client"]
+                        );
+                        $verificarVenta = Datos::verificarVentaModel($tabla, $datosController);
+                        if ($verificarVenta["coincide"] >= 1) {
+                            echo '<script>
+                                    if(window.history.replaceState){
+                                        window.history.replaceState(null, null, window.location.href);
+                                    }
+                                    window.location = "index.php?action=ventas&not6=true";
+                                </script>';
+                        }else{
+                            $ticket = $folio;
+                            $registro = Datos::registrarVentaModel($tabla, $datosController);
+                            $select = Datos::seleccionarVentaModel($tabla, $datosController, null);
+                            $ticket = $select["idventa"];
+                            if ($registro == "ok") {
+                                echo '<script>
+                                        if(window.history.replaceState){
+                                            window.history.replaceState(null, null, window.location.href);
+                                        }
+                                        window.location = "index.php?action=ventaSalida&into='.$ticket.'";
+                                    </script>';
+                            }else{
+                                echo '<script>
+                                        if(window.history.replaceState){
+                                            window.history.replaceState(null, null, window.location.href);
+                                        }
+                                        window.location = "index.php?action=ventaRegistrar&err=pc";
+                                    </script>';
+                            }
+                        }
+                    }else{
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=ventaRegistrar&err=pc";
+                            </script>';
+                    }
+                }
+            }
+        }
+        
+        #Seleccionar Ventas
+        static public function seleccionarVentasController(){
+            $tabla = "venta";
+            $respuesta = Datos::seleccionarVentasModel($tabla);
+            return $respuesta;
+        }
+
+        #Seleccionar Venta
+        static public function seleccionarVentaController($ticket){
+            $datosController = null;
+            $tabla = "venta";
+            $respuesta = Datos::seleccionarVentaModel($tabla, $datosController, $ticket);
+            return $respuesta;
+        }
+
+        #Detalle Venta
+        static public function detalleVentaController($valor){
+            $tabla = "venta";
+            $respuesta = Datos::detalleVentaModel($tabla, $valor);
+            return $respuesta;
+        }
+
+        #Detalle Venta Producto
+        static public function detalleVPController($valor){
+            $tabla = "venta_salida";
+            $respuesta = Datos::detalleVPModel($tabla, $valor);
+            return $respuesta;
+        }
+
+        #Quitar Salida
+        public function quitarSalidaController($ticket){
+            if (isset($_POST["removeIntro"]) && isset($_GET["into"])) {
+                $ticket = $_GET["into"];
+                $tabla = "venta_salida";
+                $valor = $_POST["removeIntro"];
+                $respuesta = Datos::quitarSalidaModel($tabla, $valor);
+                if ($respuesta == "ok") {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=ventaSalida&into='.$ticket.'&not3=true";
+                        </script>';
+                }
+                return $respuesta;
+            }
+        }
+
+        #Registrar Salida
+        static public function registrarSalidaController($ticket){
+            $tabla = "venta_salida";
+            if(isset($_POST["hiddenVenta"]) && isset($_GET["into"])){
+                if (
+                    preg_match("/^[0-9.]{1,9}+$/", $_POST["buyPrice"]) && 
+                    preg_match("/^[0-9]{1,9}+$/", $_POST["cuantity"])
+                ) {
+                    $ticket = $_GET["into"];
+                    $datosController = array(
+                        "venta" => $_POST["hiddenVenta"], 
+                        "producto" => $_POST["product"], 
+                        "precioventa" => $_POST["buyPrice"], 
+                        "cantidad" => $_POST["cuantity"]);
+                    
+                    $respuesta = Datos::registrarSalidaModel($datosController, $tabla);
+                    if ($respuesta == "ok") {
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=ventaSalida&into='.$ticket.'&not0=true";
+                            </script>';
+                    }else{
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=ventaSalida&into='.$ticket.'&err=re";
+                            </script>';
+                    }   
+                }else {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=ventaSalida&into='.$ticket.'&eTrr=re";
+                        </script>'; 
+                }
+            }
+        }
+
+        #Seleccionar Clientes Venta
+        static public function seleccionarClienteController($item, $valor){
+            $tabla = "user";
+            if ($item == null && $valor == null) {
+                $respuesta = Datos::seleccionarClienteModel($tabla, $item, $valor);
+                return $respuesta;
+            }else{
+                $respuesta = Datos::seleccionarClienteModel($tabla, $item, $valor);
+                return $respuesta;
             }
         }
 

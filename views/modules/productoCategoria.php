@@ -8,13 +8,32 @@
     }
 ?>
 <div class="contenedor-formulario">
-    <div class="gridFichas">
     <?php
+    if ($productoCategoria == null) {
+        ?>
+    <div><span class="info-nodata">Aún no hay datos aquí</span></div>
+    <div><a class="extra-button-small" href="index.php?action=inicio">Volver al Inicio</a></div>
+        <?php
+    }else{
+        ?>
+    <div class="gridFichas">
+        <?php
         foreach ($productoCategoria as $key => $value) {
-    ?>
+        ?>
         <div class="fichas">
             <div class="imagen">
-                <img class="img" src="ima/a3.jpg" alt="a" width="240" height="300">
+                <?php
+                    $imagenFicha = MvcController::fichaImagenController($value["idpro"]);
+                    if ($imagenFicha == null) {
+                        ?>
+                    <img class="i-p-img" src="ima/a3.jpg" alt="a" width="240" height="300">
+                        <?php
+                    }else {
+                        ?>
+                    <img class="i-p-img" src="<?=$imagenFicha["ruta"]?>" alt="img" loading="lazy" width="240" height="300">
+                        <?php                    
+                    }
+                ?>
             </div>
             <div class="info">
                 <span class="ficha-name-pro"><?=$value["nombre"]?></span>
@@ -43,6 +62,10 @@
                     ?>
                 </form>
                     <?php
+                        }else {
+                            ?>
+                <a class="ver-mas" href="index.php?action=producto&idpro=<?=$value["idpro"]?>">Ver más</a>
+                            <?php
                         }
                     }else {
                         ?>
@@ -53,8 +76,11 @@
                 </div>
             </div>
         </div>
-    <?php
+        <?php
         }
-    ?>
+        ?>
     </div>    
+        <?php
+    }
+    ?>
 </div>

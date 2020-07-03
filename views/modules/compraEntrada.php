@@ -2,9 +2,8 @@
     if (!(isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
         echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
     }else {
-        if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] == "master") {
-            ?>
-            <?php
+        if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] != "master") {
+            echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
         }
     }
 
@@ -148,7 +147,7 @@
             ?>
 
             <div class="input-group">
-                <a class="extra-button" href="index.php?action=productoCompra&uBuy=<?=$compra["idcompra"]?>">Concluir Compra</a>
+                <a class="extra-button" href="index.php?action=compraRegistrar&uBuy=<?=$compra["idcompra"]?>">Concluir Compra</a>
             </div>
         </form>
     </div>

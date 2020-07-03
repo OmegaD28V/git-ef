@@ -317,6 +317,33 @@ $("#imageProduct").change(function () {
     }
 })
 
+$('#product').change(function(){
+    var pro = $('#product').val();
+    var datos = new FormData();
+    datos.append("proFPrice", pro);
+
+    $.ajax({
+        url: "ajax/ajax.php", 
+        method: "post", 
+        data: datos, 
+        cache: false, 
+        contentType: false, 
+        processData: false, 
+        dataType: "json", 
+        success: function(respuesta){
+            if (respuesta) {
+                $('#Price').val('$ ' + respuesta["precio"]);
+                $('#buyPrice').val(respuesta["precio"]);
+                $('#enable').val(respuesta["existencia"] + ' disponibles');
+                $('#exist').val(respuesta["existencia"]);
+                $('#cuantity').attr("max", respuesta["existencia"]);
+                console.log('$ ' + respuesta["precio"]);
+                console.log(respuesta["existencia"]);
+            }
+        }
+    });
+})
+
 function generateNameUser() {
     $('#correo-user').val('');
     var sizeNombre;

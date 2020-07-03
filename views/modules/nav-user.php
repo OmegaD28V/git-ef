@@ -1,5 +1,6 @@
 <?php
     $categorias = MvcController::seleccionarCategoriaController(null, null);
+    $marcas = MvcController::seleccionarMarcaController(null, null);
 ?>
 <header class="header" id="header">
     <div class="encabezado">
@@ -72,18 +73,70 @@
                 <?php
                     }
                 ?>
+                
+                <?php
+                    if ($_GET["action"] == "marca" || $_GET["action"] == "productoMarca") {
+                ?>
+                    <li id="nav-item4" title="Marcas" class="nav-items"><a class="module" href="index.php?action=marca"><i class="fas fa-copyright"></i>Marcas</a>
+                        <ul class="nav-ul-li-ul">
+                            <?php
+                                foreach ($marcas as $key => $value) {
+                            ?>
+                                <li class="nav-items">
+                                    <a class="aCat" href="index.php?action=productoMarca&tm=<?=$value["idpro_marca"]?>"><?=$value["marca"]?></a>
+                                </li>
+                            <?php
+                                }
+                            ?>
+                                
+                        </ul>
+                    </li>
+                <?php
+                    }else{
+                ?>
+                    <li id="nav-item4" title="Marcas" class="nav-items"><a href="index.php?action=marca"><i class="fas fa-copyright"></i>Marcas</a>
+                        <ul class="nav-ul-li-ul">
+                            <?php
+                                foreach ($marcas as $key => $value) {
+                            ?>
+                                <li class="nav-items">
+                                    <a class="aCat" href="index.php?action=productoMarca&tm=<?=$value["idpro_marca"]?>"><?=$value["marca"]?></a>
+                                </li>
+                            <?php
+                                }
+                            ?>
+                                
+                        </ul>
+                    </li>
+                <?php
+                    }
+                ?>
             <?php
             }else{
             ?>
                 <li id="nav-item1" title="Inicio" class="nav-items"><a class="module" href="index.php?action=inicio"><i class="fas fa-home a-module"></i>Inicio</a></li>
                 <li id="nav-item2" title="Productos" class="nav-items"><a href="index.php?action=productoInicio"><i class="fas fa-tags"></i>Productos</a></li>
-                <li id="nav-item2" title="Categorías" class="nav-items"><a href="index.php?action=categoria"><i class="fas fa-cubes"></i>Categorías</a>
+                <li id="nav-item3" title="Categorías" class="nav-items"><a href="index.php?action=categoria"><i class="fas fa-cubes"></i>Categorías</a>
                     <ul class="nav-ul-li-ul">
                         <?php
                             foreach ($categorias as $key => $value) {
                         ?>
                             <li class="nav-items">
                                 <a class="aCat" href="index.php?action=productoCategoria&cat=<?=$value["idpro_categoria"]?>"><?=$value["categoria"]?></a>
+                            </li>
+                        <?php
+                            }
+                        ?>
+                             
+                    </ul>
+                </li>
+                <li id="nav-item4" title="Marcas" class="nav-items"><a href="index.php?action=marca"><i class="fas fa-copyright"></i>Marcas</a>
+                    <ul class="nav-ul-li-ul">
+                        <?php
+                            foreach ($marcas as $key => $value) {
+                        ?>
+                            <li class="nav-items">
+                                <a class="aCat" href="index.php?action=productoMarca&tm=<?=$value["idpro_marca"]?>"><?=$value["marca"]?></a>
                             </li>
                         <?php
                             }
@@ -105,10 +158,10 @@
                 $nombreUsuario = $_SESSION["identity"];
             }
         ?>
-        <span class="span-user-log">Bienvenido <?=$nombreUsuario?></span>
+        <span class="span-user-log">Bienvenid@ <?=$nombreUsuario?></span>
         <button class="button-adjust" id="button-adjust"><i class="fas fa-user"></i>
             <div class="panel-usuario" id="panel-usuario">
-                <div class="mensaje">Bienvenido</div>
+                <div class="mensaje">Bienvenid@</div>
                 <div class="line-user"></div>
                 <a href="index.php?action=usuarioConfiguracion" class="pU-opciones">Configuración</a>
                 <a href="index.php?action=usuarioSalir" class="pU-opciones">Cerrar Sesión</a>
