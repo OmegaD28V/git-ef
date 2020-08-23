@@ -2,6 +2,22 @@
     require_once "conexion.php";
 
     class Datos extends Conexion{
+        #Buscar Productos.
+        static public function buscarProModel($valor, $tabla){
+            $stmt = Conexion::conectar() -> prepare("
+                select idpro, nombre from $tabla where nombre like :valor and status = 1;
+            ");
+
+            $valor = "%".$valor."%";
+
+            $stmt -> bindParam(":valor", $valor, PDO::PARAM_STR);
+            $stmt -> execute();
+            return $stmt -> fetchAll();
+            $stmt -> close();
+            $stmt = null;
+        }
+
+
         #Registro de productos
         static public function registrarProductoModel($datosModel, $tabla){
             $stmt = Conexion::conectar() -> prepare(
@@ -471,7 +487,8 @@
         #Seleccionar productos
         static public function seleccionarProductoModel($tabla, $item, $valor){
             if ($item == null && $valor == null) {
-                $stmt = Conexion::conectar() -> prepare("select p_c.idpro_categoria, p_c.categoria, p.idpro, p.nombre, p_p.precio, p.descripcion  
+                $stmt = Conexion::conectar() -> prepare("
+                select p_c.idpro_categoria, p_c.categoria, p.idpro, p.nombre, p_p.precio, p.descripcion, p.existencia 
                 from $tabla p 
                 inner join pro_categoria p_c on p.idpro_categoria = p_c.idpro_categoria 
                 inner join pro_precio p_p on p_p.idpro = p.idpro 
@@ -495,12 +512,44 @@
                 $stmt = null;
             }
         }
+
+        #Seleccionar productos con paginación
+        static public function selProPagModel($tabla, $inicio, $articulos){
+            $sql = Conexion::conectar() -> prepare("
+                select p_c.idpro_categoria, p_c.categoria, p.idpro, p.nombre, p_p.precio, p.descripcion, p.existencia 
+                from $tabla p 
+                inner join pro_categoria p_c on p.idpro_categoria = p_c.idpro_categoria 
+                inner join pro_precio p_p on p_p.idpro = p.idpro 
+                where (p.status = 1) and (p_p.tipo = 1) and (p_c.status = 1) order by p.nombre 
+                limit :inicio, :articulos;
+            ");
+
+            $sql -> bindParam(":inicio", $inicio, PDO::PARAM_INT);
+            $sql -> bindParam(":articulos", $articulos, PDO::PARAM_INT);
+            $sql -> execute();
+            return $sql -> fetchAll();
+            $sql -> close();
+            $sql = null;
+        }
+
+        #Contar total de productos.
+        static public function contarProductosModel($tabla){
+            $sql = Conexion::conectar() -> prepare("
+                select count(*) as total from $tabla p where p.status = 1;
+            ");
+            $sql -> execute();
+            return $sql -> fetch();
+            $sql -> close();
+            $sql = null;
+        }
         
         #Seleccionar productos Deshabilitados
         static public function seleccionarProductoDeshabilitadoModel($tabla){
-            $stmt = Conexion::conectar() -> prepare("select p_c.idpro_categoria, p_c.categoria, p.idpro, p.nombre, p.descripcion  
+            $stmt = Conexion::conectar() -> prepare("
+            select p_c.idpro_categoria, p_c.categoria, p.idpro, p.nombre, p.descripcion, p.existencia, p_p.precio  
             from $tabla p 
             inner join pro_categoria p_c on p.idpro_categoria = p_c.idpro_categoria 
+            inner join pro_precio p_p on p.idpro = p_p.idpro 
             where p.status = 0;");
             $stmt -> execute();
             return $stmt -> fetchAll();
@@ -510,7 +559,8 @@
 
         #Seleccionar productos Sin Stock
         static public function seleccionarProductoSinStockModel($tabla){
-            $stmt = Conexion::conectar() -> prepare("select p_c.idpro_categoria, p_c.categoria, p.idpro, p.nombre, p.descripcion  
+            $stmt = Conexion::conectar() -> prepare("
+            select p_c.idpro_categoria, p_c.categoria, p.idpro, p.nombre, p.descripcion  
             from $tabla p 
             inner join pro_categoria p_c on p.idpro_categoria = p_c.idpro_categoria 
             where p.status = 2;");
@@ -739,16 +789,29 @@
         }
 
         #Seleccionar Compras
-        static public function seleccionarComprasModel($tabla){
+        static public function seleccionarComprasModel($tabla, $inicio, $cantidad){
             $stmt = Conexion::conectar() -> prepare("select 
             c.idcompra, c.folio, c.iduser, c.status, u.nombre, 
             DATE_FORMAT(c.momento, '%d/%M/%Y - %H:%i:%S') momento 
             from $tabla c inner join user u on u.iduser = c.iduser 
-            where c.status >= 1 order by c.momento desc;");
+            where c.status >= 1 order by c.momento desc limit :inicio, :cantidad;");
+            $stmt -> bindParam(":inicio", $inicio, PDO::PARAM_INT);
+            $stmt -> bindParam(":cantidad", $cantidad, PDO::PARAM_INT);
             $stmt -> execute();
             return $stmt -> fetchAll();
             $stmt -> close();
             $stmt = null;
+        }
+
+        #Contar compras.
+        static public function contarComprasModel($tabla){
+            $sql = Conexion::conectar() -> prepare("
+                select count(*) as total from $tabla where status >= 1;
+            ");
+            $sql -> execute();
+            return $sql -> fetch();
+            $sql -> close();
+            $sql = null;
         }
         
         #Recuperar Compra
@@ -898,7 +961,7 @@
                 }
             }
             
-            if($result1 == "terminado" && $result2 != "error"){
+            if($result1 != "error" && $result2 == "terminado"){
                 return "ok";
             }else{
                 return "error";
@@ -954,16 +1017,29 @@
         }
         
         #Seleccionar Ventas
-        static public function seleccionarVentasModel($tabla){
+        static public function seleccionarVentasModel($tabla, $inicio, $cantidad){
             $stmt = Conexion::conectar() -> prepare("select 
             v.idventa, v.folio, v.iduser, v.status, u.nombre, 
             DATE_FORMAT(v.momento, '%d/%M/%Y - %H:%i:%S') momento 
             from $tabla v inner join user u on u.iduser = v.iduser 
-            where v.status >= 1 order by v.momento desc;");
+            where v.status >= 1 order by v.momento desc limit :inicio, :cantidad;");
+            $stmt -> bindParam(":inicio", $inicio, PDO::PARAM_INT);
+            $stmt -> bindParam(":cantidad", $cantidad, PDO::PARAM_INT);
             $stmt -> execute();
             return $stmt -> fetchAll();
             $stmt -> close();
             $stmt = null;
+        }
+
+        #Contar ventas.
+        static public function contarVentasModel($tabla){
+            $sql = Conexion::conectar() -> prepare("
+                select count(*) as total from $tabla where status >= 1;
+            ");
+            $sql -> execute();
+            return $sql -> fetch();
+            $sql -> close();
+            $sql = null;
         }
 
         #Seleccionar Venta
@@ -991,6 +1067,20 @@
                 $stmt -> close();
                 $stmt = null;
             }
+        }
+
+        #Recuperar Venta
+        static public function recuperarVentaModel($tabla, $valor){
+            $stmt = Conexion::conectar() -> prepare("
+                select v.idventa, v.folio, u.nombre from $tabla v 
+                inner join user u on u.iduser = v.iduser 
+                where v.idventa = :idventa and v.status = 1;"
+            );
+            $stmt -> bindParam(":idventa", $valor, PDO::PARAM_INT);
+            $stmt -> execute();
+            return $stmt -> fetch();
+            $stmt -> close();
+            $stmt = null;
         }
 
         #Detalle de venta
@@ -1037,6 +1127,70 @@
             }
             $stmt -> close();
             $stmt = null;
+        }
+
+        #Quitar Venta sin concluir
+        static public function quitarVentaModel($tabla, $valor){
+            $stmt = Conexion::conectar() -> prepare(
+                "update $tabla set status = 0 where idventa = :idventa;"
+            );
+
+            $stmt -> bindParam(":idventa", $valor, PDO::PARAM_INT);
+
+            if($stmt -> execute()){
+                return "ok";
+            }else{
+                return "error";
+            }
+            $stmt -> close();
+            $stmt = null;
+        }
+
+        #Concluir venta
+        static public function ventaFinalizadaModel($item, $valor, $tabla){
+            $stmt = Conexion::conectar() -> prepare(
+                "update $tabla set status = 2 where $item = :$item;"
+            );
+            $stmt2 = Conexion::conectar() -> prepare(
+                "select idpro, precioventa, cantidad from venta_salida where $item = :$item and status = 1;"
+            );
+            
+            $stmt -> bindParam(":".$item, $valor, PDO::PARAM_INT);
+            $stmt2 -> bindParam(":".$item, $valor, PDO::PARAM_INT);
+            
+            $stmt -> execute();
+            $stmt2 -> execute();
+            $result0 = $stmt2 -> fetchAll();
+            $result1 = "esperando";
+
+            foreach ($result0 as $key => $value) {
+                $stmt3 = Conexion::conectar() -> prepare(
+                    "update pro set existencia = existencia - :existencia where idpro = :idpro;"
+                ); 
+
+                $stmt3 -> bindParam(":existencia", $value["cantidad"], PDO::PARAM_INT);
+                $stmt3 -> bindParam(":idpro", $value["idpro"], PDO::PARAM_INT);
+                if($stmt3 -> execute()){
+                    $result1 = "terminado";
+                    // $stmt3 -> close();
+                    // $stmt3 = null;
+                }else{
+                    $result1 = "error";
+                }
+            }
+            
+            if($result1 == "terminado"){
+                return "ok";
+            }else{
+                return "error";
+            }
+            $stmt -> close();
+            $stmt2 -> close();
+            $stmt3 -> close();
+            $stmt4 -> close();
+            $stmt = null;
+            $stmt2 = null;
+            $stmt3 = null;
         }
 
         #Registrar Salida de productos
@@ -1311,6 +1465,94 @@
                 $stmt3 = null;
                 $stmt4 = null;
                 $stmt5 = null;
+            }elseif ($tipoUsuario == 1) {
+                $stmt = Conexion::conectar() -> prepare(
+                    "insert into $tabla (tipo, nombre, usuario, contrasena, fecha) 
+                     values (1, :nombre, :usuario, :contrasena, now());"
+                );
+    
+                $stmt -> bindParam(":nombre",  $datosModel["nombre"], PDO::PARAM_STR);
+                $stmt -> bindParam(":usuario", $datosModel["correo"], PDO::PARAM_STR);
+                $stmt -> bindParam(":contrasena", $datosModel["contrasena"], PDO::PARAM_STR);
+                $stmt -> execute();
+
+                $stmt2 = Conexion::conectar() -> prepare("
+                    select iduser from $tabla where tipo = 1 and status = 1 and usuario = :usuario;
+                ");
+                $stmt2 -> bindParam(":usuario", $datosModel["correo"], PDO::PARAM_STR);
+                $stmt2 -> execute();
+                $result = $stmt2 -> fetch();
+
+                //Niveles:
+                /**
+                 * 0: Sin acceso
+                 * 1: Acceso a lectura de datos
+                 * 2: Acceso a ingresar datos
+                 * 3: Acceso a ingresar y editar datos
+                 * 4: Acceso total a los datos
+                 * El patrón de acceso al sistema será de 5 dígitos, los cuales indican, en su 
+                 * posición de izquierda a derecha, el sub-módulo al que se le asigna el permiso.
+                 * Primer dígito: Acceso a toda la información propia de los productos.
+                 * Segundo dígito: Acceso a los proveedores.
+                 * Tercer dígito: Acceso a los clientes.
+                 * Cuarto dígito: Acceso a las compras.
+                 * Quinto dígito: Acceso a las ventas.
+                 */
+
+                if($datosModel["permisos"] == 0){
+                    $stmt3 = Conexion::conectar() -> prepare("
+                        insert into user_modulo(iduser, modulo) value(:iduser, 33333);
+                    ");
+                    $stmt3 -> bindParam(":iduser", $result["iduser"], PDO::PARAM_INT);
+                    if($stmt3 -> execute()){
+                        return "ok";
+                    }else{
+                        return "error";
+                    }
+                }elseif ($datosModel["permisos"] == 1) {
+                    $stmt3 = Conexion::conectar() -> prepare("
+                        insert into user_modulo(iduser, modulo) value(:iduser, 11303);
+                    ");
+                    $stmt3 -> bindParam(":iduser", $result["iduser"], PDO::PARAM_INT);
+                    if($stmt3 -> execute()){
+                        return "ok";
+                    }else{
+                        return "error";
+                    }
+                }elseif ($datosModel["permisos"] == 2) {
+                    $stmt3 = Conexion::conectar() -> prepare("
+                        insert into user_modulo(iduser, modulo) value(:iduser, 13130);
+                    ");
+                    $stmt3 -> bindParam(":iduser", $result["iduser"], PDO::PARAM_INT);
+                    if($stmt3 -> execute()){
+                        return "ok";
+                    }else{
+                        return "error";
+                    }
+                }elseif ($datosModel["permisos"] == 3) {
+                    $stmt3 = Conexion::conectar() -> prepare("
+                        insert into user_modulo(iduser, modulo) value(:iduser, 30000);
+                    ");
+                    $stmt3 -> bindParam(":iduser", $result["iduser"], PDO::PARAM_INT);
+                    if($stmt3 -> execute()){
+                        return "ok";
+                    }else{
+                        return "error";
+                    }
+                }
+
+
+                if($stmt3 -> execute()){
+                    return "ok";
+                }else{
+                    return "error";
+                }
+                $stmt -> close();
+                $stmt2 -> close();
+                $stmt3 -> close();
+                $stmt = null;
+                $stmt2 = null;
+                $stmt3 = null; 
             }
         }
         
@@ -1622,23 +1864,40 @@
         }
 
         #Seleccionar todos los usuarios.
-        static public function seleccionarUsuariosModel($tabla, $valor){
-            if ($valor == "cli") {
+        static public function seleccionarUsuariosModel($tabla, $tipo, $inicio, $cantidad){
+            if ($tipo == "cli") {
                 $stmt = Conexion::conectar() -> prepare("
                     select u.iduser, u.nombre, u.usuario, DATE_FORMAT(u.fecha, '%d/%M/%Y - %H:%i:%S') fecha 
                     from $tabla u 
-                    where tipo = 3 and status = 1;
+                    where tipo = 3 and status = 1 order by u.nombre limit :inicio, :cantidad;
                 ");
+                $stmt -> bindParam(":inicio", $inicio, PDO::PARAM_INT);
+                $stmt -> bindParam(":cantidad", $cantidad, PDO::PARAM_INT);
                 $stmt -> execute();
                 return $stmt -> fetchAll();
                 $stmt -> close();
                 $stmt = null;
-            }elseif ($valor == "prov") {
+            }elseif ($tipo == "prov") {
                 $stmt = Conexion::conectar() -> prepare("
                     select u.iduser, u.nombre, u.usuario, DATE_FORMAT(u.fecha, '%d/%M/%Y - %H:%i:%S') fecha 
                     from $tabla u 
-                    where tipo = 2 and status = 1;
+                    where tipo = 2 and status = 1 limit :inicio, :cantidad;
                 ");
+                $stmt -> bindParam(":inicio", $inicio, PDO::PARAM_INT);
+                $stmt -> bindParam(":cantidad", $cantidad, PDO::PARAM_INT);
+                $stmt -> execute();
+                return $stmt -> fetchAll();
+                $stmt -> close();
+                $stmt = null;
+            }elseif($tipo == "emp"){
+                $stmt = Conexion::conectar() -> prepare("
+                    select u.iduser, u.nombre, u.usuario, u_s.modulo, DATE_FORMAT(u.fecha, '%d/%M/%Y - %H:%i:%S') fecha 
+                    from $tabla u 
+                    inner join user_modulo u_s on u.iduser = u_s.iduser 
+                    where u.tipo = 1 and u.status = 1 limit :inicio, :cantidad;
+                ");
+                $stmt -> bindParam(":inicio", $inicio, PDO::PARAM_INT);
+                $stmt -> bindParam(":cantidad", $cantidad, PDO::PARAM_INT);
                 $stmt -> execute();
                 return $stmt -> fetchAll();
                 $stmt -> close();
@@ -1647,11 +1906,40 @@
                 $stmt = Conexion::conectar() -> prepare("
                     select usuario from $tabla where usuario = :usuario;
                 ");
-                $stmt -> bindParam(":usuario", $valor, PDO::PARAM_STR);
+                $stmt -> bindParam(":usuario", $tipo, PDO::PARAM_STR);
                 $stmt -> execute();
                 return $stmt -> fetch();
                 $stmt -> close();
                 $stmt = null;
+            }
+        }
+
+        #Contar usuarios.
+        static public function contarUsuariosModel($tabla, $tipo){
+            if ($tipo == "cli") {
+                $sql = Conexion::conectar() -> prepare("
+                    select count(*) as total from $tabla where tipo = 3 and status = 1;
+                ");
+                $sql -> execute();
+                return $sql -> fetch();
+                $sql -> close();
+                $sql = null;
+            }elseif($tipo == "prov"){
+                $sql = Conexion::conectar() -> prepare("
+                    select count(*) as total from $tabla where tipo = 2 and status = 1;
+                ");
+                $sql -> execute();
+                return $sql -> fetch();
+                $sql -> close();
+                $sql = null;
+            }elseif($tipo == "emp"){
+                $sql = Conexion::conectar() -> prepare("
+                    select count(*) as total from $tabla where tipo = 1 and status = 1;
+                ");
+                $sql -> execute();
+                return $sql -> fetch();
+                $sql -> close();
+                $sql = null;
             }
         }
         
@@ -1893,15 +2181,18 @@
                 return $stmt -> fetch();
                 $stmt -> close();
                 $stmt = null;
-            }else{
-                // $stmt = Conexion::conectar() -> prepare("
-                //     select usuario from $tabla where usuario = :usuario;
-                // ");
-                // $stmt -> bindParam(":usuario", $valor, PDO::PARAM_STR);
-                // $stmt -> execute();
-                // return $stmt -> fetch();
-                // $stmt -> close();
-                // $stmt = null;
+            }elseif ($tipo == "emp") {
+                $stmt = Conexion::conectar() -> prepare("
+                    select u.iduser, u.nombre, u.usuario, u.contrasena, u_s.modulo 
+                    from $tabla u 
+                    inner join user_modulo u_s on u.iduser = u_s.iduser 
+                    where u.iduser = :iduser and u.tipo = 1 and u.status = 1;
+                ");
+                $stmt -> bindParam(":iduser", $user, PDO::PARAM_INT);
+                $stmt -> execute();
+                return $stmt -> fetch();
+                $stmt -> close();
+                $stmt = null;
             }
         }
 
@@ -1964,7 +2255,9 @@
         #Inicio sesion de usuario
         static public function inicioSesionUsuarioModel($tabla, $valor){
             $stmt = Conexion::conectar() -> prepare(
-                "select *, DATE_FORMAT(fecha, '%d/%m/%Y') fecha from $tabla where usuario = :usuario;"
+                "select *, DATE_FORMAT(fecha, '%d/%m/%Y') fecha from $tabla u 
+                left outer join user_modulo u_m on u.iduser = u_m.iduser 
+                where usuario = :usuario and u.status = 1;"
             );
 
             $stmt -> bindParam(":usuario", $valor, PDO::PARAM_STR);
@@ -1973,5 +2266,22 @@
             $stmt -> close();
             $stmt = null;
         }
+
+        // static public function respaldarModel(){
+        //     // $stmt = Conexion::conectar() -> prepare("show tables;");
+        //     // $stmt -> execute();
+        //     // return $stmt -> fetchAll();
+        //     $db_host = 'localhost:3306';
+        //     $db_name = 'e_f';
+        //     // $db_user = 'cliente_ef';
+        //     $db_user = 'root';
+        //     // $db_password = 'f1ltr0 Moment4Ne0';
+        //     $db_password = 'godofwarascencion4panDitas28';
+        //     $fechaActual = date("isH-dmY");
+        //     $archivo_name = $db_name.'_'.$fechaActual.'.sql';
+        //     $dump = "mysqldump -u cliente_ef -password=$db_password e_f > mirespaldo0.sql";
+        //     // $dump = "C:\\Program Files\\MySQL\\MySQL Workbench 8.0 CE\\mysqldump -user=".$db_user." -password=".$db_password." -host=".$db_host." $db_name > $archivo_name";
+        //     system($dump, $output);
+        // }
         
     }

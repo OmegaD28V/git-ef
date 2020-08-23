@@ -2,7 +2,8 @@
     if (!(isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
         echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
     }else {
-        if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] != "master") {
+        if ($_SESSION["ingresoVerificado"] == "ok" && 
+        ($_SESSION["access"] != "master" && $_SESSION["access"] != "invite")) {
             echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
         }
     }
@@ -10,12 +11,12 @@
 if (isset($_GET["uBuy"])) {
     $item = "idventa";
     $valor = $_GET["uBuy"];
-    $producto = MvcController::compraFinalizadaController($item, $valor);
+    $producto = MvcController::ventaFinalizadaController($item, $valor);
 }
 ?>
 
 <div class="contenedor-formulario">
-    <form class="formulario" name="nuevaCompra" method="post">
+    <form class="formulario" name="nuevaVenta" method="post">
         <h2>Nueva Venta</h2>
         <div class="input-group">
             <label for="client">Cliente</label>
@@ -45,7 +46,7 @@ if (isset($_GET["uBuy"])) {
     if (isset($_GET["not1"])) {
         if ($_GET["not1"] == "true") {
             ?>
-            <script type="text/javascript" src="js/notificacion1.js"></script>
+            <script type="text/javascript" src="js/notificacion7.js"></script>
             <?php
         }
     }elseif (isset($_GET["err"])) {

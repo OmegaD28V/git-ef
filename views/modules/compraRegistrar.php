@@ -1,9 +1,10 @@
 <?php
     if (!(isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
-        echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
+        echo '<script>window.location = "usuarioInicioSession";</script>';
     }else {
-        if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] != "master") {
-            echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
+        if ($_SESSION["ingresoVerificado"] == "ok" && 
+        ($_SESSION["access"] != "master" && $_SESSION["access"] != "invite")) {
+            echo '<script>window.location = "usuarioInicioSession";</script>';
         }
     }
 
@@ -36,7 +37,7 @@ if (isset($_GET["uBuy"])) {
             </select>
         </div>
         <div class="input-group">
-            <a href="index.php?action=proveedorRegistrar" class="enlace-form">¿Este proveedor no está registrado?</a>
+            <a href="uProveedorRegistrar" class="enlace-form">¿Este proveedor no está registrado?</a>
         </div>
         <div class="input-group">
             <input type="submit" id="btnAgregarProductos" name="btnAgregarProductos" value="Agregar Productos" title="Agregar Productos">

@@ -96,7 +96,7 @@
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
 
         <!-- API Google Places -->
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFiGfcxMZchQlUNIGD6dz2RZc7Y_9iAi8&libraries=places"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
         <!-- <script src="https://maps.googleapis.com/maps/api/geocode/json?latlng=20.065136,-97.054607&key=AIzaSyBZXLpj_YTM5xyDp2mz3iu2m7cDkpd7Lz8"></script> -->
         
         <script src="https://kit.fontawesome.com/088ef51476.js" crossorigin="anonymous"></script>
@@ -139,6 +139,7 @@
             ?>
         </footer>
         <script type="text/javascript" src="views/scripts/uno.js"></script>
+        <script type="text/javascript" src="js/utilidades.js"></script>
         <script type="text/javascript" src="js/interMenu.js"></script>
         <script type="text/javascript" src="js/visibleUser.js"></script>
         <script type="text/javascript" src="js/hiddenPasswordUIS.js"></script>

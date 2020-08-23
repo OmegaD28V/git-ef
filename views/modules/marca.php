@@ -40,6 +40,25 @@
                             </form> -->
                         </td>
                             <?php
+                                }elseif ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] == "invite"){
+                                    if (substr($_SESSION["low"], 0, 1) == 3) {
+                                        ?>
+                        <td>
+                            <a class="editar" href="index.php?action=marcaEditar&tm=<?=$value["idpro_marca"]?>"><i class="fas fa-pen-square"></i>Editar</a>        
+                            <!-- <form class="formEliminar" method="post">
+                                <input class="inputEliminar" type="hidden" value="<?=$value["idpro_marca"]?>" name="removeTrademark">
+                                <button class="inputEliminar" type="submit" value="<?=$value["idpro_marca"]?>"><i class="fas fa-minus-square"></i>Quitar</button>
+                                <?php
+                                    // $quitarMarca = new MvcController();
+                                    // $quitarMarca -> quitarMarcaController();
+                                ?>
+                            </form> -->
+                        </td>
+                                      <?php
+                                    }elseif (substr($_SESSION["low"], 0, 1) <= 2) {
+                                        ?>
+                                      <?php
+                                    }
                                 }
                             }
                         ?>

@@ -1,3 +1,12 @@
+// $('#search').addListener('keydown', function(){
+//     var search = $(this).val();
+//     if (search != null || search != "") {
+//         console.log('Escribiendo');
+//     }else{
+//         console.log('Dejó de escribir');
+//     }
+// })
+
 $('#correo-user').change(function() {
     $('.info-f').remove();
     if ($(this).val().length > 60) {
@@ -69,8 +78,6 @@ $('#input3').change(function() {
     var pro = $(this).val();
     var datos = new FormData();
     datos.append("validPro", pro);
-    console.log(pro);
-    
 
     $('.info-f').remove();
     if ($(this).val().length > 10) {

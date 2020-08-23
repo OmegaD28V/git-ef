@@ -2,12 +2,25 @@
     if (!(isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
         echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
     }else {
-        if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] != "master") {
+        if ($_SESSION["ingresoVerificado"] == "ok" && 
+        ($_SESSION["access"] != "master" && $_SESSION["access"] != "invite")) {
             echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
         }
     }
 
-    $clientes = MvcController::seleccionarUsuariosController("cli");
+    if (isset($_GET["pag"])) {
+        $noClientes = MvcController::contarUsuariosController("cli");
+        $clientes = 5;
+        $paginas = ceil($noClientes["total"] / $clientes);
+        $inicio = ($_GET["pag"] - 1) * $clientes;
+        $clientes = MvcController::seleccionarUsuariosController("cli", $inicio, $clientes);
+        if ($_GET["pag"] < 1 || $_GET["pag"] > $paginas) {
+            echo '<script>window.location = "index.php?action=uClientes&pag=1"</script>';
+        }
+    }else{
+        echo '<script>window.location = "index.php?action=uClientes&pag=1"</script>';
+    }
+
 ?>
 
 <div class="contenedor-formulario">
@@ -53,11 +66,22 @@
                                 <?php
                             if ($email == null) {
                                 $correo = "Sin correo";
+                                if(substr($_SESSION["low"], 2, 1) >= 3){
+                                    ?>
+
+                                    <div class="content-msg-a">
+                                        <span class="d-p-price"><?=$correo?></span>
+                                        <a class="a-span-bottom" href="index.php?action=uClienteCorreo&cliD=<?=$value["iduser"]?>">Agregar</a>
+                                    </div>
+                                    <?php
+                                }else{
+                                    ?>
+                                    <div class="content-msg-a">
+                                        <span class="d-p-price"><?=$correo?></span>
+                                    </div>
+                                    <?php
+                                }
                                 ?>
-                            <div class="content-msg-a">
-                                <span class="d-p-price"><?=$correo?></span>
-                                <a class="a-span-bottom" href="index.php?action=uClienteCorreo&cliD=<?=$value["iduser"]?>">Agregar</a>
-                            </div>
                             <?php
                             }else {
                                 foreach ($email as $key => $value) {
@@ -73,11 +97,22 @@
                                 <?php  
                             if ($tel == null) {
                                 $telefono = "Sin teléfono";
+                                if(substr($_SESSION["low"], 2, 1) >= 3){
+                                    ?>
+
+                                    <div class="content-msg-a">
+                                        <span class="d-p-price"><?=$telefono?></span>
+                                        <a class="a-span-bottom" href="index.php?action=uClientePhone&cliD=<?=$value["iduser"]?>">Agregar</a>
+                                    </div>
+                                    <?php
+                                }else{
+                                    ?>
+                                    <div class="content-msg-a">
+                                        <span class="d-p-price"><?=$telefono?></span>
+                                    </div>
+                                    <?php
+                                }
                                 ?>
-                            <div class="content-msg-a">
-                                <span class="d-p-price"><?=$telefono?></span>
-                                <a class="a-span-bottom" href="index.php?action=uClientePhone&cliD=<?=$value["iduser"]?>">Agregar</a>
-                            </div>
                             <?php
                             }else {
                                 foreach ($tel as $key => $value) {
@@ -93,11 +128,22 @@
                                 <?php
                             if ($dom == null) {
                                 $domicilio = "Sin domicilio";
+                                if(substr($_SESSION["low"], 2, 1) >= 3){
+                                    ?>
+
+                                    <div class="content-msg-a">
+                                        <span class="d-p-price"><?=$domicilio?></span>
+                                        <a class="a-span-bottom" href="index.php?action=uClienteAddress&cliD=<?=$value["iduser"]?>">Agregar</a>
+                                    </div>
+                                    <?php
+                                }else{
+                                    ?>
+                                    <div class="content-msg-a">
+                                        <span class="d-p-price"><?=$domicilio?></span>
+                                    </div>
+                                    <?php
+                                }
                                 ?>
-                            <div class="content-msg-a">
-                                <span class="d-p-price"><?=$domicilio?></span>
-                                <a class="a-span-bottom" href="index.php?action=uClienteAddress&cliD=<?=$value["iduser"]?>">Agregar</a>
-                            </div>
                             <?php
                             }else {
                                 foreach ($dom as $key => $value) {
@@ -116,6 +162,9 @@
                         </td>
 
                         <td>
+                        <?php
+                            if (substr($_SESSION["low"], 2, 1) >= 3) {
+                                ?>
                             <a class="ver-det" href="index.php?action=uCliente&cliD=<?=$value["iduser"]?>">Detalles</a>
                             <?php
                                 if ($tel == null || $dom == null || $email == null) {
@@ -126,14 +175,17 @@
                                     <?php
                                 }
                             ?>
-                            <!-- <form class="formEliminarT" method="post" name="eliminarUsuario">
-                                <input class="inputEliminar" type="hidden" value="" name="removeUser">
-                                <button class="btn-remove" type="submit"><i class="fas fa-times-circle"></i>Quitar</button>
                                 <?php
-                                    // $quitarUsuario = new MvcController();
-                                    // $quitarUsuario -> quitarUsuarioController(3);
+                            }elseif (substr($_SESSION["low"], 2, 1) == 2 || substr($_SESSION["low"], 2, 1) == 1) {
                                 ?>
-                            </form> -->
+                            <a class="ver-det" href="index.php?action=uCliente&cliD=<?=$value["iduser"]?>">Detalles</a>
+                                <?php
+                            }elseif (substr($_SESSION["low"], 2, 1) == 0) {
+                                ?>
+                            <span>Ninguna</span>
+                                <?php
+                            }
+                        ?>
                         </td>
                     </tr>
                 <?php
@@ -160,4 +212,15 @@
                 }
             ?>
     </table>
+
+    <div class="pnt">
+        <a class="pnt__previous <?=$_GET["pag"] <= 1 ? 'disabled' : '' ?>" href="index.php?action=uClientes&pag=<?=$_GET["pag"]-1?>">< Anterior</a>
+
+        <?php for($i = 1; $i <= $paginas; $i++):?>
+            <a class="pnt__pag <?=$_GET["pag"] == $i ? 'active' : '' ?>" href="index.php?action=uClientes&pag=<?=$i?>"><?=$i?></a>
+        <?php endfor ?>
+        
+        <a class="pnt__next <?=$_GET["pag"] >= $paginas ? 'disabled' : '' ?>" href="index.php?action=uClientes&pag=<?=$_GET["pag"]+1?>">Siguiente ></a>
+    </div>
+
 </div>  

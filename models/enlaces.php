@@ -5,9 +5,8 @@
              || $enlaces == "productoEditar" || $enlaces == "categoriaLista" || $enlaces == "productoLista" 
              || $enlaces == "productoCategoria" || $enlaces == "proveedores" || $enlaces == "compras" 
              || $enlaces == "ventas" || $enlaces == "usuarioRegistrarse" || $enlaces == "usuarioInicioSession" 
-             || $enlaces == "usuarioConfiguracion" || $enlaces == "categoriaRegistrar"  
              || $enlaces == "usuarioSalir" || $enlaces == "marca" || $enlaces == "compraEntrada"  
-             || $enlaces == "categoriaEditar" || $enlaces == "marcaRegistrar" || $enlaces == "proveedorRegistrar"
+             || $enlaces == "categoriaEditar" || $enlaces == "marcaRegistrar" || $enlaces == "categoriaRegistrar" 
              || $enlaces == "compraRegistrar" || $enlaces == "categoria" || $enlaces == "productoImagen"
              || $enlaces == "producto" || $enlaces == "usuarios" || $enlaces == "productoDeshabilitado" 
              || $enlaces == "productoSinStock" || $enlaces == "productoMarca" || $enlaces == "productoCaracteristica" 
@@ -15,10 +14,11 @@
              || $enlaces == "removeIntro" || $enlaces == "compraEditar" || $enlaces == "productoImagenes" 
              || $enlaces == "uClienteRegistrar" || $enlaces == "uClientes" || $enlaces == "uCliente" 
              || $enlaces == "uClienteEditar" || $enlaces == "uClienteCorreo" || $enlaces == "uClienteAddress" 
-             || $enlaces == "uClientePhone" || $enlaces == "uProveedorRegistrar" || $enlaces == "uProveedores" || $enlaces == "uProveedor" 
+             || $enlaces == "uClientePhone" || $enlaces == "uProveedorRegistrar" || $enlaces == "uProveedores" 
              || $enlaces == "uProveedorEditar" || $enlaces == "uProveedorCorreo" || $enlaces == "uProveedorAddress" 
              || $enlaces == "uProveedorPhone" || $enlaces == "venta" || $enlaces == "ventas" || $enlaces == "ventaRegistrar" 
-             || $enlaces == "ventaEditar" || $enlaces == "ventaSalida"){
+             || $enlaces == "ventaEditar" || $enlaces == "ventaSalida" || $enlaces == "usuarioRegistrar" 
+             || $enlaces == "usuarioEditar" || $enlaces == "uProveedor" || $enlaces == "usuarioConfiguracion"){
                 $module =  "views/modules/".$enlaces.".php";
             }else if($enlaces == "index"){
                 $module =  "views/modules/inicio.php";

@@ -18,7 +18,8 @@
             <?php
                 if ($imagenes == null) {
                     ?>
-                <img class="i-p-img" src="ima/a3.jpg" alt="a" width="240" height="300">
+                <div class="no-image-card"><span>Producto sin imagen</span></div>
+                <!-- <img class="i-p-img" src="ima/a3.jpg" alt="a" width="240" height="300"> -->
                     <?php
                 }else {
                     foreach ($imagenes as $key => $value) {

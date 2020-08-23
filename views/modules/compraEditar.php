@@ -1,10 +1,10 @@
 <?php
-
     if (!(isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
-        echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
+        echo '<script>window.location = "usuarioInicioSession";</script>';
     }else {
-        if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] != "master") {
-            echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
+        if ($_SESSION["ingresoVerificado"] == "ok" && 
+        ($_SESSION["access"] != "master" && $_SESSION["access"] != "invite")) {
+            echo '<script>window.location = "usuarioInicioSession";</script>';
         }
     }
     
@@ -90,8 +90,8 @@
                 
                 <input class="inputEliminar" type="hidden" value="<?=$compra["idcompra"]?>" name="hiddenCompra">
                 
-                <label for="product">Producto</label>
-                <select id="product" name="product" required autofocus>
+                <label for="productB">Producto</label>
+                <select id="productB" name="productB" required autofocus>
                 <option selected value="">Seleccionar Producto</option>
                 <?php
                     $modo = "entrada";
@@ -106,17 +106,17 @@
             </div>
 
             <div class="input-group">
-                <a href="index.php?action=productoRegistrar" class="enlace-form">¿Este producto no está registrado?</a>
+                <a href="productoRegistrar" class="enlace-form">¿Este producto no está registrado?</a>
             </div>
 
             <div class="input-group">
-                <label for="buyPrice">Precio de Compra</label>
-                <input id="buyPrice" type="number" name="buyPrice" min="0" step="0.01" required>
+                <label for="buyPriceB">Precio de Compra</label>
+                <input id="buyPriceB" type="number" name="buyPriceB" min="0" step="0.01" required>
             </div>
 
             <div class="input-group">
-                <label for="cuantity">Unidades</label>
-                <input id="cuantity" type="number" name="cuantity" min="0" step="1" required>
+                <label for="cuantityB">Unidades</label>
+                <input id="cuantityB" type="number" name="cuantityB" min="0" step="1" required>
             </div>
 
             <div class="line-form"></div>

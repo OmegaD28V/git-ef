@@ -8,13 +8,12 @@
         public $validPro;
         public $pro;
         public $proFPrice;
-        // public $validName;
-        // public $validApe;
+        public $strSearch;
 
         #Validación Email.
         public function validEmailAjax(){
             $valor = $this -> validEmail;
-            $respuesta = MvcController::seleccionarUsuariosController($valor);
+            $respuesta = MvcController::seleccionarUsuariosController($valor, null, null);
             echo json_encode($respuesta);
         }
         
@@ -39,19 +38,12 @@
             echo json_encode($r);
         }
         
-        // #Validación Nombre.
-        // public function validNameAjax(){
-        //     $valor = $this -> validName;
-        //     $respuesta = MvcController::validNameController($valor);
-        //     echo json_encode($respuesta);
-        // }
-        
-        // #Validación Apellido.
-        // public function validApeAjax(){
-        //     $valor = $this -> validApe;
-        //     $respuesta = MvcController::validApeController($valor);
-        //     echo json_encode($respuesta);
-        // }
+        #Búsqueda.
+        public function strSearchAjax(){
+            $valor = $this -> strSearch;
+            $r = MvcController::buscarProController($valor);
+            echo json_encode($r);
+        }
     }
 
     #Objeto de Ajax que recibe la variable post.
@@ -81,19 +73,12 @@
         $objProFPrice -> proFPrice = $_POST["proFPrice"];
         $objProFPrice -> proFPriceAjax();
     }
-    
-    // #Objeto de Ajax que recibe la variable post.
-    // if (isset($_POST["validName"])) {
-    //     $objValidName = new Ajax();
-    //     $objValidName -> validName = $_POST["validName"];
-    //     $objValidName -> validNameAjax();
-    // }
-    
-    // #Objeto de Ajax que recibe la variable post.
-    // if (isset($_POST["validApe"])) {
-    //     $objValidApe = new Ajax();
-    //     $objValidApe -> validApe = $_POST["validApe"];
-    //     $objValidApe -> validApeAjax();
-    // }
+
+    #Objeto de Ajax que recibe la variable post.
+    if (isset($_POST["strSearch"])) {
+        $objStrSearch = new Ajax();
+        $objStrSearch -> strSearch = $_POST["strSearch"];
+        $objStrSearch -> strSearchAjax();
+    }
     
 ?>

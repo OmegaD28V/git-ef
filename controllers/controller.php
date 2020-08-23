@@ -17,6 +17,13 @@
             include $respuesta;
         }
 
+        #Buscar productos.
+        static public function buscarProController($valor){
+            $tabla = "pro";
+            $respuesta = Datos::buscarProModel($valor, $tabla);
+            return $respuesta;
+        }
+
         #Registrar producto
         static public function registrarProductoController(){
             if (isset($_POST["categoryProduct"])) {
@@ -243,6 +250,20 @@
                 $respuesta = Datos::listarProductoModel($tabla, $item, $valor, $modo);
                 return $respuesta;
             }
+        }
+
+        #Seleccionar productos con paginacion
+        static public function selProPagController($inicio, $articulos){
+            $tabla = "pro";
+            $respuesta = Datos::selProPagModel($tabla, $inicio, $articulos);
+            return $respuesta;
+        }
+
+        #Contar total de productos.
+        static public function contarProductosController(){
+            $tabla = "pro";
+            $r = Datos::contarProductosModel($tabla);
+            return $r;
         }
 
         #Registrar Característica.
@@ -794,10 +815,17 @@
         }
 
         #Seleccionar Compras
-        static public function seleccionarComprasController(){
+        static public function seleccionarComprasController($inicio, $cantidad){
             $tabla = "compra";
-            $respuesta = Datos::seleccionarComprasModel($tabla);
+            $respuesta = Datos::seleccionarComprasModel($tabla, $inicio, $cantidad);
             return $respuesta;
+        }
+
+        #Contar compras.
+        static public function contarComprasController(){
+            $tabla = "compra";
+            $r = Datos::contarComprasModel($tabla);
+            return $r;
         }
         
         #Recuperar Compra
@@ -893,7 +921,7 @@
                         if(window.history.replaceState){
                             window.history.replaceState(null, null, window.location.href);
                         }
-                        window.location = "index.php?action=compraRegistrar";
+                        window.location = "index.php?action=compraRegistrar&t=0";
                     </script>';
             }
         }
@@ -903,15 +931,15 @@
             $tabla = "compra_entrada";
             if(isset($_POST["hiddenCompra"]) && isset($_GET["into"])){
                 if (
-                    preg_match("/^[0-9]{1,9}+$/", $_POST["buyPrice"]) && 
-                    preg_match("/^[0-9]{1,9}+$/", $_POST["cuantity"])
+                    preg_match("/^[0-9]{1,9}+$/", $_POST["buyPriceB"]) && 
+                    preg_match("/^[0-9]{1,9}+$/", $_POST["cuantityB"])
                 ) {
                     $ticket = $_GET["into"];
                     $datosController = array(
                         "compra" => $_POST["hiddenCompra"], 
-                        "producto" => $_POST["product"], 
-                        "precioCompra" => $_POST["buyPrice"], 
-                        "cantidad" => $_POST["cuantity"]);
+                        "producto" => $_POST["productB"], 
+                        "precioCompra" => $_POST["buyPriceB"], 
+                        "cantidad" => $_POST["cuantityB"]);
                     
                     $respuesta = Datos::registrarEntradaModel($datosController, $tabla);
                     if ($respuesta == "ok") {
@@ -945,15 +973,15 @@
             $tabla = "compra_entrada";
             if(isset($_POST["hiddenCompra"]) && isset($_GET["into"])){
                 if (
-                    preg_match("/^[0-9]{1,9}+$/", $_POST["buyPrice"]) && 
-                    preg_match("/^[0-9]{1,9}+$/", $_POST["cuantity"])
+                    preg_match("/^[0-9]{1,9}+$/", $_POST["buyPriceB"]) && 
+                    preg_match("/^[0-9]{1,9}+$/", $_POST["cuantityB"])
                 ) {
                     $ticket = $_GET["into"];
                     $datosController = array(
                         "compra" => $_POST["hiddenCompra"], 
-                        "producto" => $_POST["product"], 
-                        "precioCompra" => $_POST["buyPrice"], 
-                        "cantidad" => $_POST["cuantity"]);
+                        "producto" => $_POST["productB"], 
+                        "precioCompra" => $_POST["buyPriceB"], 
+                        "cantidad" => $_POST["cuantityB"]);
                     
                     $respuesta = Datos::registrarEntradaModel($datosController, $tabla);
                     if ($respuesta == "ok") {
@@ -1052,10 +1080,17 @@
         }
         
         #Seleccionar Ventas
-        static public function seleccionarVentasController(){
+        static public function seleccionarVentasController($inicio, $cantidad){
             $tabla = "venta";
-            $respuesta = Datos::seleccionarVentasModel($tabla);
+            $respuesta = Datos::seleccionarVentasModel($tabla, $inicio, $cantidad);
             return $respuesta;
+        }
+
+        #Contar ventas.
+        static public function contarVentasController(){
+            $tabla = "venta";
+            $r = Datos::contarVentasModel($tabla);
+            return $r;
         }
 
         #Seleccionar Venta
@@ -1063,6 +1098,13 @@
             $datosController = null;
             $tabla = "venta";
             $respuesta = Datos::seleccionarVentaModel($tabla, $datosController, $ticket);
+            return $respuesta;
+        }
+
+        #Recuperar Venta
+        static public function recuperarVentaController($valor){
+            $tabla = "venta";
+            $respuesta = Datos::recuperarVentaModel($tabla, $valor);
             return $respuesta;
         }
 
@@ -1096,6 +1138,64 @@
                         </script>';
                 }
                 return $respuesta;
+            }
+        }
+
+        #Quitar Salida Update
+        public function uQuitarSalidaController($ticket){
+            if (isset($_POST["removeIntro"]) && isset($_GET["into"])) {
+                $ticket = $_GET["into"];
+                $tabla = "venta_salida";
+                $valor = $_POST["removeIntro"];
+                $respuesta = Datos::quitarSalidaModel($tabla, $valor);
+                if ($respuesta == "ok") {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=ventaEditar&into='.$ticket.'&not3=true";
+                        </script>';
+                }
+                return $respuesta;
+            }
+        }
+
+        #Quitar Venta.
+        public function quitarVentaController(){
+            if (isset($_POST["removeSell"])) {
+                $tabla = "venta";
+                $valor = $_POST["removeSell"];
+                $respuesta = Datos::quitarVentaModel($tabla, $valor);
+                if ($respuesta == "ok") {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=ventas&not3=true";
+                        </script>';
+                }
+                return $respuesta;
+            }
+        }
+
+        #Concluir venta
+        static public function ventaFinalizadaController($item, $valor){
+            $tabla = "venta";
+            $respuesta = Datos::ventaFinalizadaModel($item, $valor, $tabla);
+            if ($respuesta == "ok") {
+                echo '<script>
+                        if(window.history.replaceState){
+                            window.history.replaceState(null, null, window.location.href);
+                        }
+                        window.location = "index.php?action=ventaRegistrar&not1=true";
+                    </script>';
+            }else{
+                echo '<script>
+                        if(window.history.replaceState){
+                            window.history.replaceState(null, null, window.location.href);
+                        }
+                        window.location = "index.php?action=ventaRegistrar";
+                    </script>';
             }
         }
 
@@ -1136,6 +1236,48 @@
                                 window.history.replaceState(null, null, window.location.href);
                             }
                             window.location = "index.php?action=ventaSalida&into='.$ticket.'&eTrr=re";
+                        </script>'; 
+                }
+            }
+        }
+
+        #Registrar Salida Update
+        static public function uRegistrarSalidaController($ticket){
+            $tabla = "venta_salida";
+            if(isset($_POST["hiddenVenta"]) && isset($_GET["into"])){
+                if (
+                    preg_match("/^[0-9.]{1,9}+$/", $_POST["buyPrice"]) && 
+                    preg_match("/^[0-9]{1,9}+$/", $_POST["cuantity"])
+                ) {
+                    $ticket = $_GET["into"];
+                    $datosController = array(
+                        "venta" => $_POST["hiddenVenta"], 
+                        "producto" => $_POST["product"], 
+                        "precioventa" => $_POST["buyPrice"], 
+                        "cantidad" => $_POST["cuantity"]);
+                    
+                    $respuesta = Datos::registrarSalidaModel($datosController, $tabla);
+                    if ($respuesta == "ok") {
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=ventaEditar&into='.$ticket.'&not0=true";
+                            </script>';
+                    }else{
+                        echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=ventaEditar&into='.$ticket.'&err=re";
+                            </script>';
+                    }   
+                }else {
+                    echo '<script>
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            window.location = "index.php?action=ventaEditar&into='.$ticket.'&eTrr=re";
                         </script>'; 
                 }
             }
@@ -1208,7 +1350,7 @@
                                 window.location = "index.php?action=usuarioRegistrarse&err=ur";
                             </script>';
                     }
-                }if ($tipoUsuario == 33) {
+                }elseif ($tipoUsuario == 33) {
                     if (
                         isset($_POST["name-user"]) && 
                         isset($_POST["ape-user"]) && 
@@ -1363,7 +1505,7 @@
                                 window.location = "index.php?action=uClienteRegistrar&err=ur";
                             </script>';
                     }
-                }if ($tipoUsuario == 22) {
+                }elseif ($tipoUsuario == 22) {
                     if (
                         isset($_POST["name-user"]) && 
                         isset($_POST["ape-user"]) && 
@@ -1518,6 +1660,57 @@
                                 window.location = "index.php?action=uProveedorRegistrar&err=ur";
                             </script>';
                     }
+                }elseif ($tipoUsuario == 1) {
+                    if (
+                        preg_match("/^[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{1,75}+$/", $_POST["name-user"]) && 
+                        (preg_match("/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/", $_POST["correo-user"]) || 
+                        preg_match("/^[0-9a-zA-ZáéíóúÁÉÍÓÚñÑ\-_ ]{1,150}+$/", $_POST["correo-user"])) && 
+                        preg_match("/^[0-9a-zA-Z ]{4,30}+$/", $_POST["password-user"]) && 
+                        preg_match("/^[0-9a-zA-Z ]{4,30}+$/", $_POST["repassword-user"]) && 
+                        preg_match("/^[0-9]{1}+$/", $_POST["permisos"])
+                        ) {
+                            if ($_POST["password-user"] != $_POST["repassword-user"]) {
+                                echo '<script>
+                                        if(window.history.replaceState){
+                                            window.history.replaceState(null, null, window.location.href);
+                                        }
+                                    </script>';
+                                echo '<div><span>Error!</span></div>';
+                                echo '<div><span>Las contraseñas no coinciden</span></div>';
+                            }else{
+                                $tabla = "user";
+                                $datosController = array(
+                                    "nombre" => $_POST["name-user"],  
+                                    "correo" => $_POST["correo-user"], 
+                                    "contrasena" => $_POST["password-user"], 
+                                    "permisos" => $_POST["permisos"]
+                                );
+                                $respuesta = Datos::registrarUsuarioModel($datosController, $tabla, $tipoUsuario);
+                                if ($respuesta == "ok") {
+                                    echo '<script>
+                                            if(window.history.replaceState){
+                                                window.history.replaceState(null, null, window.location.href);
+                                            }
+                                            window.location = "index.php?action=usuarioRegistrar&not0=true";
+                                        </script>';
+                                }else{
+                                    echo '<script>
+                                            if(window.history.replaceState){
+                                                window.history.replaceState(null, null, window.location.href);
+                                            }
+                                        </script>';
+                                    echo '<div><span>Error!</span></div>';
+                                    echo '<div><span>verifique sus datos</span></div>';
+                                }  
+                            }
+                        }else{
+                            echo '<script>
+                                if(window.history.replaceState){
+                                    window.history.replaceState(null, null, window.location.href);
+                                }
+                                window.location = "index.php?action=usuarioRegistrar&err=ur";
+                            </script>';
+                        }
                 }
             }
         }
@@ -1772,10 +1965,17 @@
         }
         
         #Seleccionar todos los usuarios.
-        static public function seleccionarUsuariosController($valor){
+        static public function seleccionarUsuariosController($tipo, $inicio, $cantidad){
             $tabla = "user";
-            $respuesta = Datos::seleccionarUsuariosModel($tabla, $valor);
+            $respuesta = Datos::seleccionarUsuariosModel($tabla, $tipo, $inicio, $cantidad);
             return $respuesta;
+        }
+
+        #Contar usuarios.
+        static public function contarUsuariosController($tipo){
+            $tabla = "user";
+            $r = Datos::contarUsuariosModel($tabla, $tipo);
+            return $r;
         }
         
         #Seleccionar domicilios de usuario.
@@ -1842,6 +2042,8 @@
                     $urlTipoUsuarios = "uProveedores";
                 }elseif($tipo == 3){
                     $urlTipoUsuarios = "uClientes";
+                }elseif($tipo == 1){
+                    $urlTipoUsuarios = "usuarios";
                 }
                 $tabla = "user";
                 $valor = $_POST["removeUser"];
@@ -1869,8 +2071,12 @@
                     $_SESSION["identity"] = $respuesta["nombre"];
                     if ($respuesta["tipo"] == 0) {
                         $_SESSION["access"] = "master";
+                        $_SESSION["low"] = 44444;
                     }elseif ($respuesta["tipo"] == 1) {
                         $_SESSION["access"] = "invite";
+                        if ($respuesta != null) {
+                            $_SESSION["low"] = $respuesta["modulo"];
+                        }
                     }elseif ($respuesta["tipo"] == 3) {
                         $_SESSION["access"] = "user";
                     }
@@ -1893,6 +2099,11 @@
                 }
             }
         }    
+
+        static public function respaldar(){
+            $consultar = Datos::respaldarModel();
+            return $consultar;
+        }
 
         #Validaciones de Ajax de esta línea hacia abajo.
         #Validar Nombre de usuario.

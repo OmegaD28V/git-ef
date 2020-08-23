@@ -1,10 +1,10 @@
 <?php
     // if (!isset($_SESSION["ingresoVerificado"])) {
-    //     echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
+    //     echo '<script>window.location = "usuarioInicioSession";</script>';
     //     return;
     // }else {
     //     if ($_SESSION["ingresoVerificado"] != "ok") {
-    //         echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
+    //         echo '<script>window.location = "usuarioInicioSession";</script>';
     //         return;
     //     }
     // }
@@ -49,6 +49,25 @@
                             </form> -->
                         </td>
                             <?php
+                                }elseif ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] == "invite"){
+                                    if (substr($_SESSION["low"], 0, 1) == 3) {
+                                        ?>
+                        <td>
+                            <a class="editar" href="index.php?action=categoriaEditar&cat=<?=$value["idpro_categoria"]?>"><i class="fas fa-pen-square"></i>Editar</a>        
+                            <!-- <form class="formEliminarT" method="post">
+                                <input type="hidden" value="<?=$value["idpro_categoria"]?>" name="removeCategory">
+                                <button class="btn-remove" type="submit" value="<?=$value["idpro_categoria"]?>"><i class="fas fa-minus-square"></i>Quitar</button>
+                                <?php
+                                    // $quitarCategoria = new MvcController();
+                                    // $quitarCategoria -> quitarCategoriaController();
+                                ?>
+                            </form> -->
+                        </td>
+                                      <?php
+                                    }elseif (substr($_SESSION["low"], 0, 1) <= 2) {
+                                        ?>
+                                      <?php
+                                    }
                                 }
                             }
                         ?>

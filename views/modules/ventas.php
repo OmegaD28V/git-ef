@@ -2,12 +2,24 @@
     if (!(isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
         echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
     }else {
-        if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] != "master") {
+        if ($_SESSION["ingresoVerificado"] == "ok" && 
+        ($_SESSION["access"] != "master" && $_SESSION["access"] != "invite")) {
             echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
         }
     }
 
-    $ventas = MvcController::seleccionarVentasController();
+    if (isset($_GET["pag"])) {
+        $noVentas = MvcController::contarVentasController("cli");
+        $cantidad = 5;
+        $paginas = ceil($noVentas["total"] / $cantidad);
+        $inicio = ($_GET["pag"] - 1) * $cantidad;
+        $ventas = MvcController::seleccionarVentasController($inicio, $cantidad);
+        if ($_GET["pag"] < 1 || $_GET["pag"] > $paginas) {
+            echo '<script>window.location = "index.php?action=ventas&pag=1"</script>';
+        }
+    }else{
+        echo '<script>window.location = "index.php?action=ventas&pag=1"</script>';
+    }
 ?>
 
 <div class="contenedor-formulario">
@@ -26,7 +38,7 @@
             <tr>
                 <th><span class="thSub">Folio</span></th>
                 <th><span class="thSub">Cliente</span></th>
-                <th><span class="thSub">Fehca y Hora</span></th>
+                <th><span class="thSub">Fecha y Hora</span></th>
                 <th><span class="thSub">Total $</span></th>
                 <th><span class="thSub">Estado</span></th>
                 <th><span class="thSub">Acción</span></th>
@@ -68,6 +80,9 @@
                             <td><span class="d-p-price">$ <?=$total?></span></td>
                             <td><span class="d-p-price"><?=$estado?></span></td>
                             <td>
+                                <?php
+                                if (substr($_SESSION["low"], 4, 1) == 4) {
+                                    ?>
                                 <a class="ver-det" href="index.php?action=venta&cdet=<?=$value["idventa"]?>">Detalles</a>
                                 <?php if ($status == 1) {
                                     ?>
@@ -76,12 +91,32 @@
                                     <input class="inputEliminar" type="hidden" value="<?=$value["idventa"]?>" name="removeSell">
                                     <button class="btn-remove" type="submit" value=""><i class="fas fa-times-circle"></i>Quitar</button>
                                     <?php
-                                        // $quitarVenta = new MvcController();
-                                        // $quitarVenta -> quitarVentaController();
+                                        $quitarVenta = new MvcController();
+                                        $quitarVenta -> quitarVentaController();
                                     ?>
                                 </form>
                                 <?php
                                 }?>
+                                    <?php
+                                }elseif (substr($_SESSION["low"], 4, 1) == 3) {
+                                    ?>
+                                <a class="ver-det" href="index.php?action=venta&cdet=<?=$value["idventa"]?>">Detalles</a>
+                                <?php if ($status == 1) {
+                                    ?>
+                                <a class="editar" href="index.php?action=ventaEditar&into=<?=$value["idventa"]?>"><i class="fas fa-pen-square"></i>Editar</a>
+                                <?php
+                                }?>
+                                    <?php
+                                }elseif (substr($_SESSION["low"], 4, 1) == 2 || substr($_SESSION["low"], 4, 1) == 1) {
+                                    ?>
+                                <a class="ver-det" href="index.php?action=venta&cdet=<?=$value["idventa"]?>">Detalles</a>
+                                    <?php
+                                }elseif (substr($_SESSION["low"], 4, 1) == 0) {
+                                    ?>
+                                <span>Ninguna</span>
+                                    <?php
+                                }
+                                ?>
                             </td>
                         </tr>
                     <?php
@@ -111,4 +146,15 @@
             <?php
         }
     ?>
+
+    <div class="pnt">
+        <a class="pnt__previous <?=$_GET["pag"] <= 1 ? 'disabled' : '' ?>" href="index.php?action=ventas&pag=<?=$_GET["pag"]-1?>">< Anterior</a>
+
+        <?php for($i = 1; $i <= $paginas; $i++):?>
+            <a class="pnt__pag <?=$_GET["pag"] == $i ? 'active' : '' ?>" href="index.php?action=ventas&pag=<?=$i?>"><?=$i?></a>
+        <?php endfor ?>
+        
+        <a class="pnt__next <?=$_GET["pag"] >= $paginas ? 'disabled' : '' ?>" href="index.php?action=ventas&pag=<?=$_GET["pag"]+1?>">Siguiente ></a>
+    </div>
+
 </div>  

@@ -2,7 +2,8 @@
     if (!(isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
         echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
     }else {
-        if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] != "master") {
+        if ($_SESSION["ingresoVerificado"] == "ok" && 
+        ($_SESSION["access"] != "master" && $_SESSION["access"] != "invite")) {
             echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
         }
     }
@@ -80,14 +81,48 @@
                             <td><span class="d-p-price"><?=$detalleCliente["calle"]?></span></td>
                             <td>
                                 <div class="content-msg-a">
+                                <?php
+                                    if($detalleCliente["num_casa"] == null || $detalleCliente["num_casa"] == 0){
+                                        ?>
+                                    <span class="d-p-price">S/N</span>
+                                        <?php
+                                    }else{
+                                        ?>
                                     <span class="d-p-price"><?=$detalleCliente["num_casa"]?></span>
-                                    <span class="d-p-price"><?=$detalleCliente["num_casa2"]?></span>
+                                    <?php
+                                        if ($detalleCliente["num_casa2"] != null && $detalleCliente["num_casa2"] != 0) {
+                                            ?>
+                                    <span class="d-p-price"><?='Exterior: '.$detalleCliente["num_casa2"]?></span>
+                                            <?php
+                                        }
+                                    ?>
+                                        <?php
+                                    }
+                                ?>
                                 </div>
                             </td>
                             <td>
                                 <div class="content-msg-a">
+                                <?php
+                                    if($detalleCliente["calle1"] != null && $detalleCliente["calle2"] != null){
+                                        ?>
+                                    <span class="d-p-price"><?='Entre '.$detalleCliente["calle1"]?></span>
+                                    <span class="d-p-price"><?='y '.$detalleCliente["calle2"]?></span>
+                                        <?php
+                                    }elseif ($detalleCliente["calle1"] == null && $detalleCliente["calle2"] != null) {
+                                        ?>
+                                    <span class="d-p-price"><?=$detalleCliente["calle2"]?></span>
+                                        <?php
+                                    }elseif ($detalleCliente["calle1"] != null && $detalleCliente["calle2"] == null) {
+                                        ?>
                                     <span class="d-p-price"><?=$detalleCliente["calle1"]?></span>
-                                    <span class="d-p-price"><?='Y '.$detalleCliente["calle2"]?></span>
+                                        <?php
+                                    }elseif ($detalleCliente["calle1"] == null && $detalleCliente["calle2"] == null) {
+                                        ?>
+                                        <span class="d-p-price">Ninguna</span>
+                                        <?php
+                                    }
+                                ?>
                                 </div>
                             </td>
                             <td><span class="d-p-price"><?=$detalleCliente["referencia"]?></span></td>
