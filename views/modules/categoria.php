@@ -32,7 +32,7 @@
                             }
                         ?>
                     >
-                        <td><a href="index.php?action=productoCategoria&cat=<?=$value["idpro_categoria"]?>"><?=$value["categoria"]?></a></td>
+                        <td><a class="cell" href="index.php?action=productoCategoria&cat=<?=$value["idpro_categoria"]?>"><?=$value["categoria"]?></a></td>
                         <?php
                             if ((isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
                                 if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] == "master") {

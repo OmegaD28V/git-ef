@@ -87,20 +87,25 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="shortcut icon" href="ima/icons8_dj_48px.png" type="image/x-icon">
+
+        <!-- Fuentes de Google Fonts -->
         <!-- <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css?family=Poppins&display=swap" rel="stylesheet"> -->
+        <!-- <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@500&display=swap" rel="stylesheet"> -->
+
+        <!-- Estilos -->
         <link rel="stylesheet" href="css/estilo.css">
         <link href="css/all.css" rel="stylesheet">
+
+        <!-- JQuery, SweetAlert 2 & Fontawesome-->
         <script type="text/javascript" src="views/scripts/jquery-3.4.1.min.js"></script>
-        <!-- <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@500&display=swap" rel="stylesheet"> -->
         <script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+        <!-- <script src="https://kit.fontawesome.com/088ef51476.js" crossorigin="anonymous"></script> -->
 
         <!-- API Google Places -->
-        <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places"></script>
-        <!-- <script src="https://maps.googleapis.com/maps/api/geocode/json?latlng=20.065136,-97.054607&key=YOUR_API_KEY"></script> -->
+        <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_APIKEY&libraries=places"></script>
         
-        <script src="https://kit.fontawesome.com/088ef51476.js" crossorigin="anonymous"></script>
-    </head>        
+    </head>
         
     <body>
         <div class="main-container" id="main-container">
@@ -118,11 +123,11 @@
                         }
                     }else {
                         echo '<script>
-                        if(window.history.replaceState){
-                            window.history.replaceState(null, null, window.location.href);
-                        }
-                    </script>';
-                    echo '<div><span>Error!</span></div>';
+                            if(window.history.replaceState){
+                                window.history.replaceState(null, null, window.location.href);
+                            }
+                            </script>';
+                        echo '<div><span>Error!</span></div>';
                     }
                 }
             ?>
@@ -140,11 +145,11 @@
         </footer>
         <script type="text/javascript" src="views/scripts/uno.js"></script>
         <script type="text/javascript" src="js/utilidades.js"></script>
-        <script type="text/javascript" src="js/interMenu.js"></script>
         <script type="text/javascript" src="js/visibleUser.js"></script>
         <script type="text/javascript" src="js/hiddenPasswordUIS.js"></script>
         <script type="text/javascript" src="js/hiddenPasswordUR.js"></script>
         <script type="text/javascript" src="js/darkMode.js"></script>
-        <script src="js/validarProducto.js"></script>
-    </body>
+        <script type="text/javascript" src="js/readMode.js"></script>
+        <script type="text/javascript" src="js/productView.js"></script>
+        <!-- <script type="text/javascript" src="js/interMenu.js"></script> -->
 </html>

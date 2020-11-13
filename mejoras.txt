@@ -1,0 +1,4 @@
+1. Tema Oscuro: Mejorar el estilo del tema.
+2. Patrón de diseño: Mejorar el código, organización de los módulos y controladores.
+3. Hoja de estilos: Mejorar la sintaxis de los estilos personalizados y reorganizar la hoja de estilos.
+4. Interfaz de usuario: Mejorar la interactividad con el usuario en la interfaz.

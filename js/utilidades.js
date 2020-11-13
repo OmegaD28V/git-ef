@@ -26,10 +26,21 @@ const buscar = () => {
                 processData: false, 
                 dataType: "json", 
                 success: function (r) {
-                    $.each(r, function(i, v){
-                        $('.ul-results').append('<li class="results"><a href="index.php?action=producto&idpro=' + r[i].idpro + '">' + r[i].nombre + '</a></li>');
-                        // console.log(r[i].nombre);
-                    })
+                    if(r.length > 0){
+                        console.log(r.length);
+                        $.each(r, function(i, v){
+                            if (localStorage.getItem('dark') === '1') {
+                                $('.ul-results').append('<li class="results"><a class="a-results oscuro" href="index.php?action=producto&idpro=' + r[i].idpro + '">' + r[i].nombre + '</a></li>');
+                                // console.log(r[i]);
+                            }else{
+                                $('.ul-results').append('<li class="results"><a class="a-results" href="index.php?action=producto&idpro=' + r[i].idpro + '">' + r[i].nombre + '</a></li>');
+                                // console.log(r[i]);
+                            }
+                        })
+                    }else{
+                        $('.ul-results').append('<li class="results"><span class="noresults">Sin resultados</span></li>');
+                        console.log();
+                    }
                 }
             })
             strSearchLast = strSearch;

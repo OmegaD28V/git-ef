@@ -1,17 +1,20 @@
 <?php
-    if (isset($_GET["pag"])) {
-        $noProductos = MvcController::contarProductosController();
-        $articulos = 3;
-        $paginas = ceil($noProductos["total"] / $articulos);
-        $inicio = ($_GET["pag"] - 1) * $articulos;
-        // $modo = "fichas";
-        $p = MvcController::selProPagController($inicio, $articulos);
-        // $productos = MvcController::seleccionarProductoController(null, null, "fichas");
-        if ($_GET["pag"] < 1 || $_GET["pag"] > $paginas) {
-            echo '<script>window.location = "index.php?action=inicio&pag=1"</script>';
-        }
+    $noProductos = MvcController::contarProductosController();
+    $articulos = 12;
+    if($noProductos["total"] <= $articulos){
+        $p = MvcController::seleccionarProductoController(null, null, "fichas");
     }else{
-        echo '<script>window.location = "index.php?action=inicio&pag=1"</script>';
+        if (!isset($_GET["pag"])) {
+            echo '<script>window.location = "index.php?action=inicio&pag=1"</script>';
+        }else{
+            $paginas = ceil($noProductos["total"] / $articulos);
+            $inicio = ($_GET["pag"] - 1) * $articulos;
+            // $productos = MvcController::seleccionarProductoController(null, null, "fichas");
+            $p = MvcController::selProPagController($inicio, $articulos);
+            if ($_GET["pag"] < 1 || $_GET["pag"] > $paginas) {
+                echo '<script>window.location = "index.php?action=inicio&pag=1"</script>';
+            }
+        }
     }
 
     if ((isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
@@ -22,6 +25,12 @@
     }
 ?>
 <div class="contenedor-formulario">
+    <!-- <div>
+        <label for="s-item-p-pag">Productos por página</label>
+        <select name="s-items-p-pag" id="s-items-p-pag">
+            <option value=""></option>
+        </select>
+    </div> -->
     <div class="gridFichas">
         <?php
             foreach ($p as $key => $value) {
@@ -47,8 +56,8 @@
                         <div class="info">
                             <span class="ficha-name-pro"><?=$value["nombre"]?></span>
                             <div>
-                                <span style="color: green" class="ficha-price-pro">$<?=$value["precio"]?></span>
-                                <span style="font-size: 0.9rem; color: red;" class="ficha-price-pro"><?=$value["existencia"].' Uds.'?></span>
+                                <span class="ficha-price-pro">$<?=$value["precio"]?></span>
+                                <span class="ficha-price-pro"><?='Stock: '.$value["existencia"]?></span>
                             </div>
                             <span class="ficha-detail-pro"><?=$value["descripcion"]?></span>
                             <div class="acciones">
@@ -124,15 +133,17 @@
         ?>
     </div>    
 
-    <div class="pnt">
-        <a class="pnt__previous <?=$_GET["pag"] <= 1 ? 'disabled' : '' ?>" href="index.php?action=inicio&pag=<?=$_GET["pag"]-1?>">< Anterior</a>
+    <?php if($noProductos["total"] <= $articulos){}else{ ?>
+        <div class="pnt">
+            <a class="pnt__previous <?=$_GET["pag"] <= 1 ? 'disabled' : '' ?>" id="prev" href="index.php?action=inicio&pag=<?=$_GET["pag"]-1?>">< Anterior</a>
 
-        <?php for($i = 1; $i <= $paginas; $i++):?>
-            <a class="pnt__pag <?=$_GET["pag"] == $i ? 'active' : '' ?>" href="index.php?action=inicio&pag=<?=$i?>"><?=$i?></a>
-        <?php endfor ?>
-        
-        <a class="pnt__next <?=$_GET["pag"] >= $paginas ? 'disabled' : '' ?>" href="index.php?action=inicio&pag=<?=$_GET["pag"]+1?>">Siguiente ></a>
-    </div>
+            <?php for($i = 1; $i <= $paginas; $i++):?>
+                <a class="pnt__pag <?=$_GET["pag"] == $i ? 'active' : '' ?>" href="index.php?action=inicio&pag=<?=$i?>"><?=$i?></a>
+            <?php endfor ?>
+            
+            <a class="pnt__next <?=$_GET["pag"] >= $paginas ? 'disabled' : '' ?>" id="next" href="index.php?action=inicio&pag=<?=$_GET["pag"]+1?>">Siguiente ></a>
+        </div>
+    <?php } ?>
 
 
     <?php

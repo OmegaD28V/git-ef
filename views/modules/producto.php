@@ -9,7 +9,7 @@
     }
 ?>
 <div class="contenedor-formulario">
-    <div class="grid-info-pro">
+    <div class="grid-info-pro" id="grid-info-pro">
         <div class="title-pro">
             <span class="t-p-name"><?=$producto["nombre"]?></span>
         </div>

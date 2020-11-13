@@ -23,13 +23,13 @@
         </div>
         
         <div class="description-pro">
-            <h2 class="p-title">Cliente</h2>
-            <p class="d-p-desc"><?=$detalleVenta["cliente"]?></p>
-        </div>
-        
-        <div class="description-pro">
             <h2 class="p-title">Folio</h2>
             <p class="d-p-desc"><?=$detalleVenta["folio"]?></p>
+        </div>
+
+        <div class="description-pro">
+            <h2 class="p-title">Cliente</h2>
+            <p class="d-p-desc"><?=$detalleVenta["cliente"]?></p>
         </div>
 
         <div class="detail-pro">
@@ -39,8 +39,8 @@
                     
                 <tr class="d-g">
                     <th>Nombre</th>
-                    <td>Precio de venta</td>
-                    <td>Unidades</td>
+                    <th>Precio de venta</th>
+                    <th>Unidades</th>
                 </tr>
                     <?php
                         foreach ($detalleVP as $key => $value) {

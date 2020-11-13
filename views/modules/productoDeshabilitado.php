@@ -45,7 +45,7 @@
                         <span class="ficha-name-pro"><?=$value["nombre"]?></span>
                         <div>
                             <span class="ficha-price-pro">$<?=$value["precio"]?></span>
-                            <span style="font-size: 0.8rem; color: #39b54a;" class="ficha-price-pro"><?='Existencia: '.$value["existencia"]?></span>
+                            <span class="ficha-price-pro"><?='Stock: '.$value["existencia"]?></span>
                         </div>
                         <span class="ficha-detail-pro"><?=$value["descripcion"]?></span>
                         <div class="acciones">

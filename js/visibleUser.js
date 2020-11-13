@@ -6,6 +6,16 @@ var buttonAdjust = document.getElementById('button-adjust');
 
 
 document.querySelector('#button-adjust').addEventListener('click', () => {
+    if (localStorage.getItem('read') === '1') {
+        panelUsuario.classList.add('read');
+        panelUsuario.classList.remove('oscuro');
+    }else if(localStorage.getItem('dark') === '1'){
+        panelUsuario.classList.add('oscuro');
+        panelUsuario.classList.remove('read');
+    }else{
+        panelUsuario.classList.remove('read');
+        panelUsuario.classList.remove('oscuro');
+    }
     panelUsuario.classList.toggle('visible');
 });
 

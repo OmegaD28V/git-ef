@@ -95,8 +95,18 @@
                                         $quitarVenta -> quitarVentaController();
                                     ?>
                                 </form>
-                                <?php
-                                }?>
+                                <?php }else{ 
+                                    ?>
+                                        <!-- <a class="print-pdf" href="index.php?action=ventaPrint">Imprimir</a> -->
+                                        <form class="formEliminarT" method="post" name="printVenta">
+                                            <input type="hidden" name="printpdf" value="<?=$value["idventa"]?>">
+                                            <button class="print-pdf">Ticket</button>
+                                            <?php
+                                                // $printPDF = new ControllerPDF();
+                                                // $printPDF -> printVenta();
+                                            ?>
+                                        </form>
+                                <?php } ?>
                                     <?php
                                 }elseif (substr($_SESSION["low"], 4, 1) == 3) {
                                     ?>
@@ -148,13 +158,13 @@
     ?>
 
     <div class="pnt">
-        <a class="pnt__previous <?=$_GET["pag"] <= 1 ? 'disabled' : '' ?>" href="index.php?action=ventas&pag=<?=$_GET["pag"]-1?>">< Anterior</a>
+        <a class="pnt__previous <?=$_GET["pag"] <= 1 ? 'disabled' : '' ?>" id="prev" href="index.php?action=ventas&pag=<?=$_GET["pag"]-1?>">< Anterior</a>
 
         <?php for($i = 1; $i <= $paginas; $i++):?>
             <a class="pnt__pag <?=$_GET["pag"] == $i ? 'active' : '' ?>" href="index.php?action=ventas&pag=<?=$i?>"><?=$i?></a>
         <?php endfor ?>
         
-        <a class="pnt__next <?=$_GET["pag"] >= $paginas ? 'disabled' : '' ?>" href="index.php?action=ventas&pag=<?=$_GET["pag"]+1?>">Siguiente ></a>
+        <a class="pnt__next <?=$_GET["pag"] >= $paginas ? 'disabled' : '' ?>" id="next" href="index.php?action=ventas&pag=<?=$_GET["pag"]+1?>">Siguiente ></a>
     </div>
 
 </div>  

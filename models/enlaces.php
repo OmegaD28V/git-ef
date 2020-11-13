@@ -18,7 +18,8 @@
              || $enlaces == "uProveedorEditar" || $enlaces == "uProveedorCorreo" || $enlaces == "uProveedorAddress" 
              || $enlaces == "uProveedorPhone" || $enlaces == "venta" || $enlaces == "ventas" || $enlaces == "ventaRegistrar" 
              || $enlaces == "ventaEditar" || $enlaces == "ventaSalida" || $enlaces == "usuarioRegistrar" 
-             || $enlaces == "usuarioEditar" || $enlaces == "uProveedor" || $enlaces == "usuarioConfiguracion"){
+             || $enlaces == "usuarioEditar" || $enlaces == "uProveedor" || $enlaces == "usuarioConfiguracion" 
+             || $enlaces == "ventaPrint"){
                 $module =  "views/modules/".$enlaces.".php";
             }else if($enlaces == "index"){
                 $module =  "views/modules/inicio.php";

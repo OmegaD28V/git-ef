@@ -622,7 +622,7 @@
         #Seleccionar productos por categoria
         static public function seleccionarProductoCategoriaModel($tabla, $item, $valor, $modo){
             if ($modo == "fichas") {
-                $stmt = Conexion::conectar() -> prepare("select p_c.idpro_categoria, p_c.categoria, p.idpro, p.nombre, p_p.precio, p.descripcion  
+                $stmt = Conexion::conectar() -> prepare("select p_c.idpro_categoria, p_c.categoria, p.idpro, p.nombre, p_p.precio, p.descripcion, p.existencia 
                 from $tabla p 
                 inner join pro_categoria p_c on p.idpro_categoria = p_c.idpro_categoria 
                 inner join pro_precio p_p on p_p.idpro = p.idpro 
@@ -650,7 +650,7 @@
         #Seleccionar productos por marca
         static public function seleccionarProductoMarcaModel($tabla, $item, $valor, $modo){
             if ($modo == "fichas") {
-                $stmt = Conexion::conectar() -> prepare("select p_m.idpro_marca, p_m.marca, p.idpro, p.nombre, p_p.precio, p.descripcion  
+                $stmt = Conexion::conectar() -> prepare("select p_m.idpro_marca, p_m.marca, p.idpro, p.nombre, p_p.precio, p.descripcion, p.existencia 
                 from $tabla p 
                 inner join pro_marca p_m on p.idpro_marca = p_m.idpro_marca 
                 inner join pro_precio p_p on p_p.idpro = p.idpro 
@@ -1102,7 +1102,8 @@
         #Detalle de Venta producto
         static public function detalleVPModel($tabla, $valor){
             $stmt = Conexion::conectar() -> prepare("select 
-            v_s.idventa_salida, p.nombre as producto, p.idpro, v_s.precioventa, v_s.cantidad from $tabla v_s 
+            v_s.idventa_salida, p.nombre as producto, p.idpro, v_s.precioventa, v_s.cantidad, 
+            v_s.precioventa * v_s.cantidad as total from $tabla v_s 
             inner join pro p on v_s.idpro = p.idpro where v_s.idventa = :idventa and v_s.status = 1;");
 
             $stmt -> bindParam(":idventa", $valor, PDO::PARAM_INT);
@@ -1894,7 +1895,7 @@
                     select u.iduser, u.nombre, u.usuario, u_s.modulo, DATE_FORMAT(u.fecha, '%d/%M/%Y - %H:%i:%S') fecha 
                     from $tabla u 
                     inner join user_modulo u_s on u.iduser = u_s.iduser 
-                    where u.tipo = 1 and u.status = 1 limit :inicio, :cantidad;
+                    where u.tipo = 1 and u.status = 1". /*limit :inicio, :cantidad*/";
                 ");
                 $stmt -> bindParam(":inicio", $inicio, PDO::PARAM_INT);
                 $stmt -> bindParam(":cantidad", $cantidad, PDO::PARAM_INT);

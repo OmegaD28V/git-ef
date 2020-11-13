@@ -213,13 +213,13 @@
     </table>
 
     <div class="pnt">
-        <a class="pnt__previous <?=$_GET["pag"] <= 1 ? 'disabled' : '' ?>" href="index.php?action=uProveedores&pag=<?=$_GET["pag"]-1?>">< Anterior</a>
+        <a class="pnt__previous <?=$_GET["pag"] <= 1 ? 'disabled' : '' ?>" id="prev" href="index.php?action=uProveedores&pag=<?=$_GET["pag"]-1?>">< Anterior</a>
 
         <?php for($i = 1; $i <= $paginas; $i++):?>
             <a class="pnt__pag <?=$_GET["pag"] == $i ? 'active' : '' ?>" href="index.php?action=uProveedores&pag=<?=$i?>"><?=$i?></a>
         <?php endfor ?>
         
-        <a class="pnt__next <?=$_GET["pag"] >= $paginas ? 'disabled' : '' ?>" href="index.php?action=uProveedores&pag=<?=$_GET["pag"]+1?>">Siguiente ></a>
+        <a class="pnt__next <?=$_GET["pag"] >= $paginas ? 'disabled' : '' ?>" id="next" href="index.php?action=uProveedores&pag=<?=$_GET["pag"]+1?>">Siguiente ></a>
     </div>
 
 

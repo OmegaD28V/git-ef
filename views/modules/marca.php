@@ -23,7 +23,7 @@
                             }
                         ?>
                     >
-                        <td><a href="index.php?action=productoMarca&tm=<?=$value["idpro_marca"]?>"><?=$value["marca"]?></a></td>
+                        <td><a class="cell" href="index.php?action=productoMarca&tm=<?=$value["idpro_marca"]?>"><?=$value["marca"]?></a></td>
                         <?php
                             if ((isset($_SESSION["ingresoVerificado"]) && (isset($_SESSION["access"])))) { 
                                 if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] == "master") {

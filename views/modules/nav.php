@@ -7,11 +7,9 @@
         <div class="img-logo"><img src="ima/LogoEF1.jpeg" alt="Logo EF"></div>
         <div class="logo">Electrónica Fonseca</div>
         <div class="search" id="div-search">
-            <!-- <form class=search__form> -->
-                <input class="search__form__input" type="text" name="search" id="search" placeholder="Busca productos, marcas, etc." required>
-                <button type="submit" class="search__form__button" id="btn-search"><i id="icon-search" class="fas fa-search"></i></button>
-                <div id="buscando"></div>
-            <!-- </form> -->
+            <input class="search__form__input" type="text" name="search" id="search" placeholder="Busca productos, marcas, etc." required>
+            <button type="submit" class="search__form__button" id="btn-search"><i id="icon-search" class="fas fa-search"></i></button>
+            <div id="buscando"></div>
         </div>
     </div>
 
@@ -46,7 +44,7 @@
                 <?php
                     if ($_GET["action"] == "categoria" || $_GET["action"] == "productoCategoria") {
                 ?>
-                    <li id="nav-item2" title="Categorías" class="nav-items"><a class="module" href="categoria"><i class="fas fa-cubes a-module"></i>Categorías</a>
+                    <li id="nav-item3" title="Categorías" class="nav-items"><a class="module" href="categoria"><i class="fas fa-cubes a-module"></i>Categorías</a>
                         <ul class="nav-ul-li-ul">
                             <?php
                                 foreach ($categorias as $key => $value) {
@@ -63,7 +61,7 @@
                 <?php
                     }else{
                 ?>
-                    <li id="nav-item2" title="Categorías" class="nav-items"><a href="categoria"><i class="fas fa-cubes"></i>Categorías</a>
+                    <li id="nav-item3" title="Categorías" class="nav-items"><a href="categoria"><i class="fas fa-cubes"></i>Categorías</a>
                         <ul class="nav-ul-li-ul">
                             <?php
                                 foreach ($categorias as $key => $value) {
@@ -84,7 +82,7 @@
                 <?php
                     if ($_GET["action"] == "marca" || $_GET["action"] == "productoMarca") {
                 ?>
-                    <li id="nav-item4" title="Marcas" class="nav-items"><a class="module" href="marca"><i class="fas fa-copyright"></i>Marcas</a>
+                    <li id="nav-item4" title="Marcas" class="nav-items"><a class="module" href="marca"><i class="fas fa-copyright a-module"></i>Marcas</a>
                         <ul class="nav-ul-li-ul">
                             <?php
                                 foreach ($marcas as $key => $value) {
@@ -168,6 +166,11 @@
                 <a href="usuarioInicioSession" class="pU-actions">Iniciar Sesion</a>
                 <a href="usuarioRegistrarse" class="pU-actions">Crear Cuenta</a>
                 <a href="usuarioConfiguracion" class="pU-opciones">Configuración</a>
+                <!-- <label for="opt__switch1" class="opt__lbl" id="opt__sw1">Tema </label>
+                <label for="opt__switch1" name="btn-switch" class="btn-switch">
+                    <input type="checkbox" id="opt__switch1" class="input-btn-switch">
+                    <span class="check-btn-switch round"></span>
+                </label> -->
             </div>
         </button>
     </div>

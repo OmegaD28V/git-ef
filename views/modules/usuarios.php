@@ -5,7 +5,7 @@
         if ($_SESSION["ingresoVerificado"] == "ok" && $_SESSION["access"] != "master") {
             echo '<script>window.location = "index.php?action=usuarioInicioSession";</script>';
         }
-        $usuarios = MvcController::seleccionarUsuariosController("emp");
+        $usuarios = MvcController::seleccionarUsuariosController("emp", null, null);
     }
 ?>
 <div class="contenedor-formulario">

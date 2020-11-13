@@ -7,11 +7,9 @@
         <div class="img-logo"><img src="ima/LogoEF2.png" alt="Logo EF"></div>
         <div class="logo">Electrónica Fonseca</div>
         <div class="search" id="div-search">
-            <!-- <form class=search__form> -->
-                <input class="search__form__input" type="text" name="search" id="search" placeholder="Busca productos, marcas, etc." required>
-                <button type="submit" class="search__form__button" id="btn-search"><i id="icon-search" class="fas fa-search"></i></button>
-                <div id="buscando"></div>
-            <!-- </form> -->
+            <input class="search__form__input" type="text" name="search" id="search" placeholder="Busca productos, marcas, etc." required>
+            <button type="submit" class="search__form__button" id="btn-search"><i id="icon-search" class="fas fa-search"></i></button>
+            <div id="buscando"></div>
         </div>
     </div>
 
